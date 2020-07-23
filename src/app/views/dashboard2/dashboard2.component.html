@@ -1,0 +1,1237 @@
+<div class="animated fadeIn">
+  <div class="modal fade" #payModal id="payModal" aria-hidden="true"   data-keyboard="false"data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title"> <span style="text-transform: capitalize;">Payment </span></h4>
+          <button type="button" id="closeDocumentsModelCloseButton2" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="margin-bottom: 30px;">
+
+          <div *ngIf="ezPayURL && ezPayURL != ''">
+            <!-- <form method="get" [action]="ezPayURL"> -->
+              <!-- <input type="text" name="q"> -->
+              <!-- <button id="payModelSubmit" type="submit">Submit</button> -->
+            <!-- </form> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- End Pay Model -->
+  <!-- documentsModal -->
+  <a href="" id="full" target="_blank"></a>
+  <div class="modal fade" #documentsModal id="documentsModal" aria-hidden="true"   data-keyboard="false"data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title"> <span style="text-transform: capitalize;">Download Documents </span></h4>
+          <button type="button" id="closeDocumentsModelCloseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" style="margin-bottom: 30px;">
+          <div class="row " *ngIf="currentCertificate" >
+            <div class="col-md-4 pdf-container mt-3 mb-3" *ngFor="let doc of currentCertificate.attachedDocuments; let i = index;">
+                <label  style="text-transform: capitalize; "> <b>{{doc.name}}</b></label>
+                <span *ngIf="doc.isEndorseRequired" class="badge badge-success ">Attested</span>
+
+                <span (click)="openPDF(doc.url)" class="btn btn-sm btn-dark ">Full Screen</span>
+                <!-- <object  (click)="openPDF(doc.url)" [data]="doc.url | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
+                <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+
+            </div>
+
+            <div class="col-md-4 mt-3 mb-3 pdf-container" *ngIf="currentCertificate.coUrl">
+              <label class="mt-1" > <b>Generated CO</b></label>
+              <span (click)="openPDF(currentCertificate.coUrl)" class="btn btn-sm btn-dark ">Full Screen</span>
+              <!-- <object class="mt-1" (click)="openPDF(currentCertificate.coUrl)" [data]="currentCertificate.coUrl | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
+              <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+
+          </div>
+
+            
+        </div>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal -->
+  
+
+  <!-- End of createAmmendmentCORequestModal -->
+
+  <!-- The Modal -->
+  <div class="modal fade" #createCORequestModal id="createCORequestModal" aria-hidden="true"   data-keyboard="false"data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title"> <span style="text-transform: capitalize;">{{certificateMode}}</span> Certificate Request</h4>
+          <button type="button" id="closeCreateCoModelCloseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <mat-horizontal-stepper [linear]="isLinear" #stepper>
+              
+              <mat-step [stepControl]="coRequestFormGroup" >
+
+                <span *ngIf="!ammntmentRequest">
+                <form [formGroup]="coRequestFormGroup" (ngSubmit)="onCOSubmit()" autocomplete="off">
+
+                  <ng-template matStepLabel>CO Details</ng-template>
+                  <button style="display: none;" id="resetStepper" mat-button (click)="resetStepper(stepper)">Reset</button>
+                  <div class="row">
+                    <div class="col-md-6 mt-1">
+                      <span>  Exporter*:  </span> 
+                      <input type="text" formControlName="exporter" class="form-control" required>
+                      <div *ngIf="coForm.exporter.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporter.errors.required">
+                              Exporter is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Consignee*:  </span> 
+                      <input type="text" formControlName="consignee" class="form-control" >
+                      <div *ngIf="coForm.consignee.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.consignee.errors.required">
+                            Consignee is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Exporter Address*:  </span> 
+                      <input type="text" formControlName="exporterAddress" class="form-control" required>
+                      <div *ngIf="coForm.exporterAddress.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporterAddress.errors.required">
+                              Address is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Consignee Address*:  </span> 
+                      <input type="text" formControlName="consigneeAddress" class="form-control" required>
+                      <div *ngIf="coForm.consigneeAddress.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.consigneeAddress.errors.required">
+                              Address is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-3 mt-1">
+                      <span>  Exporter State*:  </span> 
+                      <input type="text" formControlName="exporterState" class="form-control" required>
+                      <div *ngIf="coForm.exporterAddress.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporterAddress.errors.required">
+                              State is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-3 mt-1">
+                      <span>  Exporter Country*:  </span> 
+                      <input type="text" formControlName="exporterCountry" class="form-control" required>
+                      <div *ngIf="coForm.exporterAddress.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporterAddress.errors.required">
+                              Country is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-3 mt-1">
+                      <span>  Consignee State:  </span> 
+                      <input type="text" formControlName="consigneeState" class="form-control" required>
+                   
+                    </div>
+                    <div class="col-md-3 mt-1">
+                      <span>  Consignee Country*:  </span> 
+                      <input type="text" formControlName="consigneeCountry" class="form-control" required>
+                      <div *ngIf="coForm.exporterAddress.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporterAddress.errors.required">
+                              Country is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1"></div>
+                    <div class="col-md-6 mt-1">
+                      Add notified party ? <input type="checkbox" formControlName="isNotifiedParty"> 
+                    </div>
+                    <div [hidden]="!coForm.isNotifiedParty.value" class="row col-md-12 mt-1">
+                      <div class="col-md-6 mt-1">
+                        <span>  Party Name:  </span> 
+                        <input type="text" formControlName="partyName" class="form-control" >
+                        
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Party Address:  </span> 
+                        <input type="text" formControlName="partyAddress" class="form-control" >
+                       
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Party State:  </span> 
+                        <input type="text" formControlName="partyState" class="form-control" >
+                        
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Party Country:  </span> 
+                        <input type="text" formControlName="partyCountry" class="form-control" >
+                        
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6 mt-1">
+                      <span>  Pre-Carriage by*:  </span> 
+                      <input type="text" formControlName="preCarriageBy" class="form-control" required>
+                      <div *ngIf="coForm.preCarriageBy.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.preCarriageBy.errors.required">
+                          This field  is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Place of Receipt by Pre-Carrier*:  </span> 
+                      <input type="text" formControlName="placeOfReceipt" class="form-control" required>
+                      <div *ngIf="coForm.placeOfReceipt.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.placeOfReceipt.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Vessel/Flight No.*:  </span> 
+                      <input type="text" formControlName="VesselOrFlightNo" class="form-control"  required>
+                      <div *ngIf="coForm.VesselOrFlightNo.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.VesselOrFlightNo.errors.required">
+                          This field is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1"></div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Port of Loading*:  </span> 
+                      <input type="text" formControlName="loadingPort" class="form-control"  required>
+                      <div *ngIf="coForm.loadingPort.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.loadingPort.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-md-6 mt-1">
+                      <span>  Port of Discharge*:  </span> 
+                      <input type="text" formControlName="dischargePort" class="form-control"  required>
+                      <div *ngIf="coForm.dischargePort.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.dischargePort.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1"></div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Final Destination:  </span> 
+                      <input type="text" formControlName="finalDestination" class="form-control" placeholder="City, State, Country"  required>
+                      <div *ngIf="coForm.finalDestination.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.finalDestination.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12  mt-1">
+                      <span>
+                        Goods Details
+                      </span>
+                      <span (click)="addGoodsItem()" style=" color: blue;"> <i style="font-size: 2em;" class="fa fa-plus-circle fa-lg"></i></span>
+                    </div>
+                    <span *ngIf="coRequestFormGroup.get('goods') && coRequestFormGroup.get('goods').controls">
+                    <div  class="  col-md-12 mt-1 card" style="background-color: lightslategray; margin-bottom: 5px;" formArrayName="goods" *ngFor="let item of coRequestFormGroup.get('goods').controls; let i = index;">
+
+                    <div class=" row">
+                      <div class="col-md-4" [formGroupName]="i">
+                        <span>  Marks & Nos.*:  </span> 
+                        <input type="text" formControlName="numberOfPacking" class="form-control"  >
+                       
+                      </div>
+                      <div class="col-md-4" [formGroupName]="i">
+                        <span>  Container No.*:  </span> 
+                        <input type="text" formControlName="containerNumber" class="form-control"  placeholder="sttw3467" >
+                       
+                      </div>
+                      <div class="col-md-3" [formGroupName]="i">
+                        <span> Kind of Pkgs*:  </span> 
+                        <input type="text" formControlName="typeOfPacking" class="form-control"  placeholder="Kgs/Lsb" >
+              
+                      </div>
+                      <div class="col-md-1" (click)="removeGoodsItem(i)">
+                        <i  style="color: crimson;top: 5px;position: relative;font-size: 30px;" class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                    <div class="row mb-1">
+                      <div class="col-md-12" [formGroupName]="i">
+                          <span>  Description of Goods*:  </span> 
+                          <input type="text" formControlName="goodsDescription" class="form-control" >
+                      </div>
+                    </div>
+                    </div>
+                  </span>
+        
+                    <div class="col-md-6 mt-1">
+                      <span>  ICC COO Code.(Cert)*:  </span> 
+                      <input type="text" formControlName="iccCooCode" class="form-control" placeholder="Certificate Number" >
+                      <div *ngIf="coForm.iccCooCode.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.iccCooCode.errors.required">
+                          This field is required.
+                      </div>
+                      
+                      </div>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Date*:  </span> 
+                      <input type="date" formControlName="iccCooCodeDate" class="form-control" >
+                      <div *ngIf="coForm.iccCooCodeDate.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.iccCooCodeDate.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-6 mt-1">
+                      <span>  LC No.:  </span> 
+                      <input type="text" formControlName="lcNumber" class="form-control">
+                     
+                    </div>
+        
+                    <div class="col-md-3 mt-1">
+                      <span>  Date:  </span> 
+                      <input type="date" formControlName="lcNumberDate" class="form-control"  >
+                      
+                    </div>
+                    <div class="col-md-3 mt-1">
+                      <span> Expiry Date:  </span> 
+                      <input type="date" formControlName="lcNumberDateExpiry" class="form-control"  >
+                    
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <span>  Invoice No.*:  </span> 
+                      <input type="text" formControlName="invoiceNumber" class="form-control"  >
+                      <div *ngIf="coForm.invoiceNumber.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.invoiceNumber.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-md-6 mt-1">
+                      <span>  Date*:  </span> 
+                      <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
+                      <div *ngIf="coForm.invoiceNumberDate.invalid &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.invoiceNumberDate.errors.required">
+                          This Field is required.
+                      </div>
+                      
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mt-1">
+                      <span>  Order No.:  <sub>Enter "Email Order" for Email order.</sub>  </span> 
+                      <input type="text" formControlName="orderNumber" class="form-control"  >
+                    
+                    </div>
+        
+                    <div class="col-md-6 mt-1">
+                      <span>  Date:  </span> 
+                      <input type="date" formControlName="orderNumberDate" class="form-control"  >
+                      
+                    </div>
+
+                    <div class="col-md-6 mt-1">
+                      <span>  IEC No.*:  </span> 
+                      <input type="text" formControlName="iecNumber" class="form-control" >
+                      <div *ngIf="coForm.iecNumber.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.iecNumber.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row col-md-12 mt-1">
+                      <div class="col-md-6 ">
+                        <span>   Net Weight*:  </span> 
+                        <input type="text" formControlName="netWeight" class="form-control" >
+                        <div *ngIf="coForm.netWeight.invalid  &&  coSubmitted" class="error_txt">
+                          <div *ngIf="coForm.netWeight.errors.required">
+                            This field is required .
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span>  Gross Weight*:  </span> 
+                        <input type="text" formControlName="grossWeight" class="form-control" >
+                        <div *ngIf="coForm.grossWeight.invalid  &&  coSubmitted" class="error_txt">
+                          <div *ngIf="coForm.grossWeight.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 mt-1">
+                      <span>  Value*:  </span> 
+                      <input type="text" formControlName="totalValue" class="form-control" >
+                      <div *ngIf="coForm.totalValue.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.totalValue.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 mt-1">
+                      <span>  &nbsp;  </span> 
+                      <select class="form-control dropdowns" formControlName="valueCurrency">
+                        <option *ngFor="let unit of currencyArray" [value]="unit">{{unit}}</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12 mt-1">
+                      Attest Certificate of Origin ?  <input type="checkbox" formControlName="isCOEndorseRequired" disabled> 
+                    </div>
+                    <div class="col-md-12 mt-1">
+                      I Accept <span  style="text-decoration: underline; color: blue; cursor: pointer;"> Terms and Conditions : </span> <input type="checkbox" formControlName="termsAccepted" > 
+                    </div>
+                    
+                    <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+                      <span class="text-center"> {{showError}}</span>
+                    </div>
+                    <div class="col-md-12">
+                      <button type="submit" class="btn btn-sm btn-pill btn-primary" style="float: right;">Next </button>
+                    </div>
+                    <div class="col-md-12">
+                      <button type="button" id="firstStepNext" style="display: none;"  mat-button  matStepperNext>Next</button>
+                    </div>
+        
+                  </div>
+                </form>
+                </span>
+                <span *ngIf="ammntmentRequest">
+                  <form [formGroup]="coAmmendmentRequestFormGroup" (ngSubmit)="onAmmendmentRequestCOSubmit()" autocomplete="off">
+
+                    <ng-template matStepLabel>CO Details</ng-template>
+                    <button style="display: none;" id="resetStepper" mat-button (click)="resetStepper(stepper)">Reset</button>
+                    <div class="row">
+                      <div class="col-md-6 mt-1">
+                        <span>  CO Reference Number*:  </span> 
+                        <input (change)="checkReferenceNumber()"  type="text" formControlName="oldCOReferenceNumber" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.oldCOReferenceNumber.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.oldCOReferenceNumber.errors.required">
+                                Co Reference is required. 
+                          </div>
+                         
+                        </div>
+                        <div *ngIf="notIssuedCertificate" class="error_txt">
+                          Certificate Not issued.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mt-1">
+                        <span>  Exporter*:  </span> 
+                        <input type="text" formControlName="exporter" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.exporter.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.exporter.errors.required">
+                                Exporter is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Consignee*:  </span> 
+                        <input type="text" formControlName="consignee" class="form-control" >
+                        <div *ngIf="coAmmendmentForm.consignee.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.consignee.errors.required">
+                              Consignee is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Exporter Address*:  </span> 
+                        <input type="text" formControlName="exporterAddress" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.exporterAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.exporterAddress.errors.required">
+                                Address is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Consignee Address*:  </span> 
+                        <input type="text" formControlName="consigneeAddress" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.consigneeAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.consigneeAddress.errors.required">
+                                Address is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Exporter State*:  </span> 
+                        <input type="text" formControlName="exporterState" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.exporterAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.exporterAddress.errors.required">
+                                State is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Exporter Country*:  </span> 
+                        <input type="text" formControlName="exporterCountry" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.exporterAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.exporterAddress.errors.required">
+                                Country is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Consignee State:  </span> 
+                        <input type="text" formControlName="consigneeState" class="form-control" required>
+                       
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span>  Consignee Country*:  </span> 
+                        <input type="text" formControlName="consigneeCountry" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.exporterAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.exporterAddress.errors.required">
+                                Country is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1"></div>
+                      <div class="col-md-6 mt-1">
+                        Add notified party ?  <input type="checkbox" formControlName="isNotifiedParty"> 
+                      </div>
+                      <div [hidden]="!coAmmendmentForm.isNotifiedParty.value" class=" row col-md-12 mt-1">
+                        <div class="col-md-6 mt-1">
+                          <span>  Party Name:  </span> 
+                          <input type="text" formControlName="partyName" class="form-control" >
+                          
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span>  Party Address:  </span> 
+                          <input type="text" formControlName="partyAddress" class="form-control" >
+                         
+                        </div>
+                        <div class="col-md-3 mt-1">
+                          <span>  Party State:  </span> 
+                          <input type="text" formControlName="partyState" class="form-control" >
+                          
+                        </div>
+                        <div class="col-md-3 mt-1">
+                          <span>  Party Country:  </span> 
+                          <input type="text" formControlName="partyCountry" class="form-control" >
+                          
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6 mt-1">
+                        <span>  Pre-Carriage by*:  </span> 
+                        <input type="text" formControlName="preCarriageBy" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.preCarriageBy.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.preCarriageBy.errors.required">
+                            This field  is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Place of Receipt by Pre-Carrier*:  </span> 
+                        <input type="text" formControlName="placeOfReceipt" class="form-control" required>
+                        <div *ngIf="coAmmendmentForm.placeOfReceipt.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.placeOfReceipt.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Vessel/Flight No.*:  </span> 
+                        <input type="text" formControlName="VesselOrFlightNo" class="form-control"  required>
+                        <div *ngIf="coAmmendmentForm.VesselOrFlightNo.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.VesselOrFlightNo.errors.required">
+                            This field is required.
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1"></div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Port of Loading*:  </span> 
+                        <input type="text" formControlName="loadingPort" class="form-control"  required>
+                        <div *ngIf="coAmmendmentForm.loadingPort.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.loadingPort.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="col-md-6 mt-1">
+                        <span>  Port of Discharge*:  </span> 
+                        <input type="text" formControlName="dischargePort" class="form-control"  required>
+                        <div *ngIf="coAmmendmentForm.dischargePort.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.dischargePort.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1"></div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Final Destination:  </span> 
+                        <input type="text" formControlName="finalDestination" class="form-control" placeholder="City, State, Country"  required>
+                        <div *ngIf="coAmmendmentForm.finalDestination.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.finalDestination.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12  mt-1">
+                        <span>
+                          Goods Details
+                        </span>
+                        <span (click)="addGoodsItemAmendment()" style=" color: blue;"> <i class="fa fa-plus-circle fa-lg"></i></span>
+                      </div>
+                      <span *ngIf="coAmmendmentRequestFormGroup.get('goods') && coAmmendmentRequestFormGroup.get('goods').controls">
+                      <div  class="  col-md-10 mt-1 card" style="background-color: lightslategray; margin-bottom: 5px;    left: 75px;" formArrayName="goods" *ngFor="let item of coAmmendmentRequestFormGroup.get('goods').controls; let i = index;">
+  
+                      <div class=" row">
+                        <div class="col-md-4" [formGroupName]="i">
+                          <span>  Marks & Nos.*:  </span> 
+                          <input type="text" formControlName="numberOfPacking" class="form-control"  >
+                         
+                        </div>
+                        <div class="col-md-4" [formGroupName]="i">
+                          <span>  Container No.*:  </span> 
+                          <input type="text" formControlName="containerNumber" class="form-control"  placeholder="sttw3467">
+                         
+                        </div>
+                        <div class="col-md-3" [formGroupName]="i">
+                          <span> Kind of Pkgs*:  </span> 
+                          <input type="text" formControlName="typeOfPacking" class="form-control" placeholder="Kgs/Lsb" >
+                
+                        </div>
+                        <div class="col-md-1" (click)="removeGoodsItem(i)">
+                          <i  style="color: crimson;top: 5px;position: relative;font-size: 30px;" class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
+                        </div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-md-12" [formGroupName]="i">
+                            <span>  Description of Goods*:  </span> 
+                            <input type="text" formControlName="goodsDescription" class="form-control" >
+                        </div>
+                      </div>
+                      </div>
+                    </span>
+          
+                      <div class="col-md-6 mt-1">
+                        <span>  ICC COO Code.(Cert)*:  </span> 
+                        <input type="text" formControlName="iccCooCode" class="form-control" placeholder="Certificate Number" >
+                        <div *ngIf="coAmmendmentForm.iccCooCode.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.iccCooCode.errors.required">
+                            This field is required.
+                        </div>
+                        
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Date*:  </span> 
+                        <input type="date" formControlName="iccCooCodeDate" class="form-control" >
+                        <div *ngIf="coAmmendmentForm.iccCooCodeDate.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.iccCooCodeDate.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6 mt-1">
+                        <span>  LC No.:  </span> 
+                        <input type="text" formControlName="lcNumber" class="form-control">
+                     
+                      </div>
+          
+                      <div class="col-md-3 mt-1">
+                        <span>  Date:  </span> 
+                        <input type="date" formControlName="lcNumberDate" class="form-control"  >
+                       
+                      </div>
+                      <div class="col-md-3 mt-1">
+                        <span> Expiry Date:  </span> 
+                        <input type="date" formControlName="lcNumberDateExpiry" class="form-control"  >
+                      
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <span>  Invoice No.*:  </span> 
+                        <input type="text" formControlName="invoiceNumber" class="form-control"  >
+                        <div *ngIf="coAmmendmentForm.invoiceNumber.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.invoiceNumber.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="col-md-6 mt-1">
+                        <span>  Date*:  </span> 
+                        <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
+                        <div *ngIf="coAmmendmentForm.invoiceNumberDate.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.invoiceNumberDate.errors.required">
+                            Date is required.
+                        </div>
+                        
+                        </div>
+                      </div>
+  
+                      <div class="col-md-6 mt-1">
+                        <span>  Order No.:  </span> 
+                        <input type="text" formControlName="orderNumber" class="form-control"  >
+                        
+                      </div>
+          
+                      <div class="col-md-6 mt-1">
+                        <span>  Date:  </span> 
+                        <input type="date" formControlName="orderNumberDate" class="form-control"  >
+                      
+                      </div>
+  
+                      <div class="col-md-6 mt-1">
+                        <span>  IEC No.*:  </span> 
+                        <input type="text" formControlName="iecNumber" class="form-control" >
+                        <div *ngIf="coAmmendmentForm.iecNumber.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.iecNumber.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row col-md-12 mt-1">
+                        <div class="col-md-6 ">
+                          <span>   Net Weight*:  </span> 
+                          <input type="text" formControlName="netWeight" class="form-control" >
+                          <div *ngIf="coAmmendmentForm.netWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                            <div *ngIf="coAmmendmentForm.netWeight.errors.required">
+                              This field is required .
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <span>  Gross Weight*:  </span> 
+                          <input type="text" formControlName="grossWeight" class="form-control" >
+                          <div *ngIf="coAmmendmentForm.grossWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                            <div *ngIf="coAmmendmentForm.grossWeight.errors.required">
+                              This field is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="col-md-5 mt-1">
+                        <span>  Value*:  </span> 
+                        <input type="text" formControlName="totalValue" class="form-control" >
+                        <div *ngIf="coAmmendmentForm.totalValue.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
+                          <div *ngIf="coAmmendmentForm.totalValue.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mt-1">
+                        <span> &nbsp;   </span> 
+                        <select class="form-control dropdowns" formControlName="valueCurrency">
+                          <option *ngFor="let unit of currencyArray" [value]="unit">{{unit}}</option>
+                        </select>
+                       
+                      </div>
+  
+                      <div style="display: none;" class="col-md-12 mt-1">
+                        Attest Certificate of Origin?  <input type="checkbox" formControlName="isCOEndorseRequired" > 
+                      </div>
+                      <div class="col-md-12 mt-1">
+                        I Accept <span  style="text-decoration: underline; color: blue; cursor: pointer;"> Terms and Conditions : </span> <input type="checkbox" formControlName="termsAccepted" > 
+                      </div>
+                      
+                      <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+                        <span class="text-center"> {{showError}}</span>
+                      </div>
+                      <div class="col-md-12">
+                        <button type="submit" class="btn btn-sm btn-pill btn-primary" style="float: right;">Next </button>
+                      </div>
+                      <div class="col-md-12">
+                        <button type="button" id="firstStepNextAmmendment" style="display: none;"  mat-button  matStepperNext>Next</button>
+                      </div>
+          
+                    </div>
+                  </form>
+                </span>
+
+              </mat-step>
+              <mat-step [stepControl]="coRequestFormGroup">
+                <ng-template matStepLabel>Required Documents</ng-template>
+                <div [hidden]="uploadDocClicked">
+
+                
+                <div class="row col-md-12 mt-2">  
+                  <button (click)="addAdditionalDocument()" type="button" class="btn btn-sm btn-pill btn-primary" style="float: right;"> <i
+                  class="fa fa-plus-circle fa-lg"> Add Document</i> </button>
+                </div>
+                <div class="row" *ngFor="let doc of attachedDocuments; index as i;">
+                  <div class="col-md-3 mt-1">
+                    <span>  name*:  </span> 
+                    <input *ngIf="i <= 2" type="text" [(ngModel)]="doc.name" class="form-control" required disabled>
+
+                    <input *ngIf="i > 2" type="text" [(ngModel)]="doc.name" class="form-control" required>
+                   
+                  </div>
+                  <div [hidden]="doc.url && doc.url != '' " class="col-md-3 mt-1" >
+                    <span [hidden]=" doc.file && doc.file != '' ">
+                    <input id="{{'certificateDocInput-'+i}}" hidden type="file" name="fileInput" accept=".pdf,.doc"
+                        (change)="onFileChosen($event, doc, i)">
+                    <button type="button" class="btn btn-dark" (click)="onDocUploadClicked($event, i)">Upload Document&nbsp;&nbsp;<i class="fa fa-camera"></i></button>
+                    </span>
+                    <span (click)="doc.file= ''" [hidden]="doc.file == '' " title="Click to Remove">{{doc.file && doc.file.name}}</span>
+
+
+                  </div>
+
+                  <div [hidden]="!doc.url || doc.url == '' " class="col-md-3 mt-4" >
+                    <span style="margin-top: 2em !important;" (click)="doc.url= ''" title="Click to Remove">{{doc.name + '.pdf'}}</span>
+
+                  </div>
+                  
+
+                  <div [hidden]="!doc.name" class="col-md-4 mt-4">
+                    Attest {{doc.name}} ?  <input type="checkbox"[(ngModel)]="doc.isEndorseRequired" > 
+                  </div>
+                  <div *ngIf=" i != 0 || i != 1"  class="col-md-1" (click)="removeUploadDocsItem(i)">
+                    <i  style="color: red;" class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div *ngIf="showError" class="col-md-12 mt-2 error_txt text-center" style="font-size: 12px;">
+                  <span class="text-center"> {{showError}}</span>
+                </div>
+                </div>
+                <div class="text-center " [hidden]="!uploadDocClicked">
+                   <span class="text-center " style="vertical-align: middle;">
+                     Uploading Docs.....
+                   </span>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <button type="button" (click)="checkAndSaveDocs();" class="btn btn-sm btn-pill btn-primary" style="float: right;">Next </button>
+                  <button type="button" (click)="backButtonSecondStep();" class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
+
+                </div>
+                <div class="col-md-12 mt-2">
+                  <button type="button" id="secondStepNext" style="display: none;"  mat-button  matStepperNext></button>
+                  <button type="button" id="secondStepBack" style="display: none;"  mat-button  matStepperPrevious></button>
+
+                </div>
+              </mat-step>
+              <mat-step [stepControl]="coRequestFormGroup">
+
+                <ng-template matStepLabel>Verify OTP</ng-template>
+                <span *ngIf="currentCertificate && !currentCertificate.isOTPVerified">
+
+                    <div  class="row  mt-1">
+                      <div class="col-md-12 text-center">
+                        <span class="text-center"> <strong> OTP is already sent to your registered email-id. </strong>  </span>
+                      </div>
+                      <div class="col-md-4"></div>
+                      
+                      <div class="col-md-4">
+                        <!-- <button class="btn btn-pill btn-dark"  (click)="resendOTP(currentCertificate)">Resend OTP</button> -->
+                      </div>
+                    </div>
+                <div class="row  mt-4">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">
+                      <input type="text" [(ngModel)]="enteredOTP" class="form-control" placeholder="Email OTP" >
+                  </div>
+                    <div class="col-md-4 "> 
+                      <button class="btn btn-pill btn-success" type="button" (click)="verifyOTP(enteredOTP)">Verify</button>
+                    </div>
+                    
+                </div>
+                <div class="row mt-4">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">
+                    <button class="btn btn-pill btn-dark"  (click)="resendOTP(currentCertificate)">Resend OTP</button>
+                  </div>
+
+                </div>
+                <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+                  <span class="text-center"> {{showError}}</span>
+                </div>
+              </span>
+              <span *ngIf="currentCertificate && currentCertificate.isOTPVerified">
+                <div style= "text-align: center;color: green;font-size: 16px;">
+                  OTP Verified Successfully...
+                </div>
+
+                <div class="col-md-12">
+                  <div class="col-md-12 mt-3">
+                    <button type="button" id="thirdStepNext" (click)="getCert()" class="btn btn-sm btn-pill btn-primary" style="float: right;" matStepperNext>Next </button>
+                    <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
+  
+                  </div>
+                </div>
+              </span>
+
+              </mat-step>
+              <mat-step [stepControl]="coRequestFormGroup">
+                <ng-template matStepLabel>Payment</ng-template>
+                <div *ngIf="currentInvoice && currentInvoice.invoiceItems['length'] > 0"  class="row  mt-1">
+                   <div   class="col-md-12" > <!-- [hidden]="payClicked" -->
+                    <table class="table table-responsive ">
+                      <thead>
+                        <tr>
+                          <th style="width: 35%;">Item</th>
+                          <th>Quantity</th>
+                          <th>Rate</th>
+                          <th style="width: 25%;">Amount</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr 
+                          *ngFor="let row  of currentInvoice.invoiceItems; index as i "
+                         >
+                          <td style="text-transform:uppercase;">{{row.description}}</td>
+                          <td>{{row.quantity}}</td>
+                          <td> 
+                            <span *ngIf="row.description != 'IGST' && row.description != 'CGST' && row.description != 'SGST' ">{{row.amount}} pcs</span> 
+                            <span *ngIf="row.description == 'IGST' || row.description == 'CGST' || row.description == 'SGST' "></span>
+                          </td>
+                          <td *ngIf="row.description != 'IGST' || row.description != 'CGST' || row.description != 'SGST' "> 
+                            <span *ngIf="row.description != 'IGST' || row.description != 'CGST' || row.description != 'SGST' ">{{row.amount}} </span> 
+                            <span *ngIf="row.description == 'IGST' || row.description == 'CGST' || row.description == 'SGST' ">{{row.rate}}</span>
+                          </td>                        
+                        </tr>
+                        <td>Total</td>
+                        <td>{{currentInvoice.totalQuantity}}</td>
+                        <td></td>
+                        <td>{{currentInvoice.totalAmount}}</td>
+                      </tbody>
+                    </table>
+                   
+                  </div>
+                  <!-- <div [hidden]="!payClicked" class="col-md-12">
+                    <iframe style="width: 54vw;height: 60vh;" name="output_frame" src="" id="output_frame"  scrolling=yes frameborder=0 width="XX" height="XX">
+                    </iframe>
+                  </div> -->
+                  <div style="display: none;" class="col-md-12" >
+                    <form  ngNoForm method="get" action="https://eazypay.icicibank.com/EazyPG" target="_blank">
+
+                      <label for="merchantid">merchantid:</label>
+                      <input type="text" id="merchantid" [(ngModel)]="payment['merchantid']" name="merchantid"><br><br>
+                      <label for="mandatory fields">mandatory fields:</label>
+                      <input type="text" id="mandatory fields"  [(ngModel)]="payment['mandatory fields']" name="mandatory fields"><br><br>
+                      <label for="optional fields">optional fields:</label>
+                      <input type="text" id="optional fields"  [(ngModel)]="payment['optional fields']" name="optional fields"><br><br>
+                      <label for="returnurl">returnurl:</label>
+                      <input type="text" id="returnurl"  [(ngModel)]="payment['returnurl']" name="returnurl"><br><br>
+                      <label for="Reference No">Reference No:</label>
+                      <input type="text" id="Reference No"  [(ngModel)]="payment['Reference No']" name="Reference No"><br><br>
+                      
+                      <label for="submerchantid">submerchantid:</label>
+                      <input type="text" id="submerchantid"  [(ngModel)]="payment['submerchantid']" name="submerchantid"><br><br>
+                      
+                      <label for="transaction amount">transaction amount:</label>
+                      <input type="text" id="transaction amount"  [(ngModel)]="payment['transaction amount']" name="transaction amount"><br><br>
+                      <label for="paymode">paymode:</label>
+                      <input type="text" id="paymode"  [(ngModel)]="payment['paymode']" name="paymode"><br><br>
+                      
+                      <input   id="payModelSubmit" type="submit" value="Submit">
+                      <!-- <button  id="payModelSubmit" type="submit">Submit</button> -->
+                    </form>
+                    
+                   
+                  </div>
+                </div>
+                <div>
+                  <span [hidden]="currentCertificate && currentCertificate['rejectionReason']">
+                    <div *ngIf="!payClicked" class="col-md-12 mt-3">
+                      <button *ngIf="isWalletPayActive()" type="button" (click)="payCredit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary ml-2" style="float: right;"  >Pay From Wallet</button>
+                      <button type="button" (click)="payNowTest(currentCertificate)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
+                      <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
+                    </div>
+                </span> 
+                <span [hidden]=" currentCertificate && !currentCertificate['rejectionReason']">
+                  <div *ngIf="!payClicked" class="col-md-12 mt-3">
+                    <button type="button" (click)="resubmit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Resubmit</button>
+                    <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
+                  </div>
+                </span>
+
+                  
+                </div>
+              </mat-step>
+            </mat-horizontal-stepper>
+           
+
+        </div>
+        
+
+        <!-- Modal footer -->
+        <!-- <div class="modal-footer">
+          <button  type="button" (click)="submit()" data-dismiss="modal" style="float: right; font-weight: 600;" class="btn btn-success"> Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!--End of Create Co Model-->
+
+  <div class="row margin_top_10 ">
+
+    <!-- <div class="col-md-12 mb-12"> -->
+    <tabset class="width_100">
+      <tab style="margin-bottom: 3em !important;">
+        <ng-template tabHeading><i class="icon-list"></i> Packing List & Commercial Invoice </ng-template>
+        <div>
+          <div class="row col-md-12">
+            <div class="col-md-6 col-sm-4"></div>
+            <div  class="col-md-6 col-sm-8">
+              <button *rbacShow="['user']" (click)="ammendmentMode='create'; ammntmentRequest = true" data-toggle="modal" data-target="#createCORequestModal" type="button"
+              class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Ammendment  <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i> </button>
+              <button *rbacShow="['user']" (click)="certificateMode='create'" data-toggle="modal" data-target="#createCORequestModal" type="button"
+                class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Request  <i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i> </button>
+            </div>
+          </div>
+          <div class="row col-md-12">
+            <!-- <div class="col-md-3 col-sm-6"></div> -->
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <div class="form-group">
+                <label *rbacShow="['editor']" for="searchText"> Company Name </label>
+                <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
+                <input (change)="updateFilter(searchText,fromDate, toDate)"  type="search" [(ngModel)]="searchText"  class="form-control"
+                  placeholder="Search.." id="searchText">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <label class="" for="fromDate"> From </label>
+              <div>
+                <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="fromDate"  id="fromDate" type="date"
+                  name="fromDate" placeholder="date">
+              </div>
+              <!-- <input type="search" class="form-control" placeholder="Search.." id="searchText"> -->
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <label class="" for="toDate"> To </label>
+              <div>
+                <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate" id="toDate" type="date" name="toDate"
+                  placeholder="date">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+              <button (click)="searchText=''; callClear()" type="button"
+                class="btn btn-sm btn-pill btn-danger">Clear</button>
+                
+              
+            </div>
+          </div>
+          <table class="table table-responsive  table-striped">
+            <thead>
+              <tr>
+                <th *rbacShow="['editor']" style="width: 20%;">Company Name</th>
+                <th *rbacShow="['user']" style="width: 20%;">Consignee's Name</th>
+                <th style="width: 20%;">Reference No.</th>
+                <th style="width: 12%;">IEC No.</th>
+                <th style="width: 12%;">Request Type</th>
+                <th>Date</th>
+                <th style="width: 20%;">Destination</th>
+                <th *rbacShow="['editor']" style="width: 20%;">Editor Action</th>
+                <th *rbacShow="['admin']" style="width: 20%;">Editor Action</th>
+
+                <th>Status</th>
+                <th style="width: 12%;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="" *ngFor="let pl of plList; index as i ">
+                <td *rbacShow="['editor']" >{{pl.exporter}}</td>
+                <td *rbacShow="['user']" >{{pl.consignee}}</td>
+                <td> {{pl.coReferenceNumber}}</td>
+                <td>{{pl.iecNumber}}</td>
+                <td>              
+                  <span *ngIf="pl.ammendmentMode" class="badge badge-warning"  style="text-transform: capitalize;">Ammendment</span>
+                  <span *ngIf="!pl.ammendmentMode" class="badge badge-success"  style="text-transform: capitalize;">Certificate</span>
+
+                </td>
+                <td>{{pl.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td>{{pl.finalDestination}}</td>
+                <td  *rbacShow="['editor']"> <span *ngIf="pl.editorAction == 'Accept'" class="badge badge-success">Reviewed</span></td>
+
+                <td  *rbacShow="['admin']"> <span *ngIf="pl.editorAction == 'Accept'" class="badge badge-success">Reviewed</span></td>
+
+
+                <td>
+                  <span *ngIf="pl.docStatus == 'draft'" class="badge badge-secondary" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+
+                  <span *ngIf="pl.docStatus == 'issued'" class="badge badge-secondary" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                  <span *ngIf=" pl.docStatus == 'submitted'" class="badge badge-warning"  style="text-transform: capitalize;">Pending</span>
+                  <span *ngIf="pl.docStatus == 'accepted' " class="badge badge-success" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                  <span *ngIf="pl.docStatus == 'rejected' " class="badge badge-danger" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                </td>
+                <td *rbacShow="['user']">
+                  <span *ngIf="pl.ammendmentMode">
+                    <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditAmmendmentCertificateClicked(pl)">Edit</button>
+
+                  </span>
+                  <span *ngIf="!pl.ammendmentMode">
+                    <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
+                  </span>
+                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
+                </td>
+                <td *rbacShow="['editor']">
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"  re >View</button>
+                </td>
+                <td *rbacShow="['admin']">
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"  re >View</button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <div *ngIf="plList && plList['length']> 0">
+          <ngb-pagination 
+              class="float-right" 
+              [(page)]="page" 
+              [pageSize]="pagination.perPage"
+              [maxSize]="maxSize"
+              [collectionSize]="pagination.numOfResults" 
+              aria-label="Default pagination" 
+              [rotate]="true"
+              (pageChange)="pageChanged($event)">
+          </ngb-pagination>
+          </div>
+          <div class="text-center" *ngIf="plList && plList['length'] == 0">
+            <span class="text-center" style="color: #2196F3;font-weight: 400;">No Results Found</span>
+          </div>
+        </div>
+
+      </tab>
+      <tab style="margin-bottom: 3em !important;">
+        <ng-template tabHeading><i class="icon-calculator"></i> Issued Co </ng-template>
+        <div class="">
+          <div class="row col-md-12">
+            <!-- <div class="col-md-3 col-sm-6"></div> -->
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <div class="form-group">
+                <label *rbacShow="['editor']" for="searchText"> Company Name </label>
+                <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
+
+                <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control"
+                  placeholder="Search.." id="searchText">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <label class="" for="fromDate"> From </label>
+              <div>
+                <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="fromDate"  id="fromDate" type="date"
+                  name="fromDate" placeholder="date">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%;">
+              <label class="" for="toDate"> To </label>
+              <div>
+                <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
+                  placeholder="date">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+              <button (click)="searchText='';  callClear()" type="button"
+                class="btn btn-sm btn-pill btn-danger">Clear</button>
+            </div>
+          </div>
+          <table class="table table-responsive  table-striped">
+            <thead>
+              <tr>
+                <th *rbacShow="['editor']" style="width: 30%;">Company Name</th>
+                <th *rbacShow="['user']" style="width: 30%;">Consignee's Name</th>
+                <th style="width: 20%;">Reference No.</th>
+                <th style="width: 12%;">IEC No.</th>
+                <th style="width: 12%;">Date</th>
+                <th style="width: 20%;">Destination</th>
+               
+                <th>Status</th>
+                <th style="width: 12%;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="pointer"
+                *ngFor="let pl of coList; index as i "
+                >
+                <td *rbacShow="['editor']" >{{pl.exporter}}</td>
+                <td *rbacShow="['user']" >{{pl.consignee}}</td>
+
+                <td> {{pl.coReferenceNumber}}</td>
+
+                <td>{{pl.iecNumber}}</td>
+                <td>{{pl.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td>{{pl.finalDestination}}</td>
+
+              
+                <td>  
+                  <span *ngIf="pl.docStatus == 'draft'" class="badge badge-secondary" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+
+                  <span *ngIf="pl.docStatus == 'issued'" class="badge badge-success" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                  <span *ngIf=" pl.docStatus == 'submitted'" class="badge badge-warning"  style="text-transform: capitalize;">Pending</span>
+                  <span *ngIf="pl.docStatus == 'accepted' " class="badge badge-success" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                  <span *ngIf="pl.docStatus == 'rejected' " class="badge badge-danger" style="text-transform: capitalize;">{{pl.docStatus}}</span>
+                </td>
+                <td *rbacShow="['user']">
+                  <button  title="Ammendments fees will be added."class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
+                  <button title="Download Documents " (click)="downloadClicked(pl)" data-toggle="modal" data-target="#documentsModal" class="btn btn-sm btn-primary" *ngIf=" pl.docStatus == 'issued'"  > <i class="fa fa-arrow-down fa-lg" aria-hidden="true"></i></button>
+
+                </td>
+                <td *rbacShow="['editor']">
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"  >View</button>
+                </td>
+                
+                <td *rbacShow="['admin']">
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"   >View</button>
+                </td>
+              
+              </tr>
+
+            </tbody>
+          </table>
+          <div *ngIf="coList && coList['length']> 0">
+            <ngb-pagination 
+                class="float-right" 
+                [(page)]="page1" 
+                [pageSize]="pagination1.perPage"
+                [maxSize]="maxSize"
+                [collectionSize]="pagination1.numOfResults" 
+                aria-label="Default pagination" 
+                [rotate]="true"
+                (pageChange)="pageChanged1($event)">
+            </ngb-pagination>
+          </div>
+          <div class="text-center" *ngIf="coList && coList['length'] == 0">
+            <span class="text-center" style="color: #2196F3;font-weight: 400;">No Results Found</span>
+          </div>
+        </div>
+      </tab>
+
+    </tabset>
+
+    <!-- </div> -->
+
+  </div>
+</div>

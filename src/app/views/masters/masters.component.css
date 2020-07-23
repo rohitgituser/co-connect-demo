@@ -1,0 +1,13 @@
+.date-card{
+    height: 125px !important;
+    background-color: #0a417e !important;
+    color: white !important;
+    margin-bottom: 0px;
+}
+
+.master-label{
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    margin: auto;
+}

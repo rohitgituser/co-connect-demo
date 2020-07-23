@@ -1,0 +1,90 @@
+<div class="animated fadeIn">
+    <div class="row margin_top_10">
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+                Payments
+            </div>
+            <div class="card-body">
+                <div class="row col-md-12">
+                    <!-- <div class="col-md-3 col-sm-6"></div> -->
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <div class="form-group">
+                        <!-- <label for="searchText"><b>Company Name</b></label> -->
+                        <label *rbacShow="['user']" for="searchText"> Company Name </label>
+                        <label *rbacShow="['editor']" for="searchText">Consignee's Name</label>
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control" placeholder="Search.."
+                          id="searchText">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="fromDate"><b>From</b></label>
+                      <div >
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="fromDate"  id="fromDate" type="date"
+                          name="fromDate" placeholder="date">
+                      </div>
+                      <!-- <input type="search" class="form-control" placeholder="Search.." id="searchText"> -->
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="toDate"><b>To</b></label>
+                      <div >
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
+                          placeholder="date">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                      <button (click)="fromDate=''; toDate=''" type="button" class="btn btn-sm btn-pill btn-danger">Clear</button>
+        
+                    </div>
+                  </div>
+                <table class="table table-responsive  table-striped">
+                    <thead>
+                        <tr>
+                            <!-- <th>ID</th> -->
+                            <th style="width: 30%;">Reference No</th>
+                            <th style="width: 30%;">Consignee Name</th>
+                            <!-- <th>Sub Merchant Id</th> -->
+                            <th style="width: 10%;">Date</th>
+                            <th style="width: 15%;">Transaction ID</th>
+                            <th >Status</th>
+                            <th style="width: 6%;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pl of paymentsList ; index as i;">
+                            <!-- <td>{{pl.ID}}</td> -->
+                            <td>{{pl.ReferenceNo}}</td>
+                            <td>{{pl.companyName}}</td>
+                            <!-- <td>{{pl.SubMerchantId}}</td> -->
+                            <td>{{pl.transactionDate }}</td>
+                            <td>{{pl.transactionID}}</td>
+                            <td>
+                                <span *ngIf="pl.refCode == 'E000'" class="badge badge-success">Success</span>
+                            </td>
+                            <td>{{pl.transactionAmount}} <i class="fa fa-rupee fa-lg "></i></td>
+
+
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div  *ngIf="paymentsList && paymentsList['length'] > 0">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" >Prev</a></li>
+                    <li class="page-item active">
+                        <a class="page-link" >1</a>
+                    </li>
+                    <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li> -->
+                    <li class="page-item"><a class="page-link" >Next</a></li>
+                </ul>
+                </div>
+                <div class="text-center" *ngIf="paymentsList && paymentsList['length'] == 0">
+                  <span class="text-center" style="color: #2196F3;font-weight: 400;">No Results Found</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<app-header
+  [navbarBrandRouterLink]="['/dashboard']"
+  [fixed]="true"
+  [navbarBrandFull]="{src: '/assets/img/brand/yourlogo.jpg', width: 130, alt: 'Your Logo'}"
+  [navbarBrandMinimized]="{src: '/assets/img/brand/logo4.png', width: 30, height: 30, alt: 'Your Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="false">
+  
+ 
+    <img src="/assets/img/brand/yourlogo.jpg" width=280 height="50" class="" alt="Your Logo"/>
+
+
+  <ul class="nav navbar-nav ml-auto">
+    <!-- <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+    </li> -->
+    <!-- <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-list"></i></a>
+    </li> -->
+    <!-- <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
+    </li> -->
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a  class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+       <span *rbacShow="['user']" >{{getCurrentUserName()}}  </span>
+       <span *rbacShow="['editor']" >{{getCurrentUserName()}}</span>
+       <span *rbacShow="['admin']" >{{getCurrentUserName()}}</span>
+
+       <img src="assets/img/avatars/fa-user-tie.png" class="img-avatar" alt="{{getCurrentUserName()}}"/>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+       
+        <a class="dropdown-item" routerLink="/profile"><i class="fa fa-user" ></i> Profile</a>
+        <!-- <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Setting</a> -->
+        <!-- <a class="dropdown-item"routerLink="/payments"><i class="fa fa-usd"  ></i> Payments<span class="badge badge-dark">42</span></a> -->
+        <div class="divider"></div>
+        <a class="dropdown-item"routerLink="/logout"><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+
+      <div class="d-flex flex-column">
+        <footer class="footer  col-md-12" style="position: fixed;bottom: 0px;padding: 0px;margin: 0px;color: black;">
+          <div class="row col-md-12" style="    color: white;background: #3a4248;">
+
+          
+          <div class="row col-md-8">
+            <a target="_blank" href="https://www.indianchamber.org/"> Indian Chambers of Commerce</a>
+            <span>&copy; 2020 Automaxis.</span>
+          </div>
+          <div class="ml-auto col-md-4">
+            <span>Powered by</span>
+            <a target="_blank" href="http://autom-axis.com/">Automaxis</a>
+          </div>
+        </div>
+        </footer>
+      </div>
+    </div>
+  </main>
+  
+</div>

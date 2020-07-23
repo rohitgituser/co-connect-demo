@@ -1,0 +1,37 @@
+
+.filter-select {
+    width: 100%;
+    list-style: none;
+    font-size: 1.1em;
+    color: rgb(105, 105, 105);
+    /*so things don't jump around*/
+    position: absolute;
+    /* left: 25%; */
+    top: calc(50% + 25px);
+    max-height: 180px;
+    overflow-y: auto;
+    background: #fff;
+    z-index: 999;
+  }
+  .filter-select-list img {
+    margin-right: 0px;
+  }
+  
+  .filter-select-list:hover .tags {
+    color: #fff;
+  }
+ 
+    
+  .filter-select-list {
+    cursor: pointer;
+    padding-top: 5px;
+    padding-left: 10px;  
+}
+  .artist-name {
+    display: block;
+    position: absolute;
+  }
+  .filter-select-list:hover {
+    background:  #2b2a3d;
+    color: #fff
+  }

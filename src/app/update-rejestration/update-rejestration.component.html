@@ -1,0 +1,201 @@
+<div class="app-body">
+    <main class="main d-flex align-items-center">
+       
+      <div class="container" style="max-width: 1350px; margin-top: 20px;">
+
+        <div class="card">
+            <div class="card-header  page_heading">User Registration</div>
+        
+            <form [formGroup]="registrationForm" (ngSubmit)="onRegisterSubmit()" autocomplete="off">
+                <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-8">
+                    <span> <b>Company Name*:</b> </span> 
+                    <input type="text" formControlName="companyName" class="form-control" placeholder="Company Name" required>
+                    <div *ngIf="rForm.companyName.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.companyName.errors.required">
+                            Company name is required.
+                        </div>
+                    
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b> ICC COO code:</b> </span> 
+                    <input type="text" formControlName="coReference" maxlength="10" class="form-control" placeholder="Co Reference Number" >
+                    
+                    </div>
+                    <div class="col-md-12">
+                    <span> <b>Address*:</b> </span> 
+                    <input type="text" formControlName="address" class="form-control" placeholder="Address" required>
+                    <div *ngIf="rForm.address.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.address.errors.required">
+                        Address  is required.
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b>City*:</b> </span> 
+                    <input type="text" formControlName="city" class="form-control" placeholder="City" required>
+                    <div *ngIf="rForm.city.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.city.errors.required">
+                        Address  is required.
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b>State*:</b> </span> 
+                    <input type="text" formControlName="state" class="form-control" placeholder="State" required>
+                    <div *ngIf="rForm.state.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.state.errors.required">
+                        Address  is required.
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-4">
+                    <span> <b>Pin Code*:</b> </span> 
+                    <input type="text" formControlName="zipCode" class="form-control" placeholder="Zip Code" required>
+                    <div *ngIf="rForm.zipCode.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.zipCode.errors.required">
+                        Address  is required.
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b>IEC No*:</b> </span> 
+                    <input type="text" formControlName="iecNumber" class="form-control" placeholder="ICE Number" required>
+                    <div *ngIf="rForm.iecNumber.invalid && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.iecNumber.errors.required">
+                        IEC No.  is required.
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b>PAN No*:</b> </span> 
+                    <input type="text" formControlName="panNumber" class="form-control" placeholder="PAN Number" required>
+                    <div *ngIf="rForm.panNumber.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.panNumber.errors.required">
+                        PAN No.  is required.
+                        </div>
+                        <div *ngIf="rForm.panNumber.errors.pattern">
+                        In valid PAN Number.
+                    </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <span> <b>GSTIN No:</b> </span> 
+                    <input type="text" formControlName="gstinNumber" class="form-control" placeholder="GSTIN Number" >
+                    
+                    </div>
+
+                    <div class="col-md-6">
+                    <span> <b>Name of Authorized Signatory*:</b> </span> 
+                    <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Name" required>
+                    <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.contactPersonName.errors.required">
+                        This field is required  is required.
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <span> <b>Website:</b> </span> 
+                    <input type="text" formControlName="website" class="form-control" placeholder="wwww.xyz.com" >
+                    
+                    </div>
+
+                    <!-- <div class="col-md-6">
+                    <span> <b>Registered Person*:</b> </span> 
+                    <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Contact Person Name" >
+                    <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.contactPersonName.errors.required">
+                        This field is required  is required.
+                        </div>
+                    </div>
+                    </div> -->
+
+                    <div class="col-md-6">
+                    <span> <b>Registered Email*:</b> </span> 
+                    <input type="text" formControlName="email" class="form-control" placeholder="Email Id"  disabled>
+                    <div *ngIf="rForm.email.invalid && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.email.errors.required">
+                        Email Id is required.
+                    </div>
+                    <div *ngIf="rForm.email.errors.pattern">
+                        In valid email address.
+                    </div> 
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <span> <b>Registered Contact No.*:</b> </span> 
+                    <input type="text" formControlName="contactNumber" class="form-control" placeholder="Contact Number" >
+                    <div *ngIf="rForm.contactNumber.invalid && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.contactNumber.errors.required">
+                        This field is required  is required.
+                        </div>
+                    </div>
+                    </div>
+                
+                    <div class="col-md-6">
+                    <span> <b>Fax No.:</b> </span> 
+                    <input type="text" formControlName="faxNumber" class="form-control" placeholder="Fax Number" >
+                    
+                    </div>
+
+                    <!-- <div class="col-md-6">
+                    <span> <b>Annual Turnover*:</b> </span> 
+                    <input type="text" formControlName="turnover" class="form-control" placeholder="Amount" >
+                    <div *ngIf="rForm.turnover.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.turnover.errors.required">
+                        This field is required  is required.
+                        </div>
+                    </div>
+                    </div> -->
+                    <!-- <div class="col-md-6">
+                    <span> <b>Export Product*:</b> </span> 
+                    <input type="text" formControlName="product" class="form-control" placeholder="Product Name" >
+                    <div *ngIf="rForm.product.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.product.errors.required">
+                        This field is required  is required.
+                        </div>
+                    </div>
+                    </div> -->
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                    <span> <b>Password*:</b> </span> 
+                    <input type="password" formControlName="password" class="form-control"  required>
+                    <div *ngIf="rForm.password.invalid" class="error_txt">
+                        <div *ngIf="rForm.password.errors.required && registerSubmitted">
+                        Password Id is required.
+                    </div>
+                    <div *ngIf="rForm.password.errors.pattern">
+                        At least one digit,one lowercase character,one uppercase character and least one special character is Required. At least 8 characters in length, but no more than 32.
+                    </div> 
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <span> <b>Confirm Password*:</b> </span> 
+                    <input type="password" formControlName="passwordConfirm" class="form-control"  >
+                    
+                    </div>
+
+                    <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+                    <span class="text-center"> {{showError}}</span>
+                    </div>
+
+                </div>
+                
+                </div>
+                <div class="card-footer p-4">
+
+                <div class="col-md-12">
+                <button  type="submit"  style="float: right; font-weight: 600;" class="btn btn-success mb-2"> Resubmit Register</button>
+
+                </div>
+            </div>
+            </form>
+        </div>
+      </div>
+    </main>
+</div>

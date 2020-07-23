@@ -1,0 +1,90 @@
+
+<div class="animated fadeIn container-fluid mt-3">
+   
+   <div class="row margin_top_10">
+       <div class="card width_100">
+           <div class="card-header page_heading" >
+               Members Master
+           </div>
+           <div class="card-body">
+            <div class="row col-md-12">
+                <div class="col-md-6"></div>
+                <div class="col-md-3">
+                    <input id="importMembers" (change)="onFileChange($event)" type="file" accept=".csv" style="display: none;" />
+                    <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="importMembers()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Import Members CSV</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportSampleCSV()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Members Sample CSV</button>
+                </div>
+            </div>
+               <div class="row col-md-12">
+                   <!-- <div class="col-md-3 col-sm-6"></div> -->
+                   <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                     <div class="form-group">
+                       <label for="searchText"><b>Company Name</b></label>
+                       <input type="text" [(ngModel)]="searchText" (input)="nameChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                         id="searchText">
+                     </div>
+                   </div>
+                   <div class="form-group col-md-3 col-sm-6">
+                       <div class="form-group">
+                           <label for="selectedAccountType"><b>Account</b> </label> <br>
+                           <select (change)="accountClicked($event)" [(ngModel)]="selectedAccountType" class="form-control"  >
+                               <option disabled>Select Account type</option>
+                               <option  *ngFor="let account of accountType">{{account}}</option>
+                             </select>
+                           </div>
+                          
+                   </div>
+                   <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                   
+                   </div>
+                   <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                     <button (click)="selectedAccountType=''; searchText=''; getMembersList('', '', '1')" type="button" class="btn btn-sm btn-pill btn-danger">Clear</button>
+                   </div>
+                 </div>
+               <table class="table table-responsive  table-striped" style="width: 100%;">
+                   <thead>
+                       <tr>
+                           <th style="width: 23vw;">Company Name</th>
+                           <th style="width: 30%;">Member No</th>
+                           <th style="width: 20%;">Is Active</th>
+                           <th>Action</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <!-- <tr *ngFor="let user of membersList | gridFilter: {'companyName':searchText, 'fromDate': fromDate, 'toDate': toDate}; index as i;"> -->
+                       <tr *ngFor="let member of membersList ; index as i;">
+                           <td style="width: 30vw">{{member.name}}</td>
+                           <td style="width: 30%;">{{member.coReference}}</td>
+
+                           <td  style="width: 20%;" *ngIf="member.isActive"><span class="badge badge-success">Active</span></td>
+                           <td style="width: 20%;" *ngIf="!member.isActive"><span class="badge badge-warning">In-Active</span></td>
+
+                           <td>
+                               <!-- <button (click)="viewClicked(user)" data-toggle="modal" data-target="#viewUserMode" class="btn btn-pill btn-primary">View</button> -->
+                           </td>
+                       </tr>
+
+                   </tbody>
+               </table>
+               <span [hidden]="membersList && membersList.length > 0" class="not-found">
+                   Members Not Found 
+               </span>
+
+               <div class="width_100 mt-1" [hidden]="membersList && membersList.length < 0">
+                   <ngb-pagination
+                       class="float-right" 
+                       [(page)]="page"
+                       [pageSize]="pagination.perPage"
+                       [maxSize]="maxSize"
+                       [collectionSize]="pagination.numOfResults"
+                       aria-label="Default pagination"
+                       [rotate]="true" 
+                       (pageChange)="pageChanged($event)">
+                   </ngb-pagination>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

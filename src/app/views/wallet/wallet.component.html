@@ -1,0 +1,171 @@
+<div class="animated fadeIn container-fluid mt-3">
+    <div class="row margin_top_10">
+        <!-- The Modal -->
+  <div class="modal" #CreditModel id="CreditModel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">Credit</h4>
+          <button type="button" id="closeCreditModelButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form [formGroup]="creditForm" (ngSubmit)="onCreditSubmit()" autocomplete="off">
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+                <div class="form-group col-md-4 col-sm-6">
+                    <!-- <div class="form-group"> -->
+                        <label for="selectedCompany"><b>Company</b> </label>
+                        <input type="text" [(ngModel)]="selectedCompany" formControlName="selectedCompany" (input)="getCompany($event.target.value)" class="form-control" placeholder="Search.." />
+                        <div [hidden]="!companyList">
+                            <ul  class="filter-select" style="padding-left: 0px;">
+                                <li (click)="companyClicked(company)" *ngFor="let company of companyList"   class="filter-select-list">{{company.companyName}}
+                                </li>
+                            </ul>
+                        </div> 
+                        <div *ngIf="cForm.selectedCompany.invalid  &&  creditSubmitted" class="error_txt">
+                            <div *ngIf="cForm.selectedCompany.errors.required">
+                              This field is required.
+                            </div>
+                          </div>
+                       
+                </div>
+                <div class="col-md-2 mt-1">
+                    <span>  &nbsp; Type  </span> 
+                <select class="form-control dropdowns" formControlName="type">
+                    <option *ngFor="let unit of ['Credit', 'Debit']" [value]="unit">{{unit}}</option>
+                </select>
+                  <div *ngIf="cForm.type.invalid  &&  creditSubmitted" class="error_txt">
+                    <div *ngIf="cForm.type.errors.required">
+                      This field is required.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                    <span>  Description*:  </span> 
+                    <input type="text" formControlName="description" class="form-control" >
+                    <div *ngIf="cForm.description.invalid  &&  creditSubmitted" class="error_txt">
+                      <div *ngIf="cForm.description.errors.required">
+                        This field is required.
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <span>  Amount <i class="fa fa-inr" aria-hidden="true"></i>*:  </span> 
+                    <input type="text" formControlName="amount" class="form-control" >
+                    <div *ngIf="cForm.amount.invalid  &&  creditSubmitted" class="error_txt">
+                      <div *ngIf="cForm.amount.errors.required">
+                        This field is required.
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-1 mr-1" [hidden]="!showError" class="error_txt text-center">
+                     <span class="text-center">{{showError}}</span>
+                </div>
+              <div class="col-md-12 mt-3 text-center">
+                <button  type="submit" style="float: right; font-weight: 600;" class="btn btn-success"> Submit </button>
+              </div>
+            </div>
+          </div>
+          </form>
+      </div>
+    </div>
+  </div>
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+                Wallet History
+                <span *rbacShow="['user']" style="float:right" >Available Credit: {{getCurrentUserCredit()}}</span>
+            </div>
+            <div class="card-body">
+                <div *rbacShow="['editor']"  class="row col-md-12">
+                    <div class="col-md-6 col-sm-4"></div>
+                    <div  class="col-md-6 col-sm-8">
+                        <button   data-toggle="modal" data-target="#CreditModel" type="button"
+                        class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
+                    </div>
+                </div>
+                <div *rbacShow="['admin']"  class="row col-md-12">
+                  <div class="col-md-6 col-sm-4"></div>
+                  <div  class="col-md-6 col-sm-8">
+                      <button   data-toggle="modal" data-target="#CreditModel" type="button"
+                      class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
+                  </div>
+              </div>
+                <div class="row col-md-12">
+                    <!-- <div class="col-md-3 col-sm-6"></div> -->
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <div class="form-group">
+                        <label *rbacShow="['editor']" for="searchText"> Company Name </label>
+                        <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
+        
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control"
+                          placeholder="Search.." id="searchText">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="fromDate"> From </label>
+                      <div>
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="fromDate"  id="fromDate" type="date"
+                          name="fromDate" placeholder="date">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="toDate"> To </label>
+                      <div>
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
+                          placeholder="date">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                      <button (click)="searchText='';  callClear()" type="button"
+                        class="btn btn-sm btn-pill btn-danger">Clear</button>
+                    </div>
+                  </div>
+                <table class="table table-responsive  table-striped">
+                    <thead>
+                        <tr style="width: 100%;">
+                            <th *rbacShow="['editor']" style="width: 25%;">Company Name</th>
+                            <th *rbacShow="['user']" style="width: 25%;">Consignee's Name</th>
+                            <th style="width: 30%;">Description</th>
+                            <th style="width: 10%;">Credited/Debited </th>
+                            <th >Date</th>
+                            <th style="width: 15%;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let wallet of walletList ; index as i;">
+                            <td>{{wallet.companyName}}</td>
+                            <td>{{wallet.description}}</td>
+
+                            <td>{{wallet.type}}</td>
+                            <td>{{wallet.createdAt | date:'dd-MM-yy' }}</td>
+                            <td>{{wallet.amount}}</td>
+
+                           
+                        </tr>
+
+                    </tbody>
+                </table>
+                <span [hidden]="walletList && walletList.length > 0" class="not-found">
+                    History Not Found 
+                </span>
+
+                <div class="width_100 mt-1" [hidden]="walletList && walletList.length < 0">
+                    <ngb-pagination
+                        class="float-right" 
+                        [(page)]="page"
+                        [pageSize]="pagination['perPage']"
+                        [maxSize]="maxSize"
+                        [collectionSize]="pagination['numOfResults']"
+                        aria-label="Default pagination"
+                        [rotate]="true" 
+                        (pageChange)="pageChanged($event)">
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

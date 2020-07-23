@@ -1,0 +1,44 @@
+<div class="animated fadeIn">
+    <div class="row margin_top_10">
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+                Certificate of Origin <i class="fa fa-long-arrow-right fa-lg "></i> {{coObject['companyName'] }} - {{coObject['coNo']}}
+            </div>
+            <div class="card-body">
+                
+                <div class="row">
+                    <div class="col-md-3 zoom-img" >
+                        <img src="assets/img/brand/coSample.jpg" style=" width: 100%; height: 50vh" (click)="showLightbox(0)" />
+                       
+
+                    </div>
+                    <div class="col-md-3 zoom-img">
+                        <img src="assets/img/brand/chalan.jpg"  style=" width: 100%; height: 50vh" (click)="showLightbox(1)" />
+
+                    </div>
+                </div>
+                <div>
+                    <ng-image-fullscreen-view
+                    [images]="imageObject"
+                    [imageIndex]="selectedImageIndex"
+                    [show]="showFlag"
+                    (close)="closeEventHandler()">
+                    </ng-image-fullscreen-view>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 ">
+                        <button  routerLink="/dashboard" type="button"  style="float: right; font-weight: 600;" class="btn btn-sm btn-danger mr-1"><i class="cui-circle-x icons "></i>  Reject</button>
+                        <button routerLink="/dashboard" type="button" style="float: right; font-weight: 600;" class="btn btn-sm btn-success mr-1"><i class="cui-check icons "></i>  Accept and Issue Co</button>
+                    </div>
+                </div> -->
+
+                
+
+            </div>
+        </div>
+    </div>
+    <div>
+       
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="animated fadeIn container-fluid mt-3">
+    <div class="row margin_top_10">
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+                Pricing Master
+            </div>
+            <div class="card-body">
+                <div class="row col-md-12">
+                    <!-- <div class="col-md-3 col-sm-6"></div> -->
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <div class="form-group">
+                        <label for="searchText"><b>Price Name</b></label>
+                        <input type="text" [(ngModel)]="searchText" (input)="nameChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                          id="searchText">
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                    
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                      <button (click)=" searchText=''; getPriceList('', '1')" type="button" class="btn btn-sm btn-pill btn-danger">Clear</button>
+                    </div>
+                  </div>
+                <table class="table table-responsive  table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Pricing Name</th>
+                            <th style="width: 30%;">Description</th>
+                            <th>Members Cost</th>
+                            <th>Non-Members Cost</th>
+                          
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let price of priceList ; index as i;">
+                            <td>{{price.name}}</td>
+                            <td>{{price.description}}</td>
+
+                            <td>{{price.costForMember}}</td>
+                            <td>{{price.costForNonMember}}</td>
+                           
+                            <td>
+                                <button (click)="editCostClicked(price)" data-toggle="modal" data-target="#editCostMode" class="btn btn-pill btn-primary">Edit</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <span [hidden]="priceList && priceList.length > 0" class="not-found">
+                    Users Not Found 
+                </span>
+
+                <div class="width_100 mt-1" [hidden]="priceList && priceList.length < 0">
+                    <ngb-pagination
+                        class="float-right" 
+                        [(page)]="page"
+                        [pageSize]="pagination['perPage']"
+                        [maxSize]="maxSize"
+                        [collectionSize]="pagination['numOfResults']"
+                        aria-label="Default pagination"
+                        [rotate]="true" 
+                        (pageChange)="pageChanged($event)">
+                    </ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

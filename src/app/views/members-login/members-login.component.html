@@ -1,0 +1,71 @@
+<div class="app-body">
+    <main class="main d-flex align-items-center" style="margin-top: 30px;">
+      <div class="container" style="max-width: 1350px;">
+        <a href="" id="full" target="_blank"></a>
+
+        <div class="row">
+          <div class="col-md-12 mx-auto">
+            <div class="card-group">
+              <div class="card p-4">
+                <div class="card-body">
+                  <div class="row ">
+                    <img style= "    margin: auto; margin-bottom: 20px;" src="/assets/img/brand/yourlogo.jpg" width="300" class="" alt="BCCI Logo"/>
+                  </div>
+                  <div class="row  ">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+                    <label for="referenceNumber">Enter CO Reference No.:</label><br>
+                    <input  placeholder="icc/2020/...." class="form-control" type="text" id="referenceNumber"  [(ngModel)]="referenceNumber" (change)="referenceNumber=referenceNumber.trim()" name="referenceNumber"><br><br>
+                   
+                  </div>
+                  <div class="col-md-3">
+                    <label for="referenceNumber">Company Name:</label><br>
+                    <input  placeholder="ICC ..." class="form-control" type="text" id="companyName"  [(ngModel)]="companyName" (change)="companyName=companyName.trim()" name="companyName"><br><br>
+                   
+                  </div>
+                  <div class="col-md-1">
+                   <span style="font-weight: 600;position: absolute;top: 40px;right: 40px;">OR</span> 
+                  </div>
+                  <div class="col-md-3">
+                    <label for="referenceNumber">Invoice Number:</label><br>
+                    <input  placeholder="icc/2020/...." class="form-control" type="text" id="invoiceNumber"  [(ngModel)]="invoiceNumber"  (change)="invoiceNumber=invoiceNumber.trim()" name="invoiceNumber"><br><br>
+                   
+                  </div>
+                  <diV class="col-md-1">
+
+                  </diV>
+                  
+                  </div>
+                  <div class="row col-md-12 text-center">
+                    <button class=" btn btn-primary text-center" style="margin: auto;" (click)="getCert(referenceNumber, companyName, invoiceNumber)">Search</button>
+
+                  </div>
+                  <div class='row col-md-12 text-center'>
+
+                    <span [hidden]="!showError" class="text-center" style="font-size: 15px;font-weight: 500;color: #18468e;">
+                      {{showError}}
+                    </span>
+                  </div>
+                   
+                <div class="row " *ngIf="currentCertificate" >
+                 
+
+                  <div class="col-md-4 mt-3 mb-3 pdf-container" *ngIf="currentCertificate.coUrl">
+                    <label class="mt-1" > <b>Generated CO</b></label>
+                    <span (click)="openPDF(currentCertificate.coUrl)" class="btn btn-sm btn-dark ">Full Screen</span>
+                    <img (click)="openPDF(currentCertificate.coUrl)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+
+                    <!-- <object class="mt-1" (click)="openPDF(currentCertificate.coUrl)" [data]="currentCertificate.coUrl | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
+                </div>
+
+                  
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  

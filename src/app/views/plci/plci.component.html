@@ -1,0 +1,360 @@
+<div class="animated fadeIn">
+  <div class="modal" #rejectionModal id="rejectionModal">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" >
+          <h4 class="modal-title"> Reject Certificate of Origin Request</h4>
+              <button type="button" id="rejectionModelCLoseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div *ngIf="currentCertificate" class="modal-body">
+          <div class="row col-md-12">
+            Please enter rejection reason and submit to complete the rejection.
+          </div>
+          <div class="row">
+
+            <div class="col-md-1"></div>
+            <div class="col-md-12">
+              <textarea placeholder="Rejection Reason" [(ngModel)]="currentCertificate.rejectionReason" class="form-control" > </textarea>
+            </div>
+          </div>
+
+          <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+            <span class="text-center"> {{showError}}</span>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button  type="button" (click)="rejectRequest(currentCertificate['rejectionReason'])" style="float: right; font-weight: 600;" class="btn btn-danger"> Send Reason</button>
+
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal" #editorActionModal id="editorActionModal">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" >
+          <h4 class="modal-title"> {{editorAction}} Request</h4>
+              <button type="button" id="editorActionModalCLoseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div *ngIf="currentCertificate" class="modal-body">
+          <div class="row col-md-12">
+            Please enter {{editorAction}} reason and submit.
+          </div>
+          <div class="row">
+
+            <div class="col-md-1"></div>
+            <div class="col-md-12">
+              <textarea placeholder="Reason" [(ngModel)]="currentCertificate.editorReason" class="form-control" > </textarea>
+            </div>
+          </div>
+
+          <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+            <span class="text-center"> {{showError}}</span>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button  type="button" (click)="editorActionSubmit(currentCertificate['editorReason'])" style="float: right; font-weight: 600;" class="btn btn-primary"> Send Request</button>
+
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" #acceptModal id="acceptModal">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" >
+          <h4 class="modal-title"> Accept Certificate of Origin Request</h4>
+              <button type="button" id="acceptModelCloseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div *ngIf="currentCertificate" class="modal-body">
+          <div class="row col-md-12">
+            Please upload/digitally sign documents to proceed.
+          </div>
+          <div class="row" *ngFor="let doc of acceptDocuments; index as i;">
+            <div class="col-md-6 mt-1">
+              <span>  Name:  </span> <br>
+              {{doc.name}}
+              <!-- <input type="text" [(ngModel)]="doc.name" class="form-control" required> -->
+             
+            </div>
+            <div [hidden]="doc.url && doc.url != '' " class="col-md-6 mt-1" >
+              <span [hidden]=" doc.file && doc.file != '' ">
+              <input id="{{'certificateDocInput-'+i}}" hidden type="file" name="fileInput" accept=".pdf,.doc"
+                  (change)="onFileChosen($event, doc, i)">
+              <button type="button" class="btn btn-dark" (click)="onDocUploadClicked($event, i)">Upload Document&nbsp;&nbsp;<i class="fa fa-camera"></i></button>
+              </span>
+              <span (click)="doc.file= ''" [hidden]="doc.file == '' " title="Click to Remove">{{doc.file && doc.file.name}}</span>
+
+
+            </div>
+            <div [hidden]="!doc.url || doc.url == '' " class="col-md-6 mt-4" >
+              <span style="margin-top: 2em !important;" (click)="doc.url= ''" title="Click to Remove">{{doc.name + '.pdf'}}</span>
+
+            </div>
+            
+            
+          </div>
+
+          <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+            <span class="text-center"> {{showError}}</span>
+          </div>
+
+        </div>
+        <div  class="modal-footer">
+          <button  type="button" (click)="digitalSigningDoc()" style="float: right; font-weight: 600;" class="btn btn-success"> Digitally Sign & Issue </button>
+          <span>
+            &nbsp; <strong>OR</strong>  &nbsp;
+          </span>
+          <button  type="button" (click)="checkAndSaveDocs();" style="float: right; font-weight: 600;" class="btn btn-success"> Upload & Issue </button>
+
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="modal" #createCORequestModal id="createCORequestModal">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            
+            <!-- Modal Header -->
+            <div class="modal-header" >
+              <h4 class="modal-title"> <span style="text-transform: capitalize;"></span> Certificate of Origin Request</h4>
+              <button type="button" id="closeCreateCoModelCloseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div *ngIf="currentCertificate" class="modal-body" style="white-space: initial;">
+                  
+                      <div class="row" style="overflow: hidden;text-overflow: ellipsis;">
+                        <div class="col-md-6 mt-1"> 
+                          <span> <strong>Exporter:</strong></span> {{currentCertificate && currentCertificate.exporter}}
+                         
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span> <strong>Consignee:</strong></span> {{currentCertificate && currentCertificate.consignee}}
+                         
+                        </div>
+                        <div class="col-md-6 mt-1">
+                            <span><strong>Exporter Address:</strong></span> {{currentCertificate && currentCertificate.exporterAddress}}
+                            
+                          </div>
+                          <div class="col-md-6 mt-1">
+                            <span><strong>Consignee Address:</strong></span> {{currentCertificate && currentCertificate.consigneeAddress}}
+                          </div>
+                          <div class="col-md-3 mt-1">
+                            <span><strong>State:</strong></span> {{currentCertificate && currentCertificate.exporterState}}
+                          </div>
+                          <div class="col-md-3 mt-1">
+                            <span><strong>Country:</strong></span>  {{currentCertificate && currentCertificate.exporterCountry}}
+                          </div>
+                          <div class="col-md-3 mt-1">
+                            <span><strong>State:</strong></span> {{currentCertificate && currentCertificate.consigneeState}}
+                          </div>
+                          <div class="col-md-3 mt-1">
+                            <span><strong>Country:</strong></span> {{currentCertificate && currentCertificate.consigneeCountry}}
+                          </div>
+                          
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Pre-Carriage by:</strong></span> {{currentCertificate && currentCertificate.preCarriageBy}}
+                         
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Receipt by Pre-Carrier:</strong></span> {{currentCertificate && currentCertificate.placeOfReceipt}}
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Vessel/Flight No.:</strong></span> {{currentCertificate && currentCertificate.VesselOrFlightNo}}
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Port of Loading:</strong></span> {{currentCertificate && currentCertificate.loadingPort}}
+                        </div>
+            
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Port of Discharge:</strong></span> {{currentCertificate && currentCertificate.dischargePort}}
+                        </div>
+            
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Final Destination:</strong></span> {{currentCertificate && currentCertificate.finalDestination}}
+                        </div>
+                        <div class="col-md-12  mt-1">
+                          <span>
+                            <strong>Goods Details</strong>
+                          </span>
+                        </div>
+                        <div *ngFor="let item of currentCertificate['goods']; let i = index;" class="col-md-11 mt-1 card" style=" margin-bottom: 5px;left: 2.7em;"  >
+    
+                        <div class=" row">
+                          <div class="col-md-4">
+                            <span><strong>Marks & Nos.:</strong></span> {{item && item.numberOfPacking}}
+                           
+                          </div>
+                          <div class="col-md-4" >
+                            <span><strong>Container No.:</strong></span> {{item && item.containerNumber}}                           
+                          </div>
+                          <div class="col-md-3" >  
+                            <span><strong>Kind of Pkgs:</strong></span> {{ item && item.typeOfPacking}}                  
+                          </div>
+                          
+                        </div>
+                        <div class="row mb-1">
+                          <div class="col-md-12" >
+                              <span><strong>Description of Goods:</strong></span>  {{item && item.goodsDescription}} 
+                          </div>
+                        </div>
+                        </div>
+                      
+            
+                        <div class="col-md-6 mt-1">
+                          <span><strong>ICC COO Code.(Cert):</strong></span> {{currentCertificate && currentCertificate.iccCooCode}}
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Date:</strong></span> {{currentCertificate && currentCertificate.iccCooCodeDate}}
+                        </div>
+                        
+                        <div class="col-md-6 mt-1">
+                          <span><strong> LC No.:</strong>   </span> {{currentCertificate && currentCertificate.lcNumber}}
+                        </div>
+            
+                        <div class="col-md-6 mt-1">
+                          <span> <strong>Date:</strong>   </span> {{currentCertificate && currentCertificate.lcNumberDate | date:'dd/MM/yyyy'}}
+                          
+                        </div>
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Invoice No.:</strong></span> {{currentCertificate && currentCertificate.invoiceNumber}}
+                        </div>
+            
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Date:</strong></span> {{currentCertificate && currentCertificate.invoiceNumberDate | date:'dd/MM/yyyy'}}
+                        </div>
+    
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Order No.:</strong></span> {{currentCertificate && currentCertificate.orderNumber}}
+                        </div>
+            
+                        <div class="col-md-6 mt-1">
+                          <span><strong>Date:</strong></span> {{currentCertificate && currentCertificate.orderNumberDate| date:'dd/MM/yyyy'}}
+                        </div>
+    
+                        <div class="col-md-6 mt-1">
+                          <span><strong>IEC No.:</strong></span> {{currentCertificate && currentCertificate.iecNumber}}
+                        </div>
+    
+                        <div class="row col-md-12 mt-1">
+                          <div class="col-md-4 ">
+                            <span><strong>Net Weight:</strong></span> {{currentCertificate && currentCertificate.netWeight}}
+                          </div>
+                          <div class="col-md-4">
+                            <span><strong>Gross Weight:</strong></span> {{currentCertificate && currentCertificate.grossWeight}}
+                          </div>
+                          <div class="col-md-4">
+                            <span><strong>Value:</strong></span> {{currentCertificate && currentCertificate.totalValue}}
+                          </div>
+                        </div>
+            
+                      </div>
+                 
+              
+            </div>
+            
+    
+            
+          </div>
+        </div>
+    </div>
+    <div class="row margin_top_10">
+        <a href="" id="full" target="_blank"></a>
+        
+        <div class="card width_100">
+
+            <div class="card-header page_heading" >
+                PL & Commercial Invoice <i class="fa fa-long-arrow-right fa-lg "></i> {{currentCertificate && currentCertificate['exporter'] }} - {{currentCertificate && currentCertificate['coNo']}} - {{currentCertificate && (currentCertificate['coReferenceNumber'] || '34023')}}
+                <span  *ngIf="currentCertificate && currentCertificate['ammendmentMode']" style="float: right; margin-right: 5px;" class="btn btn-success"> Old CO:{{ currentCertificate.oldCOReferenceNumber}}</span>
+
+                <span style="" *ngIf="currentCertificate && currentCertificate['ammendmentMode']" class="badge badge-success">Ammendment </span>
+
+
+              <span style="float: right;" *ngIf="currentCertificate && currentCertificate['docStatus'] == 'rejected'" class="badge badge-warning">Rejected</span>
+              <span style="float: right;" *ngIf="currentCertificate && currentCertificate['docStatus'] == 'issued'" class="badge badge-success mr-1">Issued By:{{ currentCertificate.issuedBy}}</span>
+
+              </div>
+            <div class="card-body">
+                <div class="row col-md-12 mb-2">
+                  <div  class=" col-md-8">
+                    <span *ngIf="currentCertificate && currentCertificate['rejectionReason']" > <strong class="">Last Rejection Comment:</strong> {{ currentCertificate['rejectionReason'] }}</span> 
+                    </div>
+                    <div  class=" col-md-4"> </div>
+                    <div  class=" col-md-8">
+                    <span *ngIf="currentCertificate && currentCertificate['editorAction'] == 'Accept'"> <strong class="">Reviewed:</strong> {{ currentCertificate['editorReason'] }}</span> 
+                    </div>
+                    
+                    <div  class=" col-md-4">
+                        <!-- <span style="float: right; margin-right: 5px;" class="btn btn-success"> Transaction: </span> -->
+                        <span style="float: right;  margin-right: 5px;" data-toggle="modal" data-target="#createCORequestModal" class="btn btn-primary"> Co Details</span>
+                    </div>
+        
+                </div>
+                
+                <div class="row " *ngIf="currentCertificate" >
+                    <div class="col-md-4 pdf-container mt-3 mb-3" *ngFor="let doc of currentCertificate.attachedDocuments; let i = index;">
+                        <label  style="text-transform: capitalize; "> <b>{{doc.name}}</b></label>
+                        <span *ngIf="doc.isEndorseRequired" class="badge badge-success ">Certification Required</span>
+                        <span (click)="openPDF(doc.url)" class="btn btn-sm btn-dark ">Full Screen</span>
+                        <!-- <object   (click)="openPDF(doc.url)" [data]="doc.url | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
+                       
+                        <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+                        <!-- <pdf-viewer  [src]="doc.url | safeUrl" (click)="openPDF(doc.url)"
+                        [zoom]="1" [fit-to-page]="true"
+                                    [original-size]="false"
+                        ></pdf-viewer> -->
+                    </div>
+
+                    <div class="col-md-4 mt-3 mb-3 pdf-container" *ngIf="currentCertificate.coUrl">
+                      <label class="mt-1" > <b>Generated CO</b></label>
+                      <span  class="badge badge-success ">Certification Required</span>
+                      <span (click)="openPDF(currentCertificate.coUrl)" class="btn btn-sm btn-dark ">Full Screen</span>
+                      <!-- <object class="mt-1" (click)="openPDF(currentCertificate.coUrl)" [data]="currentCertificate.coUrl | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
+                      <!-- <img src="assets/img/brand/PDF_file_icon.svg"> -->
+                      <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+
+                      <!-- <pdf-viewer  [src]="currentCertificate.coUrl" (click)="openPDF(currentCertificate.coUrl)"
+                      [zoom]="1" [fit-to-page]="true"
+                                  [original-size]="false"
+                      ></pdf-viewer> -->
+                  </div>
+
+                    
+                </div>
+               
+                <div class="row mt-5" *rbacShow="['admin']">
+                  <div class="col-md-8"></div>
+                  <div class="col-md-4 " *ngIf="currentCertificate && currentCertificate.docStatus == 'submitted'">
+                    <button  data-toggle="modal" data-target="#rejectionModal" type="button"  style="float: right; font-weight: 600;" class="btn btn-sm btn-danger mr-1"><i class="cui-circle-x icons "></i>  Reject</button>
+                    <button  data-toggle="modal" data-target="#acceptModal" type="button" style="float: right; font-weight: 600;" class="btn btn-sm btn-success mr-1"><i class="cui-check icons "></i>  Accept and Issue Co</button>  
+                  </div>
+                 
+              </div>
+                <div class="row mt-5" *rbacShow="['editor']">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 " *ngIf="currentCertificate && currentCertificate.docStatus == 'submitted' && !currentCertificate.editorAction">
+                     
+                      <button  data-toggle="modal" data-target="#rejectionModal" type="button"  style="float: right; font-weight: 600;" class="btn btn-sm btn-danger mr-1"><i class="cui-circle-x icons "></i>  Reject</button>
+                      <button  data-toggle="modal" data-target="#editorActionModal" (click)="editorAccepted()" type="button" style="float: right; font-weight: 600;" class="btn btn-sm btn-success mr-1"><i class="cui-check icons "></i>  Accept </button>  
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+       
+    </div>
+</div>

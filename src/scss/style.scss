@@ -1,0 +1,63 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+
+.margin_top_10{
+    margin-top: 10px;
+}
+.width_100{
+    width: 100%;
+}
+.page_heading{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.ngxImageZoomContainer{
+    width: 25.333333vw !important;
+    height: 60vh !important;
+}
+.zoom-img{
+    padding: 10px;
+    margin: 22px;
+    border: 2px solid grey;
+}
+//Overright Display Class For zoom 
+ng-image-fullscreen-view .ng-image-fullscreen-view .lightbox-wrapper .lightbox-div .lightbox-image-main .lightbox-image .custom-image-main img{
+    // width: 80vw !important;
+    // overflow: auto !important;
+    // max-height: unset !important;
+    // max-width: unset !important;
+
+}
+.scrollable 
+        {
+            overflow: auto;
+        }
+
+.image-cropper{
+    display: block !important;
+    overflow: hidden !important;
+}
+
+.error_txt{
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #f86c6b;
+}
+
+.modal-header {
+    background: #162b5a !important;
+    color: white !important;
+    height: 50px !important;
+}

@@ -1,0 +1,83 @@
+<div class="animated fadeIn">
+    <div class="row margin_top_10">
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+                Invoices
+            </div>
+            <div class="card-body">
+                <div *rbacShow="['editor']" class="row col-md-12">
+                    <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportInvoice()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export To CSV</button>
+                </div>
+                <div class="row col-md-12" style="display: flex;">
+                    <!-- <div class="col-md-3 col-sm-6"></div> -->
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <div class="form-group">
+                        <label *rbacShow="['user']" for="searchText"> Buyer </label>
+                        <label *rbacShow="['editor']" for="searchText">Buyer</label>
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control" placeholder="Search.."
+                          id="searchText">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="fromDate"><b>From</b></label>
+                      <div >
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="fromDate"  id="fromDate" type="date"
+                          name="fromDate" placeholder="date">
+                      </div>
+                      <!-- <input type="search" class="form-control" placeholder="Search.." id="searchText"> -->
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <label class="" for="toDate"><b>To</b></label>
+                      <div >
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
+                          placeholder="date">
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                      <button (click)="searchText=''; callClear()" type="button"
+                      class="btn btn-sm btn-pill btn-danger">Clear</button>
+                    </div>
+                  </div>
+                <table class="table table-responsive  table-striped">
+                    <thead>
+                        <tr>
+                            <th>Invoice No</th>
+                            <th style="width: 30%;">Buyer</th>
+                            <th style="width: 10%;">Date</th>
+                            <th style="width: 15%;">Transaction ID</th>
+                            <th style="width: 10%;">Total Amount</th>
+                            <th style="width: 10%;">Total Tax</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of invoiceList ; index as i;">
+                            <td>{{invoice.invoiceNo}}</td>
+                            <td>{{invoice.buyer}}</td>
+                            <td>{{invoice.invoiceDate | date:'dd/MM/yyyy'}}</td>
+                            <td>{{invoice.transactionID}}</td>
+                            <td>{{invoice.totalAmount}} <i class="fa fa-rupee fa-lg "></i></td>
+                            <td>{{invoice.totalTaxAmount}} <i class="fa fa-rupee fa-lg "></i></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div  *ngIf="invoiceList && invoiceList['length'] > 0">
+                    <ngb-pagination 
+                        class="float-right" 
+                        [(page)]="page" 
+                        [pageSize]="pagination.perPage"
+                        [maxSize]="maxSize"
+                        [collectionSize]="pagination.numOfResults" 
+                        aria-label="Default pagination" 
+                        [rotate]="true"
+                        (pageChange)="pageChanged($event)">
+                    </ngb-pagination>
+                </div>
+                <div class="text-center" *ngIf="invoiceList && invoiceList['length'] == 0">
+                  <span class="text-center" style="color: #2196F3;font-weight: 400;">No Results Found</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

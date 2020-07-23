@@ -1,0 +1,8 @@
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+
+.tab-content .tab-pane {
+    padding: 1rem !important;
+    margin-bottom: 3em !important;
+}

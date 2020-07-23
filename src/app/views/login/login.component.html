@@ -1,0 +1,328 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container" style="max-width: 1350px;">
+
+        <!-- The Modal -->
+  <div class="modal" #forgotPasswordMode id="forgotPasswordMode">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">Forgot Password</h4>
+          <button type="button" id="closeForgotPasswordModalButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPasswordSubmit()" autocomplete="off">
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="text" formControlName="email" class="form-control" placeholder="Email Id" required >
+                <div *ngIf="passForm.email.invalid && passSubmitted" class="error_txt">
+                  <div *ngIf="passForm.email.errors.required">
+                    Email Id is required.
+                </div>
+                <div *ngIf="passForm.email.errors.pattern">
+                    In valid email address.
+                </div> 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <button  type="submit" style="float: right; font-weight: 600;" class="btn btn-success"> Request Password</button>
+              </div>
+            </div>
+          </div>
+          </form>
+      </div>
+    </div>
+  </div>
+
+      <!-- The Modal -->
+  <div class="modal" #registerMode id="registerMode">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">Registration Form</h4>
+          <button type="button" id="closeRegistrationModalButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form [formGroup]="registrationForm" (ngSubmit)="onRegisterSubmit()" autocomplete="off">
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-8">
+              <span> <b>Company Name*:</b> </span> 
+              <input type="text" formControlName="companyName" class="form-control" placeholder="Company Name" required>
+              <div *ngIf="rForm.companyName.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.companyName.errors.required">
+                    Company name is required.
+                </div>
+               
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b> ICC COO code:</b> </span> 
+              <input type="text" formControlName="coReference" maxlength="10" class="form-control" placeholder="Co Reference Number" >
+              
+            </div>
+            <div class="col-md-12">
+              <span> <b>Address*:</b> </span> 
+              <input type="text" formControlName="address" class="form-control" placeholder="Address" required>
+              <div *ngIf="rForm.address.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.address.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>City*:</b> </span> 
+              <input type="text" formControlName="city" class="form-control" placeholder="City" required>
+              <div *ngIf="rForm.city.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.city.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>State*:</b> </span> 
+              <input type="text" formControlName="state" class="form-control" placeholder="State" required>
+              <div *ngIf="rForm.state.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.state.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <span> <b>Pin Code*:</b> </span> 
+              <input type="text" formControlName="zipCode" class="form-control" placeholder="Zip Code" required>
+              <div *ngIf="rForm.zipCode.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.zipCode.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>IEC No*:</b> </span> 
+              <input type="text" formControlName="iecNumber" class="form-control" placeholder="ICE Number" required>
+              <div *ngIf="rForm.iecNumber.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.iecNumber.errors.required">
+                  IEC No.  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>PAN No*:</b> </span> 
+              <input type="text" formControlName="panNumber" class="form-control" placeholder="PAN Number" required>
+              <div *ngIf="rForm.panNumber.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.panNumber.errors.required">
+                  PAN No.  is required.
+                </div>
+                <div *ngIf="rForm.panNumber.errors.pattern">
+                  In valid PAN Number.
+              </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>GSTIN No:</b> </span> 
+              <input type="text" formControlName="gstinNumber" class="form-control" placeholder="GSTIN Number" >
+             
+            </div>
+
+            <div class="col-md-6">
+              <span> <b>Name of Authorized Signatory*:</b> </span> 
+              <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Name" required>
+              <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.contactPersonName.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <span> <b>Website:</b> </span> 
+              <input type="text" formControlName="website" class="form-control" placeholder="wwww.xyz.com" >
+            
+            </div>
+
+            <!-- <div class="col-md-6">
+              <span> <b>Registered Person*:</b> </span> 
+              <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Contact Person Name" >
+              <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.contactPersonName.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-md-6">
+              <span> <b>Registered Email*:</b> </span> 
+              <input type="text" formControlName="email" class="form-control" placeholder="Email Id"  required>
+              <div *ngIf="rForm.email.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.email.errors.required">
+                  Email Id is required.
+              </div>
+              <div *ngIf="rForm.email.errors.pattern">
+                  In valid email address.
+              </div> 
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span> <b>Registered Contact No.*:</b> </span> 
+              <input type="text" formControlName="contactNumber" class="form-control" placeholder="Contact Number" >
+              <div *ngIf="rForm.contactNumber.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.contactNumber.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div>
+           
+            <div class="col-md-6">
+              <span> <b>Fax No.:</b> </span> 
+              <input type="text" formControlName="faxNumber" class="form-control" placeholder="Fax Number" >
+             
+            </div>
+
+            <!-- <div class="col-md-6">
+              <span> <b>Annual Turnover*:</b> </span> 
+              <input type="text" formControlName="turnover" class="form-control" placeholder="Amount" >
+              <div *ngIf="rForm.turnover.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.turnover.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-6">
+              <span> <b>Export Product*:</b> </span> 
+              <input type="text" formControlName="product" class="form-control" placeholder="Product Name" >
+              <div *ngIf="rForm.product.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="rForm.product.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <span> <b>Password*:</b> </span> 
+              <input type="password" formControlName="password" class="form-control"  required>
+              <div *ngIf="rForm.password.invalid" class="error_txt">
+                <div *ngIf="rForm.password.errors.required && registerSubmitted">
+                  Password Id is required.
+              </div>
+              <div *ngIf="rForm.password.errors.pattern">
+                At least one digit,one lowercase character,one uppercase character and least one special character is Required. At least 8 characters in length, but no more than 32.
+              </div> 
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span> <b>Confirm Password*:</b> </span> 
+              <input type="password" formControlName="passwordConfirm" class="form-control"  >
+              
+            </div>
+
+            <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+              <span class="text-center"> {{showError}}</span>
+            </div>
+
+          </div>
+         
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button  type="submit"   style="float: right; font-weight: 600;" class="btn btn-success"> Register</button>
+
+          <button type="button"  class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+      <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+                <div class="row" style="float: right;">
+                  <button type="button" class="btn btn-danger px-4" routerLink="/checkCo">Check CO</button>
+                </div>
+                <div class="row ">
+                  <img style= "margin: auto; margin-bottom: 20px;" src="/assets/img/brand/yourlogo.jpg" width="300" class="" alt="Your Logo"/>
+
+                </div>
+                <div class="row">
+                <div class="col-md-8">
+                  <angular-image-slider
+                    [autoRotate]="true"
+                    [autoRotateAfter]="5000"
+                    [autoRotateRight]="false"
+                    [images]="imagesUrl"
+                  ></angular-image-slider>
+                </div>
+
+                <div class="col-md-4">
+                  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+                  <h1>Login</h1>
+                  <p class="text-muted">Sign In to your account</p>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input type="email" formControlName="username" class="form-control" placeholder="Username" autocomplete="username" required>
+                  </div>
+                  <div *ngIf="username.invalid && (username.dirty || username.touched) && submitted" class="error_txt">
+                    <div *ngIf="username.errors.required">
+                        Username is required.
+                    </div>
+                    <div *ngIf="username.errors.pattern">
+                        In valid email address.
+                    </div> 
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" formControlName="password" class="form-control" placeholder="Password" autocomplete="current-password" required>
+                  </div>
+		              <div *ngIf="password.invalid && (password.dirty || password.touched) && submitted" class="error_txt">
+                    <div *ngIf="password.errors">
+                      Password is required.
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button type="submit" class="btn btn-primary px-4" >Login</button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button type="button"  data-toggle="modal" data-target="#forgotPasswordMode"  class="btn btn-link px-0">Forgot password?</button>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col-md-12 ">
+                      <button style="float: right;" type="button" data-toggle="modal" data-target="#registerMode" class="btn btn-link px-0">Register </button>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            
+            </div>
+                <div class="row">
+                  <div class="col-6 text-right"></div>
+                  <div class="col-6 text-right">
+                  <!-- <button type="button" class="btn btn-primary active mt-3" >Register Now!</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
