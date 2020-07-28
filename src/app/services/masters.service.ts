@@ -90,6 +90,11 @@ export class MastersService {
     return this.http.post(this.serverUrl + 'users/deActivateUser' , {_id:userId} , getHeaders('application/json'))
   }
 
+  saveUserDetails = (user) => {
+    return this.http.post(this.serverUrl + 'users/saveDetails/' + user._id , user , getHeaders('application/json'))
+ 
+  }
+
   rejectRegistrationRequest = (body) => {
     return this.http.post(this.serverUrl + 'auth/rejectRegistration' ,  body, getHeaders('application/json'))
   }

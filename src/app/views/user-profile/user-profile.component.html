@@ -36,8 +36,8 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <span> <b>Member Id:</b> </span> 
-                  <input disabled type="text" formControlName="memberId" class="form-control"  >
+                  <span> <b>ICC COO code:</b> </span> 
+                  <input disabled type="text" formControlName="coReference" class="form-control"  >
                   
                 </div>
                 <div class="col-md-12">
@@ -66,10 +66,10 @@
                 </div>
     
                 <div class="col-md-6">
-                  <span> <b>Name of CM/DM/Director*:</b> </span> 
-                  <input type="text" formControlName="cdDmName" class="form-control" placeholder="Name" required>
-                  <div *ngIf="rForm.cdDmName.invalid && registerSubmitted" class="error_txt">
-                    <div *ngIf="rForm.cdDmName.errors.required">
+                  <span> <b>Name of Authorized Signatory*:</b> </span> 
+                  <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Name" required>
+                  <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                    <div *ngIf="rForm.contactPersonName.errors.required">
                       This field is required  is required.
                     </div>
                   </div>
@@ -81,15 +81,7 @@
                 
                 </div>
     
-                <div class="col-md-6">
-                  <span> <b>Contact Person*:</b> </span> 
-                  <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Contact Person Name" >
-                  <div *ngIf="rForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
-                    <div *ngIf="rForm.contactPersonName.errors.required">
-                      This field is required  is required.
-                    </div>
-                  </div>
-                </div>
+                
     
                 <div class="col-md-6">
                   <span> <b>Email*:</b> </span> 
@@ -123,24 +115,8 @@
                   </div>
                 </div>
     
-                <!-- <div class="col-md-6">
-                  <span> <b>Annual Turnover*:</b> </span> 
-                  <input type="text" formControlName="turnover" class="form-control" placeholder="Amount" >
-                  <div *ngIf="rForm.turnover.invalid  && registerSubmitted" class="error_txt">
-                    <div *ngIf="rForm.turnover.errors.required">
-                      This field is required  is required.
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <div class="col-md-6">
-                  <span> <b>Export Product*:</b> </span> 
-                  <input type="text" formControlName="product" class="form-control" placeholder="Product Name" >
-                  <div *ngIf="rForm.product.invalid  && registerSubmitted" class="error_txt">
-                    <div *ngIf="rForm.product.errors.required">
-                      This field is required  is required.
-                    </div>
-                  </div>
-                </div> -->
+               
+               
     
                 <div class="col-md-12 mt-2">
                         <button  type="submit"   style="float: right; font-weight: 600;" class="btn btn-success"> Save</button>

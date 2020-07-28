@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { MastersService } from '../../services/masters.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,6 +18,8 @@ export class UserProfileComponent implements OnInit {
 
   constructor( 
     private formBuilder: FormBuilder,
+    private mastersService: MastersService,
+    private toastr: ToastrService,
 
   ) { }
 
@@ -29,14 +33,12 @@ export class UserProfileComponent implements OnInit {
       iecNumber: [this.currentUser['iecNumber'], Validators.required],
       gstinNumber: [this.currentUser['gstinNumber'], Validators.required],
       panNumber: [this.currentUser['panNumber']],
-      cdDmName: [this.currentUser['cdDmName'], Validators.required],
       contactPersonName: [this.currentUser['contactPersonName'], Validators.required],
+      // contactPersonName: [this.currentUser['contactPersonName'], Validators.required],
       contactNumber: [this.currentUser['contactNumber'], Validators.required],
       faxNumber: [this.currentUser['faxNumber'], Validators.required],
-      turnover: [this.currentUser['turnover'], Validators.required],
-      product: [this.currentUser['product'], Validators.required],
       website: [this.currentUser['website']],
-      memberId: [this.currentUser['memberId']],
+      coReference: [this.currentUser['coReference']],
 
     })
   }
@@ -47,7 +49,24 @@ export class UserProfileComponent implements OnInit {
     this.registerSubmitted = true;
     this.showError = ''
     if(this.registrationForm.invalid){
+      console.log(this.registrationForm);
       return false;
     }
+    let values = this.registrationForm.value;
+    console.log('values', values);
+    values._id = this.currentUser['_id'];
+    this.mastersService.saveUserDetails(values).subscribe(data => {
+      console.log(data);
+      if(data['status'] == "success"){
+        this.currentUser = data['data'];
+        sessionStorage.setItem('currentUser', JSON.stringify(data['data']));
+        // this.getUsersList('', '', '1');
+        this.toastr.success('Success', 'Profile Updated.');
+
+      }
+
+      // document.getElementById("closeViewUserModalButton").click();
+    });
+
   }
 }

@@ -31,7 +31,7 @@ export class LoginComponent {
     private loadingService: LoadingScreenService
     ) {  }
   ngOnInit() {
-    this.imagesUrl = ['assets/img/brand/Webiner-Health-Wellbeing-1.png', 'assets/img/brand/Banner-3.png', 'assets/img/brand/WhatsApp-Image-2020-01-23-at-5.10.31-PM-1.jpeg', 'assets/img/brand/WhatsApp-Image-2020-02-03-at-6.16.54-PM.jpeg', 'assets/img/brand/WhatsApp-Image-2020-02-13-at-12.33.09-PM.jpeg'];
+    this.imagesUrl = ['assets/img/brand/ad1.png', 'assets/img/brand/ad2.jpg', 'assets/img/brand/ad3.jpg'];
     this.authService.restrctLogin();
     let EmailPattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'
     let PasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
