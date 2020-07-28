@@ -41,6 +41,8 @@
                         <tr>
                             <!-- <th>ID</th> -->
                             <th style="width: 30%;">Reference No</th>
+                            <th style="width: 30%;">Cert Ref No	</th>
+
                             <th style="width: 30%;">Consignee Name</th>
                             <!-- <th>Sub Merchant Id</th> -->
                             <th style="width: 10%;">Date</th>
@@ -53,6 +55,8 @@
                         <tr *ngFor="let pl of paymentsList ; index as i;">
                             <!-- <td>{{pl.ID}}</td> -->
                             <td>{{pl.ReferenceNo}}</td>
+                            <td>{{pl.coReferenceNumber}}</td>
+
                             <td>{{pl.companyName}}</td>
                             <!-- <td>{{pl.SubMerchantId}}</td> -->
                             <td>{{pl.transactionDate }}</td>

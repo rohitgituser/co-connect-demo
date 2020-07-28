@@ -9,6 +9,9 @@
               <button type="button" id="rejectionModelCLoseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
         </div>
         <div *ngIf="currentCertificate" class="modal-body">
+          <div [hidden]="currentCertificate && currentCertificate.editorAction" class="row col-md-12 warning">
+            <span  *rbacShow="['admin']"> You are signing the document without the Editor’s Verification </span>
+          </div>
           <div class="row col-md-12">
             Please enter rejection reason and submit to complete the rejection.
           </div>
@@ -44,6 +47,7 @@
               <button type="button" id="editorActionModalCLoseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
         </div>
         <div *ngIf="currentCertificate" class="modal-body">
+         
           <div class="row col-md-12">
             Please enter {{editorAction}} reason and submit.
           </div>
@@ -78,6 +82,9 @@
               <button type="button" id="acceptModelCloseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
         </div>
         <div *ngIf="currentCertificate" class="modal-body">
+          <div [hidden]="currentCertificate && currentCertificate.editorAction" class="row col-md-12 warning">
+            <span  *rbacShow="['admin']"> You are signing the document without the Editor’s Verification </span>
+          </div>
           <div class="row col-md-12">
             Please upload/digitally sign documents to proceed.
           </div>
@@ -256,7 +263,7 @@
                             <span><strong>Gross Weight:</strong></span> {{currentCertificate && currentCertificate.grossWeight}}
                           </div>
                           <div class="col-md-4">
-                            <span><strong>Value:</strong></span> {{currentCertificate && currentCertificate.totalValue}}
+                            <span><strong>Value:</strong></span> {{currentCertificate && currentCertificate.valueCurrency}}   {{currentCertificate && currentCertificate.totalValue}}
                           </div>
                         </div>
             
@@ -282,7 +289,7 @@
                 <span style="" *ngIf="currentCertificate && currentCertificate['ammendmentMode']" class="badge badge-success">Ammendment </span>
 
 
-              <span style="float: right;" *ngIf="currentCertificate && currentCertificate['docStatus'] == 'rejected'" class="badge badge-warning">Rejected</span>
+              <span style="float: right;" *ngIf="currentCertificate && currentCertificate['docStatus'] == 'rejected'" class="badge badge-danger">Rejected</span>
               <span style="float: right;" *ngIf="currentCertificate && currentCertificate['docStatus'] == 'issued'" class="badge badge-success mr-1">Issued By:{{ currentCertificate.issuedBy}}</span>
 
               </div>
@@ -309,8 +316,10 @@
                         <span *ngIf="doc.isEndorseRequired" class="badge badge-success ">Certification Required</span>
                         <span (click)="openPDF(doc.url)" class="btn btn-sm btn-dark ">Full Screen</span>
                         <!-- <object   (click)="openPDF(doc.url)" [data]="doc.url | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
-                       
-                        <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+                       <div>
+                        <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 75px;width: 175px;">
+
+                       </div>
                         <!-- <pdf-viewer  [src]="doc.url | safeUrl" (click)="openPDF(doc.url)"
                         [zoom]="1" [fit-to-page]="true"
                                     [original-size]="false"
@@ -323,7 +332,10 @@
                       <span (click)="openPDF(currentCertificate.coUrl)" class="btn btn-sm btn-dark ">Full Screen</span>
                       <!-- <object class="mt-1" (click)="openPDF(currentCertificate.coUrl)" [data]="currentCertificate.coUrl | safeUrl" type="application/pdf" width="100%" height="100%"></object> -->
                       <!-- <img src="assets/img/brand/PDF_file_icon.svg"> -->
-                      <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height: 125px;width: 250px;">
+                      <div>
+                        <img (click)="openPDF(doc.url)" src="assets/img/brand/PDF_file_icon.svg" style="height:75px;width: 175px;">
+
+                      </div>
 
                       <!-- <pdf-viewer  [src]="currentCertificate.coUrl" (click)="openPDF(currentCertificate.coUrl)"
                       [zoom]="1" [fit-to-page]="true"

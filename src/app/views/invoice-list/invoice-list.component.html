@@ -42,6 +42,8 @@
                     <thead>
                         <tr>
                             <th>Invoice No</th>
+                            <th>Cert Ref No</th>
+
                             <th style="width: 30%;">Buyer</th>
                             <th style="width: 10%;">Date</th>
                             <th style="width: 15%;">Transaction ID</th>
@@ -53,6 +55,7 @@
                     <tbody>
                         <tr *ngFor="let invoice of invoiceList ; index as i;">
                             <td>{{invoice.invoiceNo}}</td>
+                            <td>{{invoice.certificateRefNo}}</td>
                             <td>{{invoice.buyer}}</td>
                             <td>{{invoice.invoiceDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{invoice.transactionID}}</td>

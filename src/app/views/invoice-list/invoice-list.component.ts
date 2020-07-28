@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../../services/invoice.service';
 import { UserRole } from '../../enums/user-role';
 import * as moment from 'moment';
+import _ from "lodash";
 
 @Component({
   selector: 'app-invoice-list',
@@ -69,7 +70,6 @@ export class InvoiceListComponent implements OnInit {
           }
           this.page = this.pagination['currentPage'];
           this.invoiceList = data['data']['invoices'];
-          console.log(this.invoiceList);
         }
 
       });
@@ -100,10 +100,50 @@ export class InvoiceListComponent implements OnInit {
     this.invoiceService.getExportInvoice(searchText, startDate, endDate).subscribe(data => {
       if(data['status'] == "success"){
         let exportInvoices = data['data'];
+        let exportInvoicesArranged = [];
+        _.forEach(exportInvoices, invoice => {
+          invoice.invoiceDate = moment(invoice.invoiceDate).format('L');
+          invoice.createdAt = moment(invoice.createdAt).format('L');
+          let igst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'IGST'});
+          let cgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'CGST'});
+          let sgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'SGST'});
 
+          invoice.IGST = _.isEmpty(igst) ? '0': igst.amount;
+          invoice.CGST = _.isEmpty(cgst) ? '0': cgst.amount;
+          invoice.SGST = _.isEmpty(sgst) ? '0': sgst.amount;
+
+          delete invoice.invoiceItems;
+
+          exportInvoicesArranged.push({
+            invoicePaid: invoice.invoicePaid,
+            invoiceDate: invoice.invoiceDate,	
+           ' item name': invoice.itemName,	
+            deliveryNote: invoice.deliveryNote,	
+            suppliersRef: invoice.suppliersRef,	
+            'buyer name': invoice.buyer, 
+            buyerOrderNo: invoice.buyerOrderNo,	
+            dateOfBuyerOrder: invoice.dateOfBuyerOrder,	
+            dispatchedDocumentNo: invoice.dispatchedDocumentNo,	
+            destination: invoice.destination,	
+            deliveryTerms: invoice.deliveryTerms,	
+            totalQuantity: invoice.totalQuantity,	
+            totalAmount: invoice.totalAmount,	
+            totalAmountWords: invoice.totalAmountWords,	
+            IGST: invoice.IGST,	
+            CGST: invoice.CGST,	
+            SGST: invoice.SGST,	
+            remark: invoice.remark,	
+            invoiceNo: invoice.invoiceNo,	
+            totalTaxAmountWords: invoice.totalTaxAmountWords,	
+            createdAt: invoice.createdAt,	
+            payMode: invoice.payMode,	
+            transactionID: invoice.transactionID,		
+          })
+
+        })
         let date = moment().format();
         let csvName = 'Invoices-' + date + '.csv'
-        this.exportToCsv(csvName, exportInvoices);
+        this.exportToCsv(csvName, exportInvoicesArranged);
       }
     });
   }

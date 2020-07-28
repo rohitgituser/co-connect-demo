@@ -44,6 +44,7 @@ export class Dashboard2Component implements OnInit {
   coAmmendmentRequestSubmitted:  Boolean =false;
   emailSubmitted: Boolean =false;
   page:any
+  minLCDate: any;
   currentUser: Object;
   currentCertificate: any;
   currentInvoice: any;
@@ -79,6 +80,7 @@ export class Dashboard2Component implements OnInit {
   payment: object 
   payClicked: Boolean= false;
   notIssuedCertificate: Boolean = false;
+  coRefCertInvalid: Boolean = false;
   uploadDocClicked: Boolean =false;
   constructor( private generalServiceService : GeneralServiceService, 
     private formBuilder: FormBuilder,
@@ -136,7 +138,7 @@ export class Dashboard2Component implements OnInit {
       partyState: [''],
       partyCountry: [''],
       exporterState: ['', Validators.required],
-      exporterCountry: ['', Validators.required],
+      exporterCountry: ['India', Validators.required],
       consignee: ['', Validators.required],
       consigneeAddress: ['', Validators.required],
       consigneeState: [''],
@@ -177,7 +179,7 @@ export class Dashboard2Component implements OnInit {
       partyState: [''],
       partyCountry: [''],
       exporterState: ['', Validators.required],
-      exporterCountry: ['', Validators.required],
+      exporterCountry: ['India', Validators.required],
       consignee: ['', Validators.required],
       consigneeAddress: ['', Validators.required],
       consigneeState: [''],
@@ -235,7 +237,7 @@ export class Dashboard2Component implements OnInit {
       partyState: [''],
       partyCountry: [''],
       exporterState: ['', Validators.required],
-      exporterCountry: ['', Validators.required],
+      exporterCountry: ['India', Validators.required],
       consignee: ['', Validators.required],
       consigneeAddress: ['', Validators.required],
       consigneeState: [''],
@@ -277,7 +279,7 @@ export class Dashboard2Component implements OnInit {
       partyState: [''],
       partyCountry: [''],
       exporterState: ['', Validators.required],
-      exporterCountry: ['', Validators.required],
+      exporterCountry: ['India', Validators.required],
       consignee: ['', Validators.required],
       consigneeAddress: ['', Validators.required],
       consigneeState: [''],
@@ -434,6 +436,7 @@ export class Dashboard2Component implements OnInit {
   getCertificated(companyName: String, startDate:String, endDate: String, page: any, page1:any){
 
       if(this.currentUser && this.currentUser["role"] == UserRole.BA){
+        this.loadingService.show();
         this.certificateService.getCertificates(companyName, startDate,endDate, 'plList', page).subscribe(data => {
           if(data['status'] == "success"){
             this.pagination = data['data']['pagination'];
@@ -446,12 +449,13 @@ export class Dashboard2Component implements OnInit {
                 perPage: 5
               };
             }
+            this.loadingService.hide();
             this.page = this.pagination['currentPage'];
             this.plList = data['data']['certificates'];
           }
 
         });
-
+        this.loadingService.show();
         this.certificateService.getCertificates(companyName, startDate,endDate, 'coList', page1).subscribe(data => {
           if(data['status'] == "success"){
             this.pagination1 = data['data']['pagination'];
@@ -464,6 +468,7 @@ export class Dashboard2Component implements OnInit {
                 perPage: 5
               };
             }
+            this.loadingService.hide();
             this.page1 = this.pagination1['currentPage'];
             this.coList = data['data']['certificates'];
           }
@@ -471,6 +476,7 @@ export class Dashboard2Component implements OnInit {
         });
       }
       if(this.currentUser && (this.currentUser["role"] == UserRole.ICC_ADMIN|| this.currentUser["role"] == UserRole.ICC_EDITOR ) ){
+        this.loadingService.show();
         this.certificateService.getEditorCertificates(companyName, startDate,endDate,'plList', page).subscribe(data => {
           if(data['status'] == "success"){
             this.pagination = data['data']['pagination'];
@@ -483,12 +489,14 @@ export class Dashboard2Component implements OnInit {
                 perPage: 5
               };
             }
+            this.loadingService.hide();
             this.page = this.pagination['currentPage'];
             this.plList = data['data']['certificates'];
             // this.coList = _.filter(data['data']['certificates'], (cert) => { return cert.docStatus == 'issued' });
           }
 
         });
+        this.loadingService.show();
         this.certificateService.getEditorCertificates(companyName, startDate,endDate,'coList', page1).subscribe(data => {
           if(data['status'] == "success"){
             this.pagination1 = data['data']['pagination'];
@@ -501,6 +509,7 @@ export class Dashboard2Component implements OnInit {
                 perPage: 5
               };
             }
+            this.loadingService.hide();
             this.page1 = this.pagination1['currentPage'];
             this.coList = data['data']['certificates'];
           }
@@ -525,9 +534,11 @@ export class Dashboard2Component implements OnInit {
     this.certificateMode = 'edit';
     this.ammendmentMode = 'edit';
     this.payClicked = false;
+
     this.certificateId = certificate._id;
+    this.loadingService.show();
     this.certificateService.getCertificateByID(certificate._id).subscribe(data => {
-    
+      this.loadingService.hide();
       if(data['status'] == "success"){
         this.currentCertificate = data['data'];
 
@@ -589,7 +600,9 @@ export class Dashboard2Component implements OnInit {
         if(this.currentCertificate.invoice && this.currentCertificate.invoice.length> 0){
           let lastInvoice = this.currentCertificate.invoice[ this.currentCertificate.invoice.length -1];
           if(lastInvoice ) {
+            this.loadingService.show();
             this.certificateService.getInvoiceById(lastInvoice.invoiceId).subscribe(data=> {
+              this.loadingService.hide();
               this.currentInvoice = data['data'];
               
             });
@@ -618,8 +631,9 @@ export class Dashboard2Component implements OnInit {
     this.payClicked = false;
     this.certificateId = certificate._id;
 
+    this.loadingService.show();
     this.certificateService.getCertificateByID(certificate._id).subscribe(data => {
-    
+      this.loadingService.hide();
       if(data['status'] == "success"){
         this.currentCertificate = data['data'];
         if(this.currentCertificate['docStatus'] != "draft"){
@@ -681,7 +695,9 @@ export class Dashboard2Component implements OnInit {
         if(this.currentCertificate.invoice && this.currentCertificate.invoice.length> 0){
           let lastInvoice = this.currentCertificate.invoice[ this.currentCertificate.invoice.length -1];
           if(lastInvoice ) {
+            this.loadingService.show();
             this.certificateService.getInvoiceById(lastInvoice.invoiceId).subscribe(data=> {
+              this.loadingService.hide();
               this.currentInvoice = data['data'];
               
             });
@@ -705,15 +721,23 @@ export class Dashboard2Component implements OnInit {
 
   checkReferenceNumber(){
     this.notIssuedCertificate = false;
+    this.coRefCertInvalid = false
     let values = this.coAmmendmentRequestFormGroup.value;
     if(values.oldCOReferenceNumber && values.oldCOReferenceNumber != ''){
+      this.loadingService.show();
       this.certificateService.getCertificateByReference(values.oldCOReferenceNumber).subscribe(data => {
-
+        this.loadingService.hide();
+        if(_.isEmpty(data['data'])){ 
+          this.coRefCertInvalid = true;
+          return false;
+        }
+        
         if(data['status'] == 'success' && !_.isEmpty(data['data'])){
-          let oldCert = data['data']
+
+         
+          let oldCert = data['data'];
           if(oldCert['docStatus'] == 'issued'){
 
-          
           this.coAmmendmentRequestFormGroup = this.formBuilder.group({
             // email: ['', Validators.pattern(EmailPattern)],
             exporter: [oldCert.exporter , Validators.required],
@@ -750,7 +774,7 @@ export class Dashboard2Component implements OnInit {
             netWeight: [oldCert.netWeight, Validators.required],
             grossWeight: [oldCert.grossWeight, Validators.required],
             totalValue: [oldCert.totalValue, Validators.required],
-            valueCurrency: [this.currentCertificate.valueCurrency || this.currencyArray[0]],
+            valueCurrency: [oldCert.valueCurrency || this.currencyArray[0]],
             termsAccepted: [oldCert.termsAccepted, Validators.required],
             isCOEndorseRequired: [oldCert.isCOEndorseRequired, Validators.required],
             goods:this.formBuilder.array([])
@@ -785,6 +809,10 @@ export class Dashboard2Component implements OnInit {
   onAmmendmentRequestCOSubmit(){
     this.coAmmendmentRequestSubmitted = true;
     this.showError = '';
+    if(this.notIssuedCertificate || this.coRefCertInvalid ){
+      this.showError ="CO Reference Number: is invalid or not issued."
+      return;
+    }
     if(this.coAmmendmentRequestFormGroup.invalid){
       return false;
     }
@@ -818,9 +846,10 @@ export class Dashboard2Component implements OnInit {
     }
     values.email = this.currentUser["email"];
     values.ammendmentMode = true;
-    this.loadingService.show();
+    // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
+      this.loadingService.show();
       this.certificateService.editCertificate(values, this.currentCertificate._id).subscribe(data => {
         this.loadingService.hide();
         if(data['status'] == "success"){
@@ -836,6 +865,7 @@ export class Dashboard2Component implements OnInit {
         
       });
     }else{
+      this.loadingService.show();
       this.certificateService.createCertificate(values).subscribe(data => {
         this.loadingService.hide();
         if(data['status'] == "success"){
@@ -902,9 +932,10 @@ export class Dashboard2Component implements OnInit {
 
     }
     values.email = this.currentUser["email"];
-    this.loadingService.show();
+    // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
+      this.loadingService.show();
       this.certificateService.editCertificate(values, this.currentCertificate._id).subscribe(data => {
         this.loadingService.hide();
         if(data['status'] == "success"){
@@ -912,6 +943,7 @@ export class Dashboard2Component implements OnInit {
           this.page = 1;
           this.currentCertificate = data['data'];
           this.coSubmitted = false;
+          this.loadingService.hide();
           document.getElementById("firstStepNext").click();
           this.toastr.success('Success', 'Draft Certificate updated successfully...');
         }else{
@@ -920,6 +952,7 @@ export class Dashboard2Component implements OnInit {
         
       });
     }else{
+      this.loadingService.show();
       this.certificateService.createCertificate(values).subscribe(data => {
         this.loadingService.hide();
         if(data['status'] == "success"){
@@ -927,6 +960,7 @@ export class Dashboard2Component implements OnInit {
           this.page = 1;
           this.currentCertificate = data['data'];
           this.coSubmitted = false;
+          this.loadingService.hide();
           this.attachedDocuments = [];
 
           if( this.currentCertificate.attachedDocuments.length > 0){
@@ -957,16 +991,20 @@ export class Dashboard2Component implements OnInit {
     this.coAmmendmentInitital();
     this.currentCertificate = {};
     this.emailSubmitted = false;
-    
+    this.minLCDate = moment();
     this.coAmmendmentRequestSubmitted = false;
     this.attachedDocuments = [];
     this.certificateId = '';
+    this.enteredOTP = '';
     this.ezPayURL = '';
     document.getElementById('resetStepper').click();
     this.coSubmitted = false;
     this.ammntmentRequest = false;
+    this.coAmmendmentRequestSubmitted = false;
+    this.coAmmendmentRequestSubmitted = false;
     this.emailSubmitted = false;
     this.notIssuedCertificate = false;
+    this.coRefCertInvalid = false;
 
   }
 
@@ -1007,7 +1045,9 @@ export class Dashboard2Component implements OnInit {
   }
 
   saveFileDocument =  (formData, id) => {
+    this.loadingService.show();
     this.certificateService.uploadCertificateDocuments(formData, id).subscribe(data => {
+      this.loadingService.hide();
       if(data['status'] == "success"){
 
           let updatedDoc = data['data']; 
@@ -1023,6 +1063,7 @@ export class Dashboard2Component implements OnInit {
             _.forEach(this.attachedDocuments, (doc)=> { if(doc.url && doc.url != '') fileWithURL++ })
 
             if(fileWithURL == this.attachedDocuments.length){
+              this.loadingService.show();
               this.certificateService.saveCertificateDocuments({attachedDocuments:this.attachedDocuments } , this.currentCertificate._id).subscribe(data => {
   
       
@@ -1031,7 +1072,7 @@ export class Dashboard2Component implements OnInit {
                   this.attachedDocuments = data['data']['attachedDocuments'];
                   this.onEditCertificateClicked(this.currentCertificate);
                   this.onEditAmmendmentCertificateClicked(this.currentCertificate)
-
+                  this.loadingService.hide();
                   document.getElementById("secondStepNext").click();
                   this.uploadDocClicked = false;
       
@@ -1053,6 +1094,7 @@ export class Dashboard2Component implements OnInit {
     if(this.attachedDocuments.length >= 2){
       
       let isFileEmpty = false;
+      this.loadingService.show();
       _.forEach(this.attachedDocuments,  (doc)=> { 
           if( (!doc.file || doc.file == '')){ if(!doc.url) {isFileEmpty = true;}}
         });
@@ -1089,8 +1131,8 @@ export class Dashboard2Component implements OnInit {
             }else{
  
               // only save other values not uploading document
+              this.loadingService.show();
               this.certificateService.saveCertificateDocuments({attachedDocuments:this.attachedDocuments } , this.currentCertificate._id).subscribe(data => {
-  
   
                 if(data['status'] == "success"){
                   this.currentCertificate = data['data'];
@@ -1100,20 +1142,23 @@ export class Dashboard2Component implements OnInit {
                   this.attachedDocuments = data['data']['attachedDocuments'];
                   this.onEditCertificateClicked(this.currentCertificate);
                   this.onEditAmmendmentCertificateClicked(this.currentCertificate)
+                  this.loadingService.hide();
                   document.getElementById("secondStepNext").click();
+                  this.loadingService.hide();
                   this.uploadDocClicked = false;
                 } 
               });
             }
         }
       }else{
-
+        this.loadingService.show();
         this.certificateService.saveCertificateDocuments({attachedDocuments:this.attachedDocuments } , this.currentCertificate._id).subscribe(data => {
           if(data['status'] == "success"){
             this.currentCertificate = data['data'];
             this.attachedDocuments = data['data']['attachedDocuments'];
             this.onEditCertificateClicked(this.currentCertificate);
-            this.onEditAmmendmentCertificateClicked(this.currentCertificate)
+            this.onEditAmmendmentCertificateClicked(this.currentCertificate);
+            this.loadingService.hide();
             document.getElementById("secondStepNext").click();
             this.uploadDocClicked = false;
 
@@ -1135,7 +1180,9 @@ export class Dashboard2Component implements OnInit {
   }
 
   resendOTP =(certificate)=>{
+    this.loadingService.show();
     this.certificateService.requestOTP(certificate.email, this.currentCertificate._id).subscribe(data => {
+      this.loadingService.hide();
       if(data['status'] == "success"){
         this.toastr.success('Success', 'OTP Send successfully...');
       }else if(data['status'] == "error"){
@@ -1151,6 +1198,7 @@ export class Dashboard2Component implements OnInit {
     if(!otp){
       this.showError = "Please enter OTP";
     }else{
+      this.loadingService.show();
       this.certificateService.verifyOTP(otp , this.currentCertificate._id).subscribe(data => {
         if(data['status'] == "success"){
           this.enteredOTP = '';
@@ -1159,6 +1207,7 @@ export class Dashboard2Component implements OnInit {
 
           this.generateInvoice(this.currentCertificate);
           setTimeout(() => {
+            this.loadingService.hide();
             document.getElementById("thirdStepNext").click();
           }, 700);
 
@@ -1166,12 +1215,17 @@ export class Dashboard2Component implements OnInit {
           
         }
         if(data['status'] == "error"){
+          this.loadingService.hide();
           this.showError = data['message'];
         }
       });
     }
 
   }
+  lcDateChanged = (data) =>{
+    this.minLCDate = data;
+  }
+
 
   getCert = () => {
     // this.certificateService.getCertificateByID(this.certificateId).subscribe(data => {
@@ -1212,12 +1266,13 @@ export class Dashboard2Component implements OnInit {
   }
 
   generateInvoice = (certificate) => {
+    this.loadingService.show();
     this.certificateService.getCertificateByID(certificate._id).subscribe(data => {
-    
+      this.loadingService.hide();
         if(data['status'] == "success"){
           this.currentCertificate = data['data'];
         }
-
+      this.loadingService.show();
     this.mastersService.getAllPricing().subscribe(data => {
       if(data['status'] == "success"){
         this.pricingList = data['data'];
@@ -1227,6 +1282,7 @@ export class Dashboard2Component implements OnInit {
         let invoice = {
           invoiceDate: today.toISOString(),
           certificateId: this.currentCertificate._id,
+          certificateRefNo: this.currentCertificate.coReferenceNumber,
           deliveryNote: '',
           suppliersRef: '',
           buyer: this.currentCertificate.exporter,
@@ -1240,6 +1296,7 @@ export class Dashboard2Component implements OnInit {
           dispatchedDocumentNo: '',
           destination:this.currentCertificate.finalDestination,
           deliveryTerms: '',
+          itemName: this.currentCertificate.ammendmentMode ? "Ammendment Certificate of Origin": "Certificate of Origin",
           invoiceItems:[],
           // payMode: {type: String,  required: true},
           taxDetails:[],
@@ -1379,6 +1436,7 @@ export class Dashboard2Component implements OnInit {
 
 
           this.certificateService.createInvoice(invoice).subscribe(data => {
+            // this.loadingService.hide();
             if(data['status'] == "success"){
 
               this.currentInvoice = data['data'];
@@ -1387,6 +1445,7 @@ export class Dashboard2Component implements OnInit {
                 if(cert['status'] == "success"){
 
                   this.currentCertificate = cert['data'];
+                  this.loadingService.hide();
                   this.getCert();
                 }
               });
@@ -1470,11 +1529,12 @@ export class Dashboard2Component implements OnInit {
       amount: this.currentInvoice.totalAmount,
       userId: this.currentUser['_id'],
     }
-
+    this.loadingService.show();
     this.walletService.useCredit(debit).subscribe(data => {
       if(data['status'] == "success"){
           this.currentUser = data['data']['user'];
           sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+          this.loadingService.hide();
           this.payNowTest(currentCertificate);
       }
     });
@@ -1483,9 +1543,11 @@ export class Dashboard2Component implements OnInit {
 
   payNowTest = (currentCertificate) => {
     this.currentCertificate = currentCertificate;
+    this.loadingService.show();
     this.certificateService.payAmountClicked(this.currentInvoice._id,this.currentCertificate._id).subscribe(data => {
       if(data['status'] == "success"){
         this.getCertificated(this.searchText, this.fromDate, this.toDate, '1', '1');
+        this.loadingService.hide();
         document.getElementById("closeCreateCoModelCloseButton").click();
 
       }
