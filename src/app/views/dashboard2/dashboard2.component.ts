@@ -1311,7 +1311,7 @@ export class Dashboard2Component implements OnInit {
           remark: ''
         }
 
-        let isInterState = this.currentCertificate.exporterState.toLowerCase().indexOf('bengal') !== -1 ? false: true;
+        let isInterState = this.currentCertificate.exporterState.toLowerCase().indexOf('maharashtra') !== -1 ? false: true;
 
         if(this.currentCertificate.isCOEndorseRequired){
           let certificateCostObj = _.find(this.pricingList, function(price){ return price.internalName == 'isCOEndorseRequired'});
