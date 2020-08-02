@@ -194,8 +194,8 @@
                     </div>
                     
                     <div class="col-md-6 mt-1">
-                      <span>  Pre-Carriage by*:  </span> 
-                      <input type="text" formControlName="preCarriageBy" class="form-control" required>
+                      <span>  Pre-Carriage by:  </span> 
+                      <input type="text" formControlName="preCarriageBy" class="form-control" >
                       <div *ngIf="coForm.preCarriageBy.invalid  &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.preCarriageBy.errors.required">
                           This field  is required.
@@ -203,8 +203,8 @@
                       </div>
                     </div>
                     <div class="col-md-6 mt-1">
-                      <span>  Place of Receipt by Pre-Carrier*:  </span> 
-                      <input type="text" formControlName="placeOfReceipt" class="form-control" required>
+                      <span>  Place of Receipt by Pre-Carrier:  </span> 
+                      <input type="text" formControlName="placeOfReceipt" class="form-control" >
                       <div *ngIf="coForm.placeOfReceipt.invalid &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.placeOfReceipt.errors.required">
                           This field is required.
@@ -273,7 +273,7 @@
                       </div>
                       <div class="col-md-3" [formGroupName]="i">
                         <span> Kind of Pkgs*:  </span> 
-                        <input type="text" formControlName="typeOfPacking" class="form-control"  placeholder="Kgs/Lsb" >
+                        <input type="text" formControlName="typeOfPacking" class="form-control"  placeholder="" >
               
                       </div>
                       <div class="col-md-1" (click)="removeGoodsItem(i)">
@@ -290,7 +290,7 @@
                   </span>
         
                     <div class="col-md-6 mt-1">
-                      <span>  ICC COO Code.(Cert)*:  </span> 
+                      <span>  Coo. Regn. No.*:  </span> 
                       <input type="text" formControlName="iccCooCode" class="form-control" placeholder="Certificate Number" >
                       <div *ngIf="coForm.iccCooCode.invalid &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.iccCooCode.errors.required">
@@ -300,7 +300,7 @@
                       </div>
                     </div>
                     <div class="col-md-6 mt-1">
-                      <span> Cert Date*:  </span> 
+                      <span> Coo. Regn. Date*:  </span> 
                       <input type="date" formControlName="iccCooCodeDate" class="form-control" >
                       <div *ngIf="coForm.iccCooCodeDate.invalid &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.iccCooCodeDate.errors.required">
@@ -371,7 +371,7 @@
                     <div class="row col-md-12 mt-1">
                       <div class="col-md-6 ">
                         <span>   Net Weight*:  </span> 
-                        <input type="number" formControlName="netWeight" class="form-control" >
+                        <input type="text" formControlName="netWeight" class="form-control" >
                         <div *ngIf="coForm.netWeight.invalid  &&  coSubmitted" class="error_txt">
                           <div *ngIf="coForm.netWeight.errors.required">
                             This field is required .
@@ -380,7 +380,7 @@
                       </div>
                       <div class="col-md-6">
                         <span>  Gross Weight*:  </span> 
-                        <input type="number" formControlName="grossWeight" class="form-control" >
+                        <input type="text" formControlName="grossWeight" class="form-control" >
                         <div *ngIf="coForm.grossWeight.invalid  &&  coSubmitted" class="error_txt">
                           <div *ngIf="coForm.grossWeight.errors.required">
                             This field is required.
@@ -557,8 +557,8 @@
                       </div>
                       
                       <div class="col-md-6 mt-1">
-                        <span>  Pre-Carriage by*:  </span> 
-                        <input type="text" formControlName="preCarriageBy" class="form-control" required>
+                        <span>  Pre-Carriage by:  </span> 
+                        <input type="text" formControlName="preCarriageBy" class="form-control">
                         <div *ngIf="coAmmendmentForm.preCarriageBy.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                           <div *ngIf="coAmmendmentForm.preCarriageBy.errors.required">
                             This field  is required.
@@ -567,7 +567,7 @@
                       </div>
                       <div class="col-md-6 mt-1">
                         <span>  Place of Receipt by Pre-Carrier*:  </span> 
-                        <input type="text" formControlName="placeOfReceipt" class="form-control" required>
+                        <input type="text" formControlName="placeOfReceipt" class="form-control">
                         <div *ngIf="coAmmendmentForm.placeOfReceipt.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
                           <div *ngIf="coAmmendmentForm.placeOfReceipt.errors.required">
                             This field is required.
@@ -636,7 +636,7 @@
                         </div>
                         <div class="col-md-3" [formGroupName]="i">
                           <span> Kind of Pkgs*:  </span> 
-                          <input type="text" formControlName="typeOfPacking" class="form-control" placeholder="Kgs/Lsb" >
+                          <input type="text" formControlName="typeOfPacking" class="form-control" placeholder="" >
                 
                         </div>
                         <div class="col-md-1" (click)="removeGoodsItem(i)">
@@ -653,7 +653,7 @@
                     </span>
           
                       <div class="col-md-6 mt-1">
-                        <span>  ICC COO Code.(Cert)*:  </span> 
+                        <span>  Coo. Regn. No.*:  </span> 
                         <input type="text" formControlName="iccCooCode" class="form-control" placeholder="Certificate Number" >
                         <div *ngIf="coAmmendmentForm.iccCooCode.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
                           <div *ngIf="coAmmendmentForm.iccCooCode.errors.required">
@@ -663,7 +663,7 @@
                         </div>
                       </div>
                       <div class="col-md-6 mt-1">
-                        <span>  Cert Date*:  </span> 
+                        <span>  Coo. Regn. Date*:  </span> 
                         <input type="date" formControlName="iccCooCodeDate" class="form-control" >
                         <div *ngIf="coAmmendmentForm.iccCooCodeDate.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
                           <div *ngIf="coAmmendmentForm.iccCooCodeDate.errors.required">
@@ -734,7 +734,7 @@
                       <div class="row col-md-12 mt-1">
                         <div class="col-md-6 ">
                           <span>   Net Weight*:  </span> 
-                          <input type="number" formControlName="netWeight" class="form-control" >
+                          <input type="text" formControlName="netWeight" class="form-control" >
                           <div *ngIf="coAmmendmentForm.netWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                             <div *ngIf="coAmmendmentForm.netWeight.errors.required">
                               This field is required .
@@ -743,7 +743,7 @@
                         </div>
                         <div class="col-md-6">
                           <span>  Gross Weight*:  </span> 
-                          <input type="number" formControlName="grossWeight" class="form-control" >
+                          <input type="text" formControlName="grossWeight" class="form-control" >
                           <div *ngIf="coAmmendmentForm.grossWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                             <div *ngIf="coAmmendmentForm.grossWeight.errors.required">
                               This field is required.
@@ -980,7 +980,7 @@
                   <span [hidden]="currentCertificate && currentCertificate['rejectionReason']">
                     <div *ngIf="!payClicked" class="col-md-12 mt-3">
                       <button *ngIf="isWalletPayActive()" type="button" (click)="payCredit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary ml-2" style="float: right;"  >Pay From Wallet</button>
-                      <button type="button" (click)="payNowTest(currentCertificate)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
+                      <button type="button" (click)="payNow(currentCertificate)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
                       <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
                     </div>
                 </span> 
@@ -1092,9 +1092,16 @@
                 </td>
                 <td>{{pl.createdAt | date:'dd/MM/yyyy'}}</td>
                 <td>{{pl.finalDestination}}</td>
-                <td  *rbacShow="['editor']"> <span *ngIf="pl.editorAction == 'Accept'" class="badge badge-success">Reviewed</span></td>
+                <td  *rbacShow="['editor']">
+                   <span *ngIf="pl.editorAction == 'Accept' || pl.editorAction == 'Reject' " class="badge badge-success">Reviewed</span>
+                   <span *ngIf="pl.editorAction != 'Accept' &&  pl.editorAction != 'Reject'" class="badge badge-danger"> Not-Reviewed</span>
+                  </td>
 
-                <td  *rbacShow="['admin']"> <span *ngIf="pl.editorAction == 'Accept'" class="badge badge-success">Reviewed</span></td>
+                <td  *rbacShow="['admin']"> 
+                  <span *ngIf="pl.editorAction == 'Accept' || pl.editorAction == 'Reject' " class="badge badge-success">Reviewed</span>
+                  <span *ngIf="pl.editorAction != 'Accept' &&  pl.editorAction != 'Reject'" class="badge badge-danger"> Not-Reviewed</span>
+                </td>
+
 
 
                 <td>
@@ -1116,10 +1123,10 @@
                   <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
                 </td>
                 <td *rbacShow="['editor']">
-                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"  re >View</button>
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary" >View</button>
                 </td>
                 <td *rbacShow="['admin']">
-                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary"  re >View</button>
+                  <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary" >View</button>
                 </td>
               </tr>
 

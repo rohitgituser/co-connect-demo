@@ -121,9 +121,10 @@ export class Dashboard2Component implements OnInit {
     let EmailPattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'
     let PasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     let panPattern = new RegExp("[A-Z]{5}[0-9]{4}[A-Z]{1}");
-    let today = new Date()
-    this.fromDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split('T')[0];
-    this.toDate = new Date(today.setMonth(today.getMonth() + 3)).toISOString().split('T')[0];
+    let today = new Date();
+    let toDate = new Date();
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
     this.coOTPFormGroup = this.formBuilder.group({
       email: ['', Validators.pattern(EmailPattern)],
 
@@ -144,8 +145,8 @@ export class Dashboard2Component implements OnInit {
       consigneeState: [''],
       consigneeCountry: ['', Validators.required],
       iecNumber: [this.currentUser["iecNumber"], Validators.required],
-      preCarriageBy: ['', Validators.required],
-      placeOfReceipt: ['', Validators.required],
+      preCarriageBy: [''],
+      placeOfReceipt: [''],
       VesselOrFlightNo: ['', Validators.required],
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
@@ -186,8 +187,8 @@ export class Dashboard2Component implements OnInit {
       consigneeCountry: ['', Validators.required],
       oldCOReferenceNumber: ['', Validators.required],
       iecNumber: ['', Validators.required],
-      preCarriageBy: ['', Validators.required],
-      placeOfReceipt: ['', Validators.required],
+      preCarriageBy: [''],
+      placeOfReceipt: [''],
       VesselOrFlightNo: ['', Validators.required],
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
@@ -213,7 +214,7 @@ export class Dashboard2Component implements OnInit {
 
     this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
     this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-    this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+    // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
 
 
     this.mastersService.getConfig('companyConfig').subscribe(data => {
@@ -243,8 +244,8 @@ export class Dashboard2Component implements OnInit {
       consigneeState: [''],
       consigneeCountry: ['', Validators.required],
       iecNumber: [this.currentUser["iecNumber"], Validators.required],
-      preCarriageBy: ['', Validators.required],
-      placeOfReceipt: ['', Validators.required],
+      preCarriageBy: [''],
+      placeOfReceipt: [''],
       VesselOrFlightNo: ['', Validators.required],
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
@@ -286,8 +287,8 @@ export class Dashboard2Component implements OnInit {
       consigneeCountry: ['', Validators.required],
       oldCOReferenceNumber: ['', Validators.required],
       iecNumber: ['', Validators.required],
-      preCarriageBy: ['', Validators.required],
-      placeOfReceipt: ['', Validators.required],
+      preCarriageBy: [''],
+      placeOfReceipt: [''],
       VesselOrFlightNo: ['', Validators.required],
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
@@ -312,7 +313,7 @@ export class Dashboard2Component implements OnInit {
 
     this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
     this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-    this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+    // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
     this.mastersService.getConfig('companyConfig').subscribe(data => {
       if(data['status'] == "success"){
         this.companyConfig =  data['data'][0]['keyValue'];
@@ -321,9 +322,11 @@ export class Dashboard2Component implements OnInit {
    }
 
   callClear() {
-    let today = new Date()
-    this.fromDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split('T')[0];
-    this.toDate = new Date(today.setMonth(today.getMonth() + 3)).toISOString().split('T')[0];
+    let today = new Date();
+    let toDate = new Date();
+
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
     this.getCertificated('', this.fromDate, this.toDate, '1', '1');
 
   }
@@ -371,7 +374,7 @@ export class Dashboard2Component implements OnInit {
   }
 
   removeUploadDocsItem(index): void {
-    if(this.attachedDocuments.length > 3){
+    if(this.attachedDocuments.length > 2){
       this.attachedDocuments.splice(index, 1);
     }
   }
@@ -567,8 +570,8 @@ export class Dashboard2Component implements OnInit {
           consigneeState: [this.currentCertificate.consigneeState],
           consigneeCountry: [this.currentCertificate.consigneeCountry, Validators.required],
           iecNumber: [this.currentCertificate.iecNumber, Validators.required],
-          preCarriageBy: [this.currentCertificate.preCarriageBy, Validators.required],
-          placeOfReceipt: [this.currentCertificate.placeOfReceipt, Validators.required],
+          preCarriageBy: [this.currentCertificate.preCarriageBy],
+          placeOfReceipt: [this.currentCertificate.placeOfReceipt],
           VesselOrFlightNo: [this.currentCertificate.VesselOrFlightNo, Validators.required],
           loadingPort: [this.currentCertificate.loadingPort, Validators.required],
           dischargePort: [this.currentCertificate.dischargePort, Validators.required],
@@ -617,7 +620,7 @@ export class Dashboard2Component implements OnInit {
         }else{
           this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
           this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-          this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+          // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
       }
       }
       });
@@ -662,8 +665,8 @@ export class Dashboard2Component implements OnInit {
           consigneeCountry: [this.currentCertificate.consigneeCountry, Validators.required],
           iecNumber: [this.currentCertificate.iecNumber, Validators.required],
           oldCOReferenceNumber: [this.currentCertificate.oldCOReferenceNumber, Validators.required],
-          preCarriageBy: [this.currentCertificate.preCarriageBy, Validators.required],
-          placeOfReceipt: [this.currentCertificate.placeOfReceipt, Validators.required],
+          preCarriageBy: [this.currentCertificate.preCarriageBy],
+          placeOfReceipt: [this.currentCertificate.placeOfReceipt],
           VesselOrFlightNo: [this.currentCertificate.VesselOrFlightNo, Validators.required],
           loadingPort: [this.currentCertificate.loadingPort, Validators.required],
           dischargePort: [this.currentCertificate.dischargePort, Validators.required],
@@ -712,7 +715,7 @@ export class Dashboard2Component implements OnInit {
         }else{
           this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
             this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-            this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+            // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
         }
       }
       });
@@ -755,8 +758,8 @@ export class Dashboard2Component implements OnInit {
             consigneeCountry: [oldCert.consigneeCountry, Validators.required],
             iecNumber: [oldCert.iecNumber, Validators.required],
             oldCOReferenceNumber: [values.oldCOReferenceNumber, Validators.required],
-            preCarriageBy: [oldCert.preCarriageBy, Validators.required],
-            placeOfReceipt: [oldCert.placeOfReceipt, Validators.required],
+            preCarriageBy: [oldCert.preCarriageBy],
+            placeOfReceipt: [oldCert.placeOfReceipt],
             VesselOrFlightNo: [oldCert.VesselOrFlightNo, Validators.required],
             loadingPort: [oldCert.loadingPort, Validators.required],
             dischargePort: [oldCert.dischargePort, Validators.required],
@@ -881,7 +884,7 @@ export class Dashboard2Component implements OnInit {
           }else{
             this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
             this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-            this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+            // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
           }
 
           document.getElementById("firstStepNextAmmendment").click();
@@ -970,7 +973,7 @@ export class Dashboard2Component implements OnInit {
           }else{
             this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
             this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-            this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
+            // this.attachedDocuments.push({name: "Letter of Credit", isEndorseRequired: false})
           }
           document.getElementById("firstStepNext").click();
           this.toastr.success('Success', 'Draft Certificate created successfully...');
@@ -1085,12 +1088,11 @@ export class Dashboard2Component implements OnInit {
 
   checkAndSaveDocs() {
     this.showError = '';
-    if(this.attachedDocuments.length < 3){
-      this.showError= "Minimum 3 documents is Required to proceed.";
+    if(this.attachedDocuments.length < 2){
+      this.showError= "Minimum 2 documents is Required to proceed.";
       return false;
     }
     
-
     if(this.attachedDocuments.length >= 2){
       
       let isFileEmpty = false;
@@ -1291,6 +1293,7 @@ export class Dashboard2Component implements OnInit {
           buyerGSTINUIN: this.currentUser['gstinNumber'],
           buyerIEC:  this.currentUser['iecNumber'],
           buyerPAN: this.currentUser['panNumber'],
+          dispatchThrough: this.currentCertificate.loadingPort,
           buyerOrderNo: this.currentCertificate.orderNumber,
           dateOfBuyerOrder: this.currentCertificate.orderNumberDate ? new Date(this.currentCertificate.orderNumberDate).toISOString(): '',
           dispatchedDocumentNo: '',

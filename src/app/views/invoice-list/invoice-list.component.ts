@@ -28,8 +28,9 @@ export class InvoiceListComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     let today = new Date()
-    this.fromDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split('T')[0];
-    this.toDate = new Date(today.setMonth(today.getMonth() + 3)).toISOString().split('T')[0];
+    let toDate = new Date();
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
       this.getInvoices('', this.fromDate, this.toDate , '1');
   }
 
@@ -89,11 +90,18 @@ export class InvoiceListComponent implements OnInit {
   }
 
   callClear() {
-    let today = new Date()
-    this.fromDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split('T')[0];
-    this.toDate = new Date(today.setMonth(today.getMonth() + 3)).toISOString().split('T')[0];
+    let today = new Date();
+    let toDate = new Date();
+
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
     this.getInvoices('', this.fromDate, this.toDate, '1');
 
+  }
+
+  openPDF = (src)=>{
+    document.getElementById("full")['href'] = src;
+    document.getElementById("full").click();
   }
 
   exportInvoice(searchText, startDate, endDate){

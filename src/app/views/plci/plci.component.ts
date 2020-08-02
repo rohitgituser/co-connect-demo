@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import _ from "lodash";
 import  {pdf2base64} from  'pdf-to-base64';
 import * as converter from 'xml-js';
+import * as moment from 'moment';
 
 
 @Component({
@@ -60,6 +61,9 @@ export class PlciComponent implements OnInit {
       this.loadingService.hide()
       this.currentCertificate = response['data'];
 
+      if(this.currentCertificate['editorActionTimeStamp']){
+        this.currentCertificate['editorActionTimeStampMoment'] = moment(this.currentCertificate['editorActionTimeStamp']).format('LLL')
+      }
       // this.currentCertificate['coUrl'] = this.currentCertificate['coUrl'] +  "&output=embed";
 
       // _.forEach(this.currentCertificate['attachedDocuments'], (doc) => {
@@ -112,6 +116,9 @@ rejectRequest = (rejectionReason) =>{
 
     if(response['staus'] = 'success')
     this.currentCertificate = response['data'];
+    if(this.currentCertificate['editorActionTimeStamp']){
+      this.currentCertificate['editorActionTimeStampMoment'] = moment(this.currentCertificate['editorActionTimeStamp']).format('LLL')
+    }
     document.getElementById('rejectionModelCLoseButton').click();
   })
 
@@ -142,6 +149,9 @@ editorActionSubmit = (editorReason) => {
 
     if(response['staus'] = 'success')
     this.currentCertificate = response['data'];
+    if(this.currentCertificate['editorActionTimeStamp']){
+      this.currentCertificate['editorActionTimeStampMoment'] = moment(this.currentCertificate['editorActionTimeStamp']).format('LLL')
+    }
     document.getElementById('editorActionModalCLoseButton').click();
   })
 

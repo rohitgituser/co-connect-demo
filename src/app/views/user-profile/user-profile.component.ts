@@ -49,7 +49,6 @@ export class UserProfileComponent implements OnInit {
     this.registerSubmitted = true;
     this.showError = ''
     if(this.registrationForm.invalid){
-      console.log(this.registrationForm);
       return false;
     }
     let values = this.registrationForm.value;

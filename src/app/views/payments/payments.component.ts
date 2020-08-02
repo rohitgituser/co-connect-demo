@@ -27,11 +27,22 @@ export class PaymentsComponent implements OnInit {
   page1: any;
   ngOnInit(): void {
     this.user = JSON.parse(sessionStorage.getItem('currentUser'));
-    let today = new Date()
-    this.fromDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split('T')[0];
-    this.toDate = new Date(today.setMonth(today.getMonth() + 3)).toISOString().split('T')[0];
+    let today = new Date();
+    let toDate = new Date();
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
       this.getPayments('', this.fromDate, this.toDate , '1');
   } 
+
+  callClear() {
+    let today = new Date();
+    let toDate = new Date();
+    this.searchText = '';
+    this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
+    this.toDate = new Date(toDate).toISOString().split('T')[0];
+    this.getPayments('', this.fromDate, this.toDate, '1');
+
+  }
 
   getPayments(companyName: String, startDate:String, endDate: String, page: any){
 
@@ -50,6 +61,10 @@ export class PaymentsComponent implements OnInit {
           }
           this.page1 = this.pagination['currentPage'];
           this.paymentsList = data['data']['payments'];
+
+          _.forEach(this.paymentsList, pay => {
+            let date = pay.transactionDate.split(' ');
+            pay.transactionDateMoment = date[0].replace(/-/g, '/')          })
         }
 
       });
@@ -69,6 +84,11 @@ export class PaymentsComponent implements OnInit {
           }
           this.page1 = this.pagination['currentPage'];
           this.paymentsList = data['data']['payments'];
+
+          _.forEach(this.paymentsList, pay => {
+            let date = pay.transactionDate.split(' ');
+            pay.transactionDateMoment = date[0].replace(/-/g, '/')
+          })
         }
 
       });

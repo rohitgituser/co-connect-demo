@@ -1,5 +1,7 @@
 <div class="animated fadeIn">
     <div class="row margin_top_10">
+      <a href="" id="full" target="_blank"></a>
+
         <div class="card width_100">
             <div class="card-header page_heading" >
                 Invoices
@@ -12,8 +14,8 @@
                     <!-- <div class="col-md-3 col-sm-6"></div> -->
                     <div class="col-md-3 col-sm-6" style="max-width:100%;">
                       <div class="form-group">
-                        <label *rbacShow="['user']" for="searchText"> Buyer </label>
-                        <label *rbacShow="['editor']" for="searchText">Buyer</label>
+                        <label  for="searchText"> Invoice No </label>
+                        <!-- <label *rbacShow="['editor']" for="searchText">Buyer</label> -->
                         <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control" placeholder="Search.."
                           id="searchText">
                       </div>
@@ -29,7 +31,7 @@
                     <div class="col-md-3 col-sm-6" style="max-width:100%;">
                       <label class="" for="toDate"><b>To</b></label>
                       <div >
-                        <input (change)="updateFilter(searchText,fromDate, toDate)" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
+                        <input (change)="updateFilter(searchText,fromDate, toDate)" min="{{fromDate}}" class="form-control" [(ngModel)]="toDate"  id="toDate" type="date" name="toDate"
                           placeholder="date">
                       </div>
                     </div>
@@ -44,11 +46,14 @@
                             <th>Invoice No</th>
                             <th>Cert Ref No</th>
 
-                            <th style="width: 30%;">Buyer</th>
+                            <th *rbacShow="['editor']" style="width: 30%;">Company Name</th>
+                            <th *rbacShow="['admin']" style="width: 30%;">Company Name</th>
+
                             <th style="width: 10%;">Date</th>
                             <th style="width: 15%;">Transaction ID</th>
                             <th style="width: 10%;">Total Amount</th>
                             <th style="width: 10%;">Total Tax</th>
+                            <th style="width: 10%;">Action</th>
 
                         </tr>
                     </thead>
@@ -56,11 +61,15 @@
                         <tr *ngFor="let invoice of invoiceList ; index as i;">
                             <td>{{invoice.invoiceNo}}</td>
                             <td>{{invoice.certificateRefNo}}</td>
-                            <td>{{invoice.buyer}}</td>
+                            <td *rbacShow="['editor']">{{invoice.buyer}}</td>
+                            <td *rbacShow="['admin']">{{invoice.buyer}}</td>
+
                             <td>{{invoice.invoiceDate | date:'dd/MM/yyyy'}}</td>
                             <td>{{invoice.transactionID}}</td>
                             <td>{{invoice.totalAmount}} <i class="fa fa-rupee fa-lg "></i></td>
                             <td>{{invoice.totalTaxAmount}} <i class="fa fa-rupee fa-lg "></i></td>
+                            <td (click)="openPDF(invoice.invoiceUrl)" > <button class="pointer"  class="btn btn-sm btn-primary"  >View</button></td>
+
                         </tr>
 
                     </tbody>

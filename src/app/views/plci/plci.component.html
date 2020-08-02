@@ -296,11 +296,11 @@
             <div class="card-body">
                 <div class="row col-md-12 mb-2">
                   <div  class=" col-md-8">
-                    <span *ngIf="currentCertificate && currentCertificate['rejectionReason']" > <strong class="">Last Rejection Comment:</strong> {{ currentCertificate['rejectionReason'] }}</span> 
+                    <span *ngIf="currentCertificate && currentCertificate['rejectionReason']" > <strong class="">Last Rejection Comment on ({{currentCertificate['editorActionTimeStampMoment']  }}):</strong> {{ currentCertificate['rejectionReason'] }}</span> 
                     </div>
                     <div  class=" col-md-4"> </div>
                     <div  class=" col-md-8">
-                    <span *ngIf="currentCertificate && currentCertificate['editorAction'] == 'Accept'"> <strong class="">Reviewed:</strong> {{ currentCertificate['editorReason'] }}</span> 
+                    <span *ngIf="currentCertificate && currentCertificate['editorAction'] == 'Accept'"> <strong class="">Reviewed on ({{currentCertificate['editorActionTimeStampMoment']  }}):</strong> {{ currentCertificate['editorReason'] }}</span> 
                     </div>
                     
                     <div  class=" col-md-4">
