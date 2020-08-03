@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MastersService } from '../../services/masters.service';
 import * as _ from "lodash";
+import * as moment from 'moment';
+
 import { paginationMaxSize } from '../../utilities/common'
 @Component({
   selector: 'app-users-list',
@@ -78,6 +80,8 @@ export class UsersListComponent implements OnInit {
   viewClicked(user){
     let today = new Date();
     this.selectedUser = user ;
+    let coReferenceDate =  new Date(this.selectedUser.coReferenceDate);
+    this.selectedUser.coReferenceDateMoment = moment(coReferenceDate).format("L");
     this.isMember = this.selectedUser['isMember'];
     console.log(this.isMember)
 

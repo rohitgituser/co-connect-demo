@@ -18,8 +18,12 @@
                 <p>{{selectedUser && selectedUser.companyName}}</p>
             </div>
             <div class="col-md-8">
-              <span> <b>ICC COO code::</b> </span> 
+              <span> <b>ICC COO code:</b> </span> 
                 <p>{{selectedUser && selectedUser.coReference}}</p>
+            </div>
+            <div class="col-md-4">
+              <span> <b>ICC COO code Issued Date:</b> </span> 
+                <p>{{selectedUser &&  selectedUser.coReferenceDateMoment }}</p>
             </div>
             <div class="col-md-12">
               <span> <b>Address:</b> </span> 
@@ -106,7 +110,7 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4 col-sm-6" style="max-width:100%;">
-              <label class="" for="fromDate"><strong>Profile Validity</strong>  </label>
+              <label class="" for="fromDate"><strong>Indemnity Bond Validity</strong>  </label>
               <div>
                 <input  class="form-control" [(ngModel)]="profileValidity"  id="profileValidity" type="date"
                   name="profileValidity" placeholder="date">

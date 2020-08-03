@@ -49,7 +49,9 @@ export class UpdateRejestrationComponent implements OnInit {
       // turnover: ['', Validators.required],
       // product: ['', Validators.required],
       website: [''],
-      coReference: [''],
+      coReference: ['', Validators.required],
+      coReferenceDate:  ['' , Validators.required],
+
       password:['', Validators.pattern(PasswordPattern)],
       passwordConfirm: [''],
 
@@ -84,7 +86,8 @@ export class UpdateRejestrationComponent implements OnInit {
           // turnover: ['', Validators.required],
           // product: ['', Validators.required],
           website: [this.selectedUser.website],
-          coReference: [this.selectedUser.coReference],
+          coReference: [this.selectedUser.coReference , Validators.required],
+          coReferenceDate:  [this.selectedUser.coReferenceDate , Validators.required],
           password:['', Validators.pattern(PasswordPattern)],
           passwordConfirm: [''],
     

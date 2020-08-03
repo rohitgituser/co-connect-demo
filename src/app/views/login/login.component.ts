@@ -62,7 +62,8 @@ export class LoginComponent {
       // turnover: ['', Validators.required],
       // product: ['', Validators.required],
       website: [''],
-      coReference: [''],
+      coReference: ['', Validators.required],
+      coReferenceDate: ['', Validators.required],
       password:['', Validators.pattern(PasswordPattern)],
       passwordConfirm: [''],
 

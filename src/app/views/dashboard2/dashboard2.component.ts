@@ -110,7 +110,7 @@ export class Dashboard2Component implements OnInit {
 
     }
 
-    this.currencyArray = ['USD', 'INR', 'GBP'];
+    this.currencyArray = ['USD', 'INR', 'GBP', 'EUR'];
 
     this.payClicked = false;
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -151,8 +151,8 @@ export class Dashboard2Component implements OnInit {
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
       finalDestination: ['', Validators.required],
-      iccCooCode: ['', Validators.required],
-      iccCooCodeDate: ['', Validators.required],
+      iccCooCode: [this.currentUser["coReference"], Validators.required],
+      iccCooCodeDate: [this.currentUser["coReferenceDate"], Validators.required],
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry:[''],
@@ -193,8 +193,8 @@ export class Dashboard2Component implements OnInit {
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
       finalDestination: ['', Validators.required],
-      iccCooCode: ['', Validators.required],
-      iccCooCodeDate: ['', Validators.required],
+      iccCooCode: [this.currentUser["coReference"], Validators.required],
+      iccCooCodeDate: [this.currentUser["coReferenceDate"], Validators.required],
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry:[''],
@@ -250,8 +250,8 @@ export class Dashboard2Component implements OnInit {
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
       finalDestination: ['', Validators.required],
-      iccCooCode: ['', Validators.required],
-      iccCooCodeDate: ['', Validators.required],
+      iccCooCode: [this.currentUser["coReference"], Validators.required],
+      iccCooCodeDate: [this.currentUser["coReferenceDate"], Validators.required],
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry: [''],
@@ -293,8 +293,8 @@ export class Dashboard2Component implements OnInit {
       loadingPort: ['', Validators.required],
       dischargePort: ['', Validators.required],
       finalDestination: ['', Validators.required],
-      iccCooCode: ['', Validators.required],
-      iccCooCodeDate: ['', Validators.required],
+      iccCooCode: [this.currentUser["coReference"], Validators.required],
+      iccCooCodeDate: [this.currentUser["coReferenceDate"], Validators.required],
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry: [''],

@@ -21,11 +21,15 @@
                     </div>
                     </div>
                     <div class="col-md-4">
-                    <span> <b> ICC COO code:</b> </span> 
-                    <input type="text" formControlName="coReference" maxlength="10" class="form-control" placeholder="Co Reference Number" >
-                    
+                    <span> <b> ICC COO code* :</b> </span> 
+                    <input type="text" formControlName="coReference" maxlength="10" class="form-control" placeholder="Co Reference Number" required>
+                    <div *ngIf="rForm.coReference.invalid  && registerSubmitted" class="error_txt">
+                        <div *ngIf="rForm.coReference.errors.required">
+                        Address  is required.
+                        </div>
                     </div>
-                    <div class="col-md-12">
+                    </div>
+                    <div class="col-md-8">
                     <span> <b>Address*:</b> </span> 
                     <input type="text" formControlName="address" class="form-control" placeholder="Address" required>
                     <div *ngIf="rForm.address.invalid  && registerSubmitted" class="error_txt">
@@ -34,6 +38,15 @@
                         </div>
                     </div>
                     </div>
+                    <div class="col-md-4">
+                        <span> <b> ICC COO code Issued Date* :</b> </span> 
+                        <input type="date" formControlName="coReferenceDate" maxlength="10" class="form-control"  required>
+                        <div *ngIf="rForm.coReferenceDate.invalid  && registerSubmitted" class="error_txt">
+                            <div *ngIf="rForm.coReferenceDate.errors.required">
+                            Address  is required.
+                            </div>
+                        </div>
+                        </div>
                     <div class="col-md-4">
                     <span> <b>City*:</b> </span> 
                     <input type="text" formControlName="city" class="form-control" placeholder="City" required>

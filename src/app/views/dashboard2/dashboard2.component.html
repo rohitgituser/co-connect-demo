@@ -268,7 +268,7 @@
                       </div>
                       <div class="col-md-4" [formGroupName]="i">
                         <span>  Container No.*:  </span> 
-                        <input type="text" formControlName="containerNumber" class="form-control"  placeholder="sttw3467" >
+                        <input type="text" formControlName="containerNumber" class="form-control"  placeholder="" >
                        
                       </div>
                       <div class="col-md-3" [formGroupName]="i">
@@ -631,7 +631,7 @@
                         </div>
                         <div class="col-md-4" [formGroupName]="i">
                           <span>  Container No.*:  </span> 
-                          <input type="text" formControlName="containerNumber" class="form-control"  placeholder="sttw3467">
+                          <input type="text" formControlName="containerNumber" class="form-control"  placeholder="">
                          
                         </div>
                         <div class="col-md-3" [formGroupName]="i">
@@ -805,9 +805,9 @@
                 <div class="row" *ngFor="let doc of attachedDocuments; index as i;">
                   <div class="col-md-3 mt-1">
                     <span>  name*:  </span> 
-                    <input *ngIf="i <= 2" type="text" [(ngModel)]="doc.name" class="form-control" required disabled>
+                    <input *ngIf="i <= 1" type="text" [(ngModel)]="doc.name" class="form-control" required disabled>
 
-                    <input *ngIf="i > 2" type="text" [(ngModel)]="doc.name" class="form-control" required>
+                    <input *ngIf="i > 1" type="text" [(ngModel)]="doc.name" class="form-control" required>
                    
                   </div>
                   <div [hidden]="doc.url && doc.url != '' " class="col-md-3 mt-1" >
