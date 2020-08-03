@@ -828,8 +828,8 @@ export class Dashboard2Component implements OnInit {
       this.showError = "Please Enter LC Number or Order Number and dates associated."
       return false;
     }
-    if(values.lcNumber && (!values.lcNumberDateExpiry || !values.lcNumberDateExpiry)){
-      this.showError = "Please Enter LC Number Date and Expiry Date."
+    if(values.lcNumber && !values.lcNumberDate ){
+      this.showError = "Please Enter LC Number Issued Date."
       return false;
     }
 
@@ -914,8 +914,8 @@ export class Dashboard2Component implements OnInit {
       this.showError = "Please Enter LC Number or Order Number and dates associated."
       return false;
     }
-    if(values.lcNumber && (!values.lcNumberDateExpiry || !values.lcNumberDateExpiry)){
-      this.showError = "Please Enter LC Number Date and Expiry Date."
+    if(values.lcNumber && !values.lcNumberDate ){
+      this.showError = "Please Enter LC Number Issued Date."
       return false;
     }
 
