@@ -44,4 +44,15 @@ export class InvoiceService {
     return this.http.get(this.serverUrl + url, getHeaders('application/json'))
 
   }
+
+  getExportInvoiceUser =(companyName, startDate, endDate) =>{
+    let url = 'invoice/export/toCSV?';
+    if(companyName) {  url = url + '&companyName=' + companyName}
+    if(startDate) {  url = url + '&startDate=' + startDate}
+    if(endDate) {  url = url + '&endDate=' + endDate}
+
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+
+  }
 }
+

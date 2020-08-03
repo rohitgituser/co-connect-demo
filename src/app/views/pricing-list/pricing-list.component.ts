@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MastersService } from '../../services/masters.service';
 import { paginationMaxSize } from '../../utilities/common'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pricing-list',
@@ -15,8 +16,10 @@ export class PricingListComponent implements OnInit {
   pagination: object;
   searchText: string;
   maxSize: number = paginationMaxSize;
-
-  constructor(private mastersService: MastersService) { }
+  nonMembersCont: string = '';
+  membersCont: string = '';
+  showError:  string = '';
+  constructor(private mastersService: MastersService, private toastr: ToastrService ) { }
 
   ngOnInit(): void {
     this.pagination = {
@@ -59,13 +62,36 @@ export class PricingListComponent implements OnInit {
   }
 
   editCostClicked(cost){
-    this.currentCost == cost;
+    console.log('editCostClicked', cost);
+    this.currentCost = cost;
   }
 
   pageChanged(event: any): void {
     if (event && !isNaN(event) && event != this.pagination['currentPage']) {
     this.getPriceList(this.searchText, event)
     }
+  }
+
+  clearModel(){
+    this.currentCost = {};
+  }
+
+  savePricing(pricing){
+    this.showError = '';
+    console.log('pricing', pricing);
+
+    if(!pricing.costForMember || !pricing.costForNonMember){
+      this.showError = "Both Values are required."
+    }
+    this.mastersService.updatePricing(pricing).subscribe(data => {
+      if(data['status'] == "success"){
+
+        this.toastr.success('', "Pricing updated successfully.");
+        document.getElementById("editPricingModelCLoseButton").click();
+        this.getPriceList('', '1')
+
+      }
+    });
   }
 
 

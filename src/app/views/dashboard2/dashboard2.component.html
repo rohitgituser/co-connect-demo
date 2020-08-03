@@ -825,8 +825,6 @@
                     <span style="margin-top: 2em !important;" (click)="doc.url= ''" title="Click to Remove">{{doc.name + '.pdf'}}</span>
 
                   </div>
-                  
-
                   <div [hidden]="!doc.name" class="col-md-4 mt-4">
                     Attest {{doc.name}} ?  <input type="checkbox"[(ngModel)]="doc.isEndorseRequired" > 
                   </div>

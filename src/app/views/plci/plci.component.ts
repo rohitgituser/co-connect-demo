@@ -277,7 +277,7 @@ signDocHandel(i, doc){
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
     uniqueId = uniqueId + '|' + doc.name;
-    console.log('uniqueId', uniqueId);
+    // console.log('uniqueId', uniqueId);
     let body =  '<request>'+
         '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
         "<certificate>"+

@@ -109,6 +109,15 @@ export class MastersService {
 
   }
 
+  updatePricing=(cost) => {
+
+    let url = 'masters/costs/' + cost._id;
+  
+    return this.http.post(this.serverUrl + url , cost,  getHeaders('application/json'))
+
+  }
+
+
   getAllPricing = () => {
     let url = 'masters/costs/allcosts';
 
