@@ -18,10 +18,10 @@ export class ConstantService {
 
 
     //Demo Server
-    this.serverUrl = 'http://13.232.45.144:4000/api/v1/';
-    this.loginUrl = 'http://13.232.45.144:4000/api/v1/auth';
-    this.authUrl = 'http://13.232.45.144:4000/api/v1/auth';
-    this.logoutUrl = 'http://13.232.45.144:4000/api/v1/auth/logout';
+    this.serverUrl = 'http://api.dcciapune.com/api/v1/';
+    this.loginUrl = 'http://api.dcciapune.com/api/v1/auth';
+    this.authUrl = 'http://api.dcciapune.com/api/v1/auth';
+    this.logoutUrl = 'http://api.dcciapune.com/api/v1/auth/logout';
    }
 
    getUrl(){
