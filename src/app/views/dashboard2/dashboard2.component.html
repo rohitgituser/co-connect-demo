@@ -1,4 +1,7 @@
 <div class="animated fadeIn">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
   <div class="modal fade" #payModal id="payModal" aria-hidden="true"   data-keyboard="false"data-backdrop="static">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -978,7 +981,7 @@
                   <span [hidden]="currentCertificate && currentCertificate['rejectionReason']">
                     <div *ngIf="!payClicked" class="col-md-12 mt-3">
                       <button *ngIf="isWalletPayActive()" type="button" (click)="payCredit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary ml-2" style="float: right;"  >Pay From Wallet</button>
-                      <button type="button" (click)="payNow(currentCertificate)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
+                      <button type="button" (click)="payNowRazor(currentCertificate, $event)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
                       <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
                     </div>
                 </span> 

@@ -136,4 +136,12 @@ export class CertificateService {
 
   }
 
+  purchaseRazorPay = (data) => {
+    return this.http.post(this.serverUrl + 'payment/purchaseRazorPay' , data, getHeaders('application/json'))
+  }
+
+  signatureRazorPay= (data) => {
+    return this.http.post(this.serverUrl + 'payment/signatureRazorPay' , data, getHeaders('application/json'))
+  }
+
 }

@@ -62,7 +62,7 @@ export class PricingListComponent implements OnInit {
   }
 
   editCostClicked(cost){
-    console.log('editCostClicked', cost);
+    
     this.currentCost = cost;
   }
 

@@ -19,6 +19,8 @@ import { WalletService } from '../../services/wallet.service';
 import { DatePipe } from '@angular/common';
 
 
+declare var Razorpay: any; 
+
 @Component({
   selector: 'app-dashboard2',
   templateUrl: './dashboard2.component.html',
@@ -82,6 +84,11 @@ export class Dashboard2Component implements OnInit {
   notIssuedCertificate: Boolean = false;
   coRefCertInvalid: Boolean = false;
   uploadDocClicked: Boolean =false;
+
+  rzp1:any;
+  razorPayOptions: any;
+  payment_creation_id=null;
+
   constructor( private generalServiceService : GeneralServiceService, 
     private formBuilder: FormBuilder,
     private certificateService: CertificateService,
@@ -90,14 +97,12 @@ export class Dashboard2Component implements OnInit {
     private loadingService: LoadingScreenService,
     public sanitizer: DomSanitizer,
     private walletService: WalletService,
-
     ) { 
     
   }
 
   
   ngOnInit(): void {
-    
     this.payment = {
       "merchantid": 0,
       "mandatory fields": 0,
@@ -109,7 +114,22 @@ export class Dashboard2Component implements OnInit {
       "paymode": 9,
 
     }
-
+    this.razorPayOptions = {
+      "key": '', 
+      "amount": '', 
+      "currency": "INR",
+      "name": "",
+      "description": "Co Request Payment",
+      "order_id":"",
+      "image": "",
+      "handler": function (response) {
+      },
+      "notes": {
+      },
+      "theme": {
+          "color": "#8bf7a8"
+      },
+  };
     this.currencyArray = ['USD', 'INR', 'GBP', 'EUR'];
 
     this.payClicked = false;
@@ -1587,6 +1607,68 @@ export class Dashboard2Component implements OnInit {
 
 
   }
+
+  payNowRazor(cert, e):void { 
+    e.preventDefault();
+    let finalObject = {
+      "certificateId": cert._id,
+      "coReferenceNumber": cert.coReferenceNumber,
+      "amount": Number(this.currentInvoice.totalAmount),
+      "userName": this.currentUser['contactPersonName'],
+      "userEmail": this.currentUser['email'],
+     
+    }
+    this.certificateService.purchaseRazorPay(finalObject).subscribe(response => {
+      let payload = response['payload'];
+
+      if (payload["key"] && payload["dbRes"]["order"]["id"] && payload["dbRes"]["order"]["amount"]) {
+        this.razorPayOptions.key = payload["key"];
+        this.razorPayOptions.order_id = payload["dbRes"]["order"]["id"];
+        this.razorPayOptions.amount =  payload["dbRes"]["order"]["amount"];
+        this.razorPayOptions.handler =  this.razorPayResponseHandler;
+        this.payment_creation_id = payload["dbRes"]["_id"];
+        finalObject["_id"] =payload["dbRes"]["_id"]
+        sessionStorage.setItem("temp",JSON.stringify(finalObject))
+
+  
+      var rzp1 = new Razorpay(this.razorPayOptions);
+      rzp1.open();
+      } else {
+        // bro show error here
+      }
+    }, (error) => {
+      console.log("error", error);
+    });
+   
+ }
+
+ razorPayResponseHandler = (response) => {
+  let storage_data =sessionStorage.getItem('temp') 
+  let sess =  JSON.parse(storage_data);
+  let paymentObject= {
+    _id:sess._id,
+    payment:response,
+    razorpay_order_id: response['razorpay_order_id'],
+    razorpay_payment_id: response['razorpay_payment_id'],
+    razorpay_signature: response['razorpay_signature'],
+    certificateId:sess.certificateId,
+    amount: sess.amount,
+    userEmail:sess.userEmail,
+    userName:sess.userName,
+  }
+
+  this.certificateService.signatureRazorPay(paymentObject).subscribe(response => {
+
+    if(response['status'] == 'success'){
+      this.toastr.success('', 'Payment Successful');
+      document.getElementById("closeCreateCoModelCloseButton").click();
+      this.getCertificated(this.searchText, this.fromDate, this.toDate, event, this.page1)
+    }
+  }, (error) => {
+    console.log("error", error);
+  });
+ }
+
   downloadClicked = (certificate) => {
     this.currentCertificate = certificate
   }
