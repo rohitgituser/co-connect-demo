@@ -74,6 +74,51 @@
       </div>
     </div>
   </div>
+  <div class="modal" #CreditUserModel id="CreditUserModel">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">Credit</h4>
+          <button type="button" id="closeCreditUsersModelButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form [formGroup]="creditUserForm" (ngSubmit)="onCreditUserSubmit()" autocomplete="off">
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <span>  Description*:  </span> 
+                    <input type="text" formControlName="description" class="form-control" >
+                    <div *ngIf="cUserForm.description.invalid  &&  creditUserSubmitted" class="error_txt">
+                      <div *ngIf="cUserForm.description.errors.required">
+                        This field is required.
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <span>  Amount <i class="fa fa-inr" aria-hidden="true"></i>*:  </span> 
+                    <input type="text" formControlName="amount" class="form-control" >
+                    <div *ngIf="cUserForm.amount.invalid  &&  creditUserSubmitted" class="error_txt">
+                      <div *ngIf="cUserForm.amount.errors.required">
+                        This field is required.
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-1 mr-1" [hidden]="!showError" class="error_txt text-center">
+                     <span class="text-center">{{showError}}</span>
+                </div>
+              <div class="col-md-12 mt-3 text-center">
+                <button  type="submit" style="float: right; font-weight: 600;" class="btn btn-success"> Submit </button>
+              </div>
+            </div>
+          </div>
+          </form>
+      </div>
+    </div>
+  </div>
         <div class="card width_100">
             <div class="card-header page_heading" >
                 Wallet History
@@ -94,6 +139,13 @@
                       class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
                   </div>
               </div>
+              <div *rbacShow="['user']"  class="row col-md-12">
+                <div class="col-md-6 col-sm-4"></div>
+                <div  class="col-md-6 col-sm-8">
+                    <button   data-toggle="modal" data-target="#CreditUserModel" type="button"
+                    class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
+                </div>
+            </div>
                 <div class="row col-md-12">
                     <!-- <div class="col-md-3 col-sm-6"></div> -->
                     <div class="col-md-3 col-sm-6" style="max-width:100%;">

@@ -46,6 +46,14 @@ export class WalletService {
     return this.http.post(this.serverUrl + 'wallet/useCredit' , body, getHeaders('application/json'))
   }
 
+  purchaseRazorPay = (data) => {
+    return this.http.post(this.serverUrl + 'payment/purchaseRazorPayWallet' , data, getHeaders('application/json'))
+  }
+
+  signatureRazorPay= (data) => {
+    return this.http.post(this.serverUrl + 'payment/signatureRazorPayWallet' , data, getHeaders('application/json'))
+  }
+
   
 
 }
