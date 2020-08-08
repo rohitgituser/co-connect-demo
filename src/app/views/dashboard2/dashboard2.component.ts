@@ -17,6 +17,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { IfStmt } from '@angular/compiler';
 import { WalletService } from '../../services/wallet.service';
 import { DatePipe } from '@angular/common';
+import { ExternalLibraryService } from '../util';
 
 
 declare var Razorpay: any; 
@@ -97,6 +98,7 @@ export class Dashboard2Component implements OnInit {
     private loadingService: LoadingScreenService,
     public sanitizer: DomSanitizer,
     private walletService: WalletService,
+    private razorpayService: ExternalLibraryService
     ) { 
     
   }
@@ -114,6 +116,9 @@ export class Dashboard2Component implements OnInit {
       "paymode": 9,
 
     }
+    this.razorpayService
+    .lazyLoadLibrary('https://checkout.razorpay.com/v1/checkout.js')
+    .subscribe();
     this.razorPayOptions = {
       "key": '', 
       "amount": '', 
@@ -792,8 +797,8 @@ export class Dashboard2Component implements OnInit {
 
             invoiceNumber: [oldCert.invoiceNumber, Validators.required],
             invoiceNumberDate: [oldCert.invoiceNumberDate, Validators.required],
-            orderNumber: [oldCert.orderNumber, Validators.required],
-            orderNumberDate: [oldCert.orderNumberDate, Validators.required],
+            orderNumber: [oldCert.orderNumber],
+            orderNumberDate: [oldCert.orderNumberDate],
             netWeight: [oldCert.netWeight, Validators.required],
             grossWeight: [oldCert.grossWeight, Validators.required],
             totalValue: [oldCert.totalValue, Validators.required],
@@ -837,6 +842,7 @@ export class Dashboard2Component implements OnInit {
       return;
     }
     if(this.coAmmendmentRequestFormGroup.invalid){
+      console.log(this.coAmmendmentRequestFormGroup);
       return false;
     }
     let values = this.coAmmendmentRequestFormGroup.value;

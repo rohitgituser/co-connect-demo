@@ -271,7 +271,7 @@ saveFileDocument =  (formData, id) => {
     });
 }
 
-signDocHandel(i, doc){
+signDocHandel(i, doc, documentLength){
   this.certificateService.getBase64Format(doc.url).subscribe(res =>{
     doc.base = res['data'];
     let today = new Date()
@@ -305,8 +305,10 @@ signDocHandel(i, doc){
       this.certificateService.sendXMLToSign(body).subscribe(res=>{
 
       // convert xml to Json and send
+      console.log(res);
       let result1 = converter.xml2json(res, {compact: true, spaces: 2});
-      const JSONData = JSON.parse(result1);
+      if(result1){
+        const JSONData = JSON.parse(result1);
         this.certificateService.uploadXMLSignedDocument(JSONData).subscribe(data=>{
 
           console.log('data', data);
@@ -314,14 +316,34 @@ signDocHandel(i, doc){
               this.getCertificateById(this.certificateId)  
           }
 
+          console.log(i == documentLength);
+          if(i == documentLength){
+            setTimeout(()=> {
+              console.log('this.user', this.user);
+              this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
+              this.currentCertificate['issuedById'] = this.user['_id'];
+
+              this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
+  
+                this.getCertificateById(this.currentCertificate['_id']);
+                document.getElementById("acceptModelCloseButton").click();
+  
+              });
+            }, i* 500);
+          }
+
         },
         error => {
           this.toastr.error('',error.message);
         });
-    
-     
+      }else{
+        console.log('result1', result1)
+      }
 
-    })
+    }, (error) => {
+      console.log("error", error);
+      this.toastr.error("", "Signing Tool Not Connected. ")
+    });
   });
 
 }
@@ -354,22 +376,22 @@ signDocHandel(i, doc){
             document.getElementById('acceptModelCloseButton').click();
             this.toastr.success('', "Signing Request sent successfully");
           }
-          await this.signDocHandel(i, doc)
-          console.log(i == documentsToSign.length-1);
-          if(i == documentsToSign.length-1){
-            setTimeout(()=> {
-              console.log('this.user', this.user);
-              this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
-              this.currentCertificate['issuedById'] = this.user['_id'];
+           await this.signDocHandel(i, doc, documentsToSign.length)
+          // console.log(i == documentsToSign.length-1);
+          // if(i == documentsToSign.length-1){
+          //   setTimeout(()=> {
+          //     console.log('this.user', this.user);
+          //     this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
+          //     this.currentCertificate['issuedById'] = this.user['_id'];
 
-              this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
+          //     this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
   
-                this.getCertificateById(this.currentCertificate['_id']);
-                document.getElementById("acceptModelCloseButton").click();
+          //       this.getCertificateById(this.currentCertificate['_id']);
+          //       document.getElementById("acceptModelCloseButton").click();
   
-              });
-            }, i* 500);
-          }
+          //     });
+          //   }, i* 500);
+          // }
          
         })
       }
