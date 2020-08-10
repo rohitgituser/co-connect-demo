@@ -842,7 +842,6 @@ export class Dashboard2Component implements OnInit {
       return;
     }
     if(this.coAmmendmentRequestFormGroup.invalid){
-      console.log(this.coAmmendmentRequestFormGroup);
       return false;
     }
     let values = this.coAmmendmentRequestFormGroup.value;
@@ -1334,6 +1333,8 @@ export class Dashboard2Component implements OnInit {
           totalQuantity: 0,
           totalAmount: 0,
           totalAmountWords: '',
+          totalAmountWithoutTax: 0,
+
           totalTaxAmount: 0,
           taxAmount: 0,
           totalTaxableValue: 0,
@@ -1351,25 +1352,104 @@ export class Dashboard2Component implements OnInit {
             hsnOrSAC: '998399',
             quantity: 1,
             rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-            amount: this.fixDecimal(isInterState? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
+            amount: pricingCost,
           });
 
           invoice.totalAmount = this.fixDecimal( invoice.totalAmount + pricingCost); // Added total cost to 
+          invoice.totalAmountWithoutTax =  pricingCost;
+
           invoice.totalQuantity = invoice.totalQuantity + 1;
-          invoice.remark = 'C.O Fees'
+          invoice.remark = 'C.O Fees';
+          if(isInterState){
+            // only push one Tax type IGST
+            if(_.isEmpty(invoice.taxDetails[0])){
+              invoice.taxDetails.push({
+                hsnOrSAC: '998399',
+                description: "IGST",
+                taxableValue:  pricingCost,
+                taxRate:  this.companyConfig['igstRate'] + '%' ,
+                taxAmount: this.fixDecimal(  this.getIGSTRate(pricingCost)),
+                totalTaxAmount: this.fixDecimal( this.getIGSTRate(pricingCost))
+              })
 
-          invoice.taxDetails.push({
-            hsnOrSAC: '998399',
-            taxableValue:this.fixDecimal( isInterState ? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
-            taxRate: isInterState ?  this.companyConfig['igstRate'] + '%' :  parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%',
-            taxAmount:this.fixDecimal( isInterState ?  this.getIGSTRate(pricingCost) :   this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-            totalTaxAmount: this.fixDecimal( isInterState ?  this.getIGSTRate(pricingCost): ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost))))
-          })
+              let taxNow =  (this.getIGSTRate(pricingCost));
 
-          let taxNow = isInterState ?  (this.getIGSTRate(pricingCost)):  ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)) );
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+              // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
 
-          invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
-          
+            }else{
+              invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? parseFloat(invoice.taxDetails[0].taxableValue) + pricingCost : pricingCost;
+              invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
+              invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
+
+              let taxNow =  (this.getIGSTRate(pricingCost));
+
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+            
+            }
+            
+           
+          }else{
+            parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%';
+            if(_.isEmpty(invoice.taxDetails[0])){
+              invoice.taxDetails.push({
+                hsnOrSAC: '998399',
+                description: "CGST",
+                taxableValue:  pricingCost,
+                taxRate:  this.companyConfig['cgstRate'] + '%', 
+                taxAmount:this.fixDecimal( this.getCGSTRate(pricingCost) ),
+                totalTaxAmount: this.fixDecimal( this.getCGSTRate(pricingCost)) ,
+              })
+
+              let taxNow =  (this.getCGSTRate(pricingCost));
+
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+            
+            }else{
+              invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + pricingCost : pricingCost;
+              invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
+              invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+            
+              let taxNow =  (this.getCGSTRate(pricingCost));
+
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+            
+            }
+            if(_.isEmpty(invoice.taxDetails[1])){
+              invoice.taxDetails.push({
+                hsnOrSAC: '998399',
+                description: "SGST",
+                taxableValue: pricingCost,
+                taxRate:  this.companyConfig['sgstRate'] + '%' ,
+                taxAmount:this.fixDecimal( this.getSGSTtRate(pricingCost)),
+                totalTaxAmount: this.fixDecimal(  this.getSGSTtRate(pricingCost))
+              })
+
+              let taxNow =  (this.getSGSTtRate(pricingCost));
+
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              // invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+            
+            }else{
+              invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? parseInt(invoice.taxDetails[0].taxableValue) +  pricingCost : pricingCost;
+              invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getSGSTtRate(pricingCost) ),
+              invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getSGSTtRate(pricingCost))))
+
+              let taxNow =  (this.getSGSTtRate(pricingCost));
+
+              invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+              // invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+            }
+
+            
+          }
+         
+
+         
         }
           _.forEach(this.currentCertificate.attachedDocuments, (doc)  => {
 
@@ -1382,19 +1462,113 @@ export class Dashboard2Component implements OnInit {
                 hsnOrSAC: '',
                 quantity: 1,
                 rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-                amount:this.fixDecimal( isInterState? parseFloat(pricingCost) - this.getIGSTRate(pricingCost): parseFloat(pricingCost) - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
+                amount: pricingCost,
               }); 
-              invoice.totalAmount = invoice.totalAmount + parseFloat(pricingCost); // Added total cost to 
+              invoice.totalAmount = invoice.totalAmount + pricingCost +  parseFloat(pricingCost); // Added total cost to 
               invoice.totalQuantity = invoice.totalQuantity + 1;
               invoice.remark = invoice.remark == ''?  doc.name + ' Certification FEES':  invoice.remark + ', ' + doc.name + ' Certification FEES';
+              invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax +  parseInt(pricingCost) ;
 
-              invoice.taxDetails.push({
-                hsnOrSAC: '998399',
-                taxableValue: this.fixDecimal(isInterState ? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
-                taxRate: isInterState ?  this.companyConfig['igstRate'] + '%' :  parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%',
-                taxAmount: this.fixDecimal(isInterState ?  this.getIGSTRate(pricingCost) :   this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-                totalTaxAmount: this.fixDecimal( isInterState ?  this.getIGSTRate(pricingCost): ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost))))
-              })
+              // invoice.taxDetails.push({
+              //   hsnOrSAC: '998399',
+                
+              //   taxableValue: this.fixDecimal(isInterState ? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
+              //   taxRate: isInterState ?  this.companyConfig['igstRate'] + '%' :  parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%',
+              //   taxAmount: this.fixDecimal(isInterState ?  this.getIGSTRate(pricingCost) :   this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
+              //   totalTaxAmount: this.fixDecimal( isInterState ?  this.getIGSTRate(pricingCost): ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost))))
+              // })
+
+              if(isInterState){
+                // only push one Tax type IGST
+                if(_.isEmpty(invoice.taxDetails[0])){
+                  invoice.taxDetails.push({
+                    hsnOrSAC: '998399',
+                    description: "IGST",
+                    taxableValue:  pricingCost,
+                    taxRate:  this.companyConfig['igstRate'] + '%' ,
+                    taxAmount: this.fixDecimal(  this.getIGSTRate(pricingCost)),
+                    totalTaxAmount: this.fixDecimal( this.getIGSTRate(pricingCost))
+                  })
+    
+                  let taxNow =  (this.getIGSTRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  // invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                  // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
+
+                }else{
+                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
+                  invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
+    
+                  let taxNow =  (this.getIGSTRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                  // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
+
+                }
+                
+               
+              }else{
+                parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%';
+                if(_.isEmpty(invoice.taxDetails[0])){
+                  invoice.taxDetails.push({
+                    hsnOrSAC: '998399',
+                    description: "CGST",
+                    taxableValue:  pricingCost,
+                    taxRate:  this.companyConfig['cgstRate'] + '%', 
+                    taxAmount:this.fixDecimal( this.getCGSTRate(pricingCost) ),
+                    totalTaxAmount: this.fixDecimal( this.getCGSTRate(pricingCost)) ,
+                  })
+    
+                  let taxNow =  (this.getCGSTRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                  // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
+
+                }else{
+                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
+                  invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+                
+                  let taxNow =  (this.getCGSTRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                  // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
+
+                }
+                if(_.isEmpty(invoice.taxDetails[1])){
+                  invoice.taxDetails.push({
+                    hsnOrSAC: '998399',
+                    description: "SGST",
+                    taxableValue: pricingCost,
+                    taxRate:  this.companyConfig['sgstRate'] + '%' ,
+                    taxAmount:this.fixDecimal( this.getSGSTtRate(pricingCost)),
+                    totalTaxAmount: this.fixDecimal(  this.getSGSTtRate(pricingCost))
+                  })
+    
+                  let taxNow =  (this.getSGSTtRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                  // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
+
+                }else{
+                  invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getSGSTtRate(pricingCost) ),
+                  invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getSGSTtRate(pricingCost))))
+    
+                  let taxNow =  (this.getSGSTtRate(pricingCost));
+    
+                  invoice.totalTaxAmount = this.fixDecimal(invoice.totalTaxAmount + taxNow);
+                  invoice.totalAmount =  this.fixDecimal( invoice.totalAmount + invoice.totalTaxAmount);
+                }
+    
+                
+              }
     
               let taxNow = isInterState ?  (this.getIGSTRate(pricingCost)):  ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)) );
     
@@ -1413,25 +1587,79 @@ export class Dashboard2Component implements OnInit {
               hsnOrSAC: '',
               quantity: 1,
               rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost) ),
-              amount: this.fixDecimal(isInterState? parseFloat(pricingCost) - this.getIGSTRate(pricingCost): parseFloat(pricingCost) - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost))),
+              amount:  parseFloat(pricingCost) ,
             });
   
             invoice.totalAmount = invoice.totalAmount + parseFloat(pricingCost); // Added total cost to 
+            invoice.totalAmountWithoutTax = invoice.totalAmountWithoutTax + pricingCost;
             invoice.totalQuantity = invoice.totalQuantity + 1;
 
             invoice.remark = invoice.remark == ''?  ' Ammendments Fees': invoice.remark +', Ammendments Fees';
 
-            invoice.taxDetails.push({
-              hsnOrSAC: '998399',
-              taxableValue: isInterState ? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-              taxRate: isInterState ?  this.companyConfig['igstRate'] + '%' :  parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%',
-              taxAmount: isInterState ?  this.getIGSTRate(pricingCost) :   this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost),
-              totalTaxAmount:  isInterState ?  this.getIGSTRate(pricingCost): ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)))
-            })
-  
-            let taxNow = isInterState ?  (this.getIGSTRate(pricingCost)):  ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)) );
-  
-            invoice.totalTaxAmount = invoice.totalTaxAmount + taxNow;
+            // invoice.taxDetails.push({
+            //   hsnOrSAC: '998399',
+            //   description: isInterState ?  "IGST" :  "CGST",
+            //   taxableValue: isInterState ? pricingCost - this.getIGSTRate(pricingCost): pricingCost - (this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
+            //   taxRate: isInterState ?  this.companyConfig['igstRate'] + '%' :  parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%',
+            //   taxAmount: isInterState ?  this.getIGSTRate(pricingCost) :   this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost),
+            //   totalTaxAmount:  isInterState ?  this.getIGSTRate(pricingCost): ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)))
+            // })
+            if(isInterState){
+              // only push one Tax type IGST
+              if(_.isEmpty(invoice.taxDetails[0])){
+                invoice.taxDetails.push({
+                  hsnOrSAC: '998399',
+                  description: "IGST",
+                  taxableValue:  pricingCost,
+                  taxRate:  this.companyConfig['igstRate'] + '%' ,
+                  taxAmount: this.fixDecimal(  this.getIGSTRate(pricingCost)),
+                  totalTaxAmount: this.fixDecimal( this.getIGSTRate(pricingCost))
+                })
+              }else{
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
+                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
+              }
+             
+            }else{
+              parseFloat( (this.companyConfig['cgstRate']) + (this.companyConfig['sgstRate']) )  + '%';
+              if(_.isEmpty(invoice.taxDetails[0])){
+                invoice.taxDetails.push({
+                  hsnOrSAC: '998399',
+                  description: "CGST",
+                  taxableValue:  pricingCost,
+                  taxRate:  this.companyConfig['cgstRate'] + '%', 
+                  taxAmount:this.fixDecimal( this.getCGSTRate(pricingCost) ),
+                  totalTaxAmount: this.fixDecimal( this.getCGSTRate(pricingCost)) ,
+                })
+              }else{
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
+                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+              
+              }
+              if(_.isEmpty(invoice.taxDetails[1])){
+                invoice.taxDetails.push({
+                  hsnOrSAC: '998399',
+                  description: "SGST",
+                  taxableValue: pricingCost,
+                  taxRate:  this.companyConfig['sgstRate'] + '%' ,
+                  taxAmount:this.fixDecimal( this.getSGSTtRate(pricingCost)),
+                  totalTaxAmount: this.fixDecimal(  this.getSGSTtRate(pricingCost))
+                })
+              }else{
+                
+                invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[1].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getCGSTRate(pricingCost) ),
+                invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+
+              }
+            }
+            
+            // let taxNow = isInterState ?  (this.getIGSTRate(pricingCost)):  ( (this.getCGSTRate(pricingCost)) + (this.getSGSTtRate(pricingCost)) );
+            // let description = isInterState ?  "IGST" : 
+            // invoice.totalTaxAmount = invoice.totalTaxAmount + taxNow;
+            
             
             
           }
@@ -1440,7 +1668,7 @@ export class Dashboard2Component implements OnInit {
               description: "IGST",
               hsnOrSAC: '',
               quantity: '',
-              amount:  this.fixDecimal( this.getIGSTRate(invoice.totalAmount)),
+              amount:  this.fixDecimal( this.getIGSTRate(invoice.totalAmountWithoutTax)),
 
             });
 
@@ -1449,7 +1677,7 @@ export class Dashboard2Component implements OnInit {
               description: "CGST",
               hsnOrSAC: '',
               quantity: '',
-              amount:  this.fixDecimal( this.getCGSTRate(invoice.totalAmount)),
+              amount:  this.fixDecimal( this.getCGSTRate(invoice.totalAmountWithoutTax)),
 
             });
 
@@ -1457,12 +1685,19 @@ export class Dashboard2Component implements OnInit {
               description: "SGST",
               hsnOrSAC: '',
               quantity: '',
-              amount:   this.fixDecimal(this.getSGSTtRate(invoice.totalAmount)),
+              amount:   this.fixDecimal(this.getSGSTtRate(invoice.totalAmountWithoutTax)),
 
             });
 
           }
 
+          let totalTaxNow = 0 
+           _.forEach(invoice.taxDetails, tax => {
+            totalTaxNow = totalTaxNow + parseFloat(tax.taxAmount);
+          })
+         
+          invoice.totalAmount = 0;
+          invoice.totalAmount = invoice.totalAmountWithoutTax +  this.fixDecimal(totalTaxNow)
 
           this.certificateService.createInvoice(invoice).subscribe(data => {
             // this.loadingService.hide();
