@@ -305,8 +305,11 @@ digitallySignDoc(event, index){
 issueCO(){
   let signedDocument = this.currentCertificate['signedDocument'];
   let isAllSigned = false;
-  let notSigned = _.find(signedDocument, doc => { return !doc.isSigned});
-
+  let notSigned = []
+  _.forEach(signedDocument, doc => { 
+    if(!doc.isSigned) { notSigned.push(doc); } 
+  });
+  console.log('notSigned', notSigned);
   if( notSigned && notSigned.length > 0){
     this.showError ="All Documents not Signed";
     return false;
