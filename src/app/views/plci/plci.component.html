@@ -73,7 +73,7 @@
     </div>
   </div>
   <div class="modal" #acceptModal id="acceptModal">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
         <!-- Modal Header -->
@@ -89,13 +89,13 @@
             Please upload/digitally sign documents to proceed.
           </div>
           <div class="row" *ngFor="let doc of acceptDocuments; index as i;">
-            <div class="col-md-6 mt-1">
+            <div class="col-md-4 mt-1">
               <span>  Name:  </span> <br>
               {{doc.name}}
               <!-- <input type="text" [(ngModel)]="doc.name" class="form-control" required> -->
              
             </div>
-            <div [hidden]="doc.url && doc.url != '' " class="col-md-6 mt-1" >
+            <div [hidden]="doc.url && doc.url != '' " class="col-md-4 mt-1" >
               <span [hidden]=" doc.file && doc.file != '' ">
               <input id="{{'certificateDocInput-'+i}}" hidden type="file" name="fileInput" accept=".pdf,.doc"
                   (change)="onFileChosen($event, doc, i)">
@@ -103,6 +103,14 @@
               </span>
               <span (click)="doc.file= ''" [hidden]="doc.file == '' " title="Click to Remove">{{doc.file && doc.file.name}}</span>
 
+
+            </div>
+            <div [hidden]="doc.url && doc.url != '' " class="col-md-1 mt-1" >
+              <strong>OR</strong>
+            </div>
+            <div [hidden]="doc.url && doc.url != '' " class="col-md-3 mt-1" >
+              
+              <button type="button" class="btn btn-dark" (click)="digitallySignDoc($event, i)">Digitally Sign &nbsp;&nbsp;</button>
 
             </div>
             <div [hidden]="!doc.url || doc.url == '' " class="col-md-6 mt-4" >
@@ -119,12 +127,8 @@
 
         </div>
         <div  class="modal-footer">
-          <button  type="button" (click)="digitalSigningDoc()" style="float: right; font-weight: 600;" class="btn btn-success"> Digitally Sign & Issue </button>
-          <span>
-            &nbsp; <strong>OR</strong>  &nbsp;
-          </span>
-          <button  type="button" (click)="checkAndSaveDocs();" style="float: right; font-weight: 600;" class="btn btn-success"> Upload & Issue </button>
-
+          <button  type="button" (click)="issueCO()" style="float: right; font-weight: 600;" class="btn btn-success"> Issue </button>
+         
           <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
         </div>
       </div>

@@ -69,16 +69,30 @@ export class PlciComponent implements OnInit {
       // _.forEach(this.currentCertificate['attachedDocuments'], (doc) => {
       //     doc.url = doc.url +  "&output=embed";
       // })
+      this.acceptDocuments = [];
       if(this.currentCertificate['isCOEndorseRequired']){
+        let signedStatus = _.find(this.currentCertificate['signedDocument'] , doc=> {
+          return doc.name == 'CO';
+        })
         this.acceptDocuments.push({
           name: "Certificate Of Origin",
+          oldUrl: this.currentCertificate['coUrl'],
+          url: signedStatus && signedStatus.isSigned ? this.currentCertificate['coUrl'] : ''
         })
       }
 
       _.forEach(this.currentCertificate['attachedDocuments'], (doc) => {
+        let signedStatus = _.find(this.currentCertificate['signedDocument'] , sign=> {
+          
+          return doc.name.toLowerCase() == sign.name.toLowerCase();
+        })
+
         if(doc.isEndorseRequired){
           this.acceptDocuments.push({
             name: doc['name'].toUpperCase(),
+            oldUrl: doc['url'],
+            url: signedStatus && signedStatus.isSigned ? doc['url'] : ''
+
           });
         }
       })
@@ -167,6 +181,7 @@ onFileChosen(event, doc, i): void {
     doc.file = file;
     reader.readAsDataURL(file)
 
+    this.uploadSignedDocument(doc, i)
     reader.onload = () => {
       //this.createEventForm.controls['eventImage'].setValue(file)
       doc.preview = reader.result
@@ -176,11 +191,49 @@ onFileChosen(event, doc, i): void {
   }
 }
 
+uploadSignedDocument = (doc, i) => {
+  doc.certificateID = this.currentCertificate['_id'];
+              const formData = new FormData()
+    //formData.append('file', this.eventImageFile)
+      formData.append('file', doc.file)
+      formData.append('name', doc.name)
+      formData.append('isEndorseRequired', doc.isEndorseRequired)
+      formData.append('certificateID', this.currentCertificate['_id'])
+      
+      setTimeout(() => { 
+        if(doc.name == 'Certificate Of Origin'){
+          this.generateCO(formData, this.currentCertificate['_id']);
+
+          this.updateSignedDocumentStatus('CO');
+        }else{
+          this.saveFileDocument(formData, this.currentCertificate['_id']);
+          this.updateSignedDocumentStatus(doc.name);
+
+        }
+      }, 200)
+
+}
+
 clearModel(){
   this.acceptDocuments = [];
   this.getCertificateById(this.certificateId);
 
 
+}
+
+updateSignedDocumentStatus(name){
+let signedDocument = this.currentCertificate['signedDocument'];
+_.forEach(signedDocument, doc => {
+  if(doc.name.toLowerCase() == name.toLowerCase()){
+    doc.isSigned = true;
+  }
+})
+
+  this.certificateService.updateSigningStatus({certificateId: this.currentCertificate['_id'], signedDocument: signedDocument}).subscribe(response => {
+    if(response['status'] == "success"){
+      this.getCertificateById(this.currentCertificate['_id']);
+    }
+  })
 }
 onDocUploadClicked(event, index): void {
   event.preventDefault()
@@ -189,6 +242,85 @@ onDocUploadClicked(event, index): void {
 
 }
 
+digitallySignDoc(event, index){
+  let doc = this.acceptDocuments[index];
+  this.certificateService.getBase64Format(doc.oldUrl).subscribe(res =>{
+    doc.base = res['data'];
+    let today = new Date()
+    let uniqueId = this.currentCertificate['_id'];
+    uniqueId = uniqueId + '|' + doc.name;
+    let body =  '<request>'+
+        '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
+        "<certificate>"+
+          " <attribute name='CN'></attribute>"+
+          " <attribute name='O'></attribute>"+
+          "<attribute name='OU'></attribute>"+
+          "<attribute name='T'></attribute>"+
+          "<attribute name='E'></attribute>"+
+          "<attribute name='SN'>‎‎</attribute>"+
+          "<attribute name='CA'></attribute>"+
+          "<attribute name='TC'>SG</attribute>"+
+          "<attribute name='AP'>1</attribute>"+
+          "</certificate>"+
+          "<file>"+
+            "<attribute name='type'>pdf</attribute>"+
+          "</file>"+
+          "<pdf>"+
+          "<page>1</page>"+
+          "<cood>10,10</cood>"+
+          "<size>200,100</size>"+
+          "</pdf>"+
+          "<data>"+doc.base +"</data>"+
+        '</request>';
+      body.replace(/"/g, '+');
+      this.certificateService.sendXMLToSign(body).subscribe(res=>{
+
+      // convert xml to Json and send
+      let result1 = converter.xml2json(res, {compact: true, spaces: 2});
+      if(result1){
+        const JSONData = JSON.parse(result1);
+        this.certificateService.uploadXMLSignedDocument(JSONData).subscribe(data=>{
+
+          if(data['success']){
+              this.getCertificateById(this.certificateId)  
+          }
+
+
+        },
+        error => {
+          this.toastr.error('',error.message);
+        });
+      }else{
+        console.log('result1', result1)
+      }
+
+    }, (error) => {
+      console.log("error", error);
+      this.toastr.error("", "Signing Tool Not Connected. ")
+    });
+  });
+  
+}
+
+issueCO(){
+  let signedDocument = this.currentCertificate['signedDocument'];
+  let isAllSigned = false;
+  let notSigned = _.find(signedDocument, doc => { return !doc.isSigned});
+
+  if( notSigned && notSigned.length > 0){
+    this.showError ="All Documents not Signed";
+    return false;
+  }
+  this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
+    this.currentCertificate['issuedById'] = this.user['_id'];
+
+    this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
+
+      this.getCertificateById(this.currentCertificate['_id']);
+      document.getElementById("acceptModelCloseButton").click();
+
+    });
+}
 checkAndSaveDocs() {
   this.showError = '';
   
@@ -228,14 +360,11 @@ checkAndSaveDocs() {
                   if(index + 1 == newDocuments.length){
 
                     setTimeout(() => {
-                      console.log('this.user', this.user);
                       let user = JSON.parse(sessionStorage.getItem('currentUser'));
-                      console.log(user);
                       this.currentCertificate['issuedBy'] = user['firstName'] + ' ' + user['lastName'];
                       this.currentCertificate['issuedById'] = user['_id'];
                     this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
 
-                      console.log('data', data);
                       this.getCertificateById(this.currentCertificate['_id']);
                       document.getElementById("acceptModelCloseButton").click();
 
@@ -277,7 +406,6 @@ signDocHandel(i, doc, documentLength){
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
     uniqueId = uniqueId + '|' + doc.name;
-    // console.log('uniqueId', uniqueId);
     let body =  '<request>'+
         '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
         "<certificate>"+
@@ -305,21 +433,17 @@ signDocHandel(i, doc, documentLength){
       this.certificateService.sendXMLToSign(body).subscribe(res=>{
 
       // convert xml to Json and send
-      console.log(res);
       let result1 = converter.xml2json(res, {compact: true, spaces: 2});
       if(result1){
         const JSONData = JSON.parse(result1);
         this.certificateService.uploadXMLSignedDocument(JSONData).subscribe(data=>{
 
-          console.log('data', data);
           if(data['success']){
               this.getCertificateById(this.certificateId)  
           }
 
-          console.log(i == documentLength);
           if(i == documentLength){
             setTimeout(()=> {
-              console.log('this.user', this.user);
               this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
               this.currentCertificate['issuedById'] = this.user['_id'];
 
@@ -366,99 +490,19 @@ signDocHandel(i, doc, documentLength){
 
       if(documentsToSign.length > 0){
         let i = -1;
-        console.log('documentsToSign', documentsToSign);
         documentsToSign.forEach( async doc => {
-          // define synchronous anonymous function
-          // IT WILL THROW ERROR!
+          
           i++;
-          console.log('i', i)
           if(i == documentsToSign.length -1){
             document.getElementById('acceptModelCloseButton').click();
             this.toastr.success('', "Signing Request sent successfully");
           }
            await this.signDocHandel(i, doc, documentsToSign.length)
-          // console.log(i == documentsToSign.length-1);
-          // if(i == documentsToSign.length-1){
-          //   setTimeout(()=> {
-          //     console.log('this.user', this.user);
-          //     this.currentCertificate['issuedBy'] = this.user['firstName'] + ' ' + this.user['lastName'];
-          //     this.currentCertificate['issuedById'] = this.user['_id'];
-
-          //     this.certificateService.acceptCertificate(this.currentCertificate).subscribe(data => {
-  
-          //       this.getCertificateById(this.currentCertificate['_id']);
-          //       document.getElementById("acceptModelCloseButton").click();
-  
-          //     });
-          //   }, i* 500);
-          // }
+          
          
         })
       }
-        // create Base64 of pdf
-        // for(let i = 0; i<documentsToSign.length; i++){
-
-        //   this.certificateService.getBase64Format(documentsToSign[i].url).subscribe(res =>{
-        //     documentsToSign[i].base = res['data'];
-        //     let today = new Date()
-        //     let uniqueId = this.currentCertificate['_id'];
-        //     uniqueId = uniqueId + '|' + documentsToSign[i].name;
-        //     let body =  '<request>'+
-        //         '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
-        //         "<certificate>"+
-        //           " <attribute name='CN'></attribute>"+
-        //           " <attribute name='O'></attribute>"+
-        //           "<attribute name='OU'></attribute>"+
-        //           "<attribute name='T'></attribute>"+
-        //           "<attribute name='E'></attribute>"+
-        //           "<attribute name='SN'>‎‎</attribute>"+
-        //           "<attribute name='CA'></attribute>"+
-        //           "<attribute name='TC'>SG</attribute>"+
-        //           "<attribute name='AP'>1</attribute>"+
-        //           "</certificate>"+
-        //           "<file>"+
-        //             "<attribute name='type'>pdf</attribute>"+
-        //           "</file>"+
-        //           "<pdf>"+
-        //           "<page>1</page>"+
-        //           "<cood>10,10</cood>"+
-        //           "<size>200,100</size>"+
-        //           "</pdf>"+
-        //           "<data>"+documentsToSign[i].base +"</data>"+
-        //         '</request>';
-        //       body.replace(/"/g, '+');
-        //       this.certificateService.sendXMLToSign(body).subscribe(res=>{
-
-        //       // convert xml to Json and send
-        //       let result1 = converter.xml2json(res, {compact: true, spaces: 2});
-        //       const JSONData = JSON.parse(result1);
-        //         this.certificateService.uploadXMLSignedDocument(JSONData).subscribe(data=>{
-
-        //           console.log('data', data);
-        //           if(data['success']){
-        //             if(i == documentsToSign.length -1){
-        //               this.getCertificateById(this.certificateId)
-        //             }
-        //           }
-  
-        //         },
-        //         error => {
-        //           this.toastr.error('',error.message);
-        //         });
-            
-             
-
-        //     })
-
-
-        //   }
-        //     )
-          
-        // }
-      // }
-
-    
-
+       
   }
   
   

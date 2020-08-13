@@ -144,4 +144,9 @@ export class CertificateService {
     return this.http.post(this.serverUrl + 'payment/signatureRazorPay' , data, getHeaders('application/json'))
   }
 
+  updateSigningStatus = (data) => {
+    return this.http.post(this.serverUrl + 'certificate/updateSigningStatus' , data, getHeaders('application/json'))
+
+  }
+
 }
