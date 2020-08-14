@@ -309,7 +309,6 @@ issueCO(){
   _.forEach(signedDocument, doc => { 
     if(!doc.isSigned) { notSigned.push(doc); } 
   });
-  console.log('notSigned', notSigned);
   if( notSigned && notSigned.length > 0){
     this.showError ="All Documents not Signed";
     return false;
@@ -408,6 +407,7 @@ signDocHandel(i, doc, documentLength){
     doc.base = res['data'];
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
+    console.log('going Doc', doc.name);
     uniqueId = uniqueId + '|' + doc.name;
     let body =  '<request>'+
         '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
