@@ -64,11 +64,11 @@
               </div>
             </div>
             <div class="col-md-4">
-              <span> <b> ICC COO code:</b> </span> 
+              <span> <b> DCCIA CO code*:</b> </span> 
               <input type="text" formControlName="coReference" maxlength="10" class="form-control" placeholder="Co Reference Number" required>
               <div *ngIf="rForm.coReference.invalid  && registerSubmitted" class="error_txt">
                 <div *ngIf="rForm.coReference.errors.required">
-                  ICC COO code  is required.
+                   DCCIA CO code  is required.
                 </div>
               </div>
             </div>
@@ -82,13 +82,9 @@
               </div>
             </div>
             <div class="col-md-4">
-              <span> <b> ICC COO code Issued Date:</b> </span> 
-              <input type="date" formControlName="coReferenceDate" maxlength="10" class="form-control" placeholder="Co Reference Number" required>
-              <div *ngIf="rForm.coReferenceDate.invalid  && registerSubmitted" class="error_txt">
-                <div *ngIf="rForm.coReferenceDate.errors.required">
-                  ICC COO code Date  is required.
-                </div>
-              </div>
+              <span> <b>  DCCIA CO code Issued Date:</b> </span> 
+              <input type="date" formControlName="coReferenceDate" maxlength="10" class="form-control" placeholder="Co Reference Number">
+             
             </div>
             <div class="col-md-4">
               <span> <b>City*:</b> </span> 

@@ -63,7 +63,7 @@ export class LoginComponent {
       // product: ['', Validators.required],
       website: [''],
       coReference: ['', Validators.required],
-      coReferenceDate: ['', Validators.required],
+      coReferenceDate: [''],
       password:['', Validators.pattern(PasswordPattern)],
       passwordConfirm: [''],
 

@@ -267,7 +267,7 @@ digitallySignDoc(event, index){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>10,10</cood>"+
+          "<cood>50,2</cood>"+
           "<size>200,100</size>"+
           "</pdf>"+
           "<data>"+doc.base +"</data>"+
@@ -281,9 +281,9 @@ digitallySignDoc(event, index){
         const JSONData = JSON.parse(result1);
         this.certificateService.uploadXMLSignedDocument(JSONData).subscribe(data=>{
 
-          if(data['success']){
-              this.getCertificateById(this.certificateId)  
-          }
+          // if(data['success']){
+              setTimeout( () => {this.getCertificateById(this.certificateId) }, 500);
+          // }
 
 
         },
@@ -407,7 +407,7 @@ signDocHandel(i, doc, documentLength){
     doc.base = res['data'];
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
-    console.log('going Doc', doc.name);
+    
     uniqueId = uniqueId + '|' + doc.name;
     let body =  '<request>'+
         '<command>pkiNetworkSign</command>' + '<ts>'+ today.toISOString()  + '</ts>' + '<txn>'+ uniqueId +  '</txn>'+
@@ -427,7 +427,7 @@ signDocHandel(i, doc, documentLength){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>10,10</cood>"+
+          "<cood>25,25</cood>"+
           "<size>200,100</size>"+
           "</pdf>"+
           "<data>"+doc.base +"</data>"+
