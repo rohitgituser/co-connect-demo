@@ -182,8 +182,8 @@ export class Dashboard2Component implements OnInit {
       lcNumberDate: [''],
       lcNumberDateExpiry:[''],
 
-      invoiceNumber: ['', Validators.required],
-      invoiceNumberDate: ['', Validators.required],
+      // invoiceNumber: ['', Validators.required],
+      // invoiceNumberDate: ['', Validators.required],
       orderNumber: [''],
       orderNumberDate: [''],
       netWeight: ['', Validators.required],
@@ -224,8 +224,8 @@ export class Dashboard2Component implements OnInit {
       lcNumberDate: [''],
       lcNumberDateExpiry:[''],
 
-      invoiceNumber: ['', Validators.required],
-      invoiceNumberDate: ['', Validators.required],
+      // invoiceNumber: ['', Validators.required],
+      // invoiceNumberDate: ['', Validators.required],
       orderNumber: [''],
       orderNumberDate: [''],
       netWeight: ['', Validators.required],
@@ -280,8 +280,8 @@ export class Dashboard2Component implements OnInit {
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry: [''],
-      invoiceNumber: ['', Validators.required],
-      invoiceNumberDate: ['', Validators.required],
+      // invoiceNumber: ['', Validators.required],
+      // invoiceNumberDate: ['', Validators.required],
       orderNumber: [''],
       orderNumberDate: [''],
       netWeight: ['', Validators.required],
@@ -323,8 +323,8 @@ export class Dashboard2Component implements OnInit {
       lcNumber: [''],
       lcNumberDate: [''],
       lcNumberDateExpiry: [''],
-      invoiceNumber: ['', Validators.required],
-      invoiceNumberDate: ['', Validators.required],
+      // invoiceNumber: ['', Validators.required],
+      // invoiceNumberDate: ['', Validators.required],
       orderNumber: [''],
       orderNumberDate: [''],
       netWeight: ['', Validators.required],
@@ -367,6 +367,8 @@ export class Dashboard2Component implements OnInit {
     return this.formBuilder.group({
       containerNumber: '',
       numberOfPacking: '',
+      invoiceNumber: '',
+      invoiceNumberDate: '',
       typeOfPacking: '',
       goodsDescription: ''
     });
@@ -376,6 +378,8 @@ export class Dashboard2Component implements OnInit {
     return this.formBuilder.group({
       containerNumber: good.containerNumber,
       numberOfPacking: good.numberOfPacking,
+      invoiceNumber: good.invoiceNumber,
+      invoiceNumberDate: good.invoiceNumberDate,
       typeOfPacking: good.typeOfPacking,
       goodsDescription: good.goodsDescription
     });
@@ -606,8 +610,8 @@ export class Dashboard2Component implements OnInit {
           lcNumber: [this.currentCertificate.lcNumber],
           lcNumberDate: [this.currentCertificate.lcNumberDate],
           lcNumberDateExpiry: [this.currentCertificate.lcNumberDateExpiry],
-          invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
-          invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
+          // invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
+          // invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
           orderNumber: [this.currentCertificate.orderNumber],
           orderNumberDate: [this.currentCertificate.orderNumberDate],
           netWeight: [this.currentCertificate.netWeight, Validators.required],
@@ -701,8 +705,8 @@ export class Dashboard2Component implements OnInit {
           lcNumber: [this.currentCertificate.lcNumber],
           lcNumberDate: [this.currentCertificate.lcNumberDate],
           lcNumberDateExpiry:[this.currentCertificate.lcNumberDateExpiry],
-          invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
-          invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
+          // invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
+          // invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
           orderNumber: [this.currentCertificate.orderNumber],
           orderNumberDate: [this.currentCertificate.orderNumberDate],
           netWeight: [this.currentCertificate.netWeight, Validators.required],
@@ -795,8 +799,8 @@ export class Dashboard2Component implements OnInit {
             lcNumberDate: [oldCert.lcNumberDate],
             lcNumberDateExpiry:[oldCert.lcNumberDateExpiry],
 
-            invoiceNumber: [oldCert.invoiceNumber, Validators.required],
-            invoiceNumberDate: [oldCert.invoiceNumberDate, Validators.required],
+            // invoiceNumber: [oldCert.invoiceNumber, Validators.required],
+            // invoiceNumberDate: [oldCert.invoiceNumberDate, Validators.required],
             orderNumber: [oldCert.orderNumber],
             orderNumberDate: [oldCert.orderNumberDate],
             netWeight: [oldCert.netWeight, Validators.required],
@@ -1332,6 +1336,7 @@ export class Dashboard2Component implements OnInit {
           invoicePaid: false,
           totalQuantity: 0,
           totalAmount: 0,
+          roundedValue: 0,
           totalAmountWords: '',
           totalAmountWithoutTax: 0,
 
@@ -1356,7 +1361,7 @@ export class Dashboard2Component implements OnInit {
           });
 
           invoice.totalAmount = this.fixDecimal( invoice.totalAmount + pricingCost); // Added total cost to 
-          invoice.totalAmountWithoutTax =  pricingCost;
+          invoice.totalAmountWithoutTax =  parseFloat(pricingCost.toString());
 
           invoice.totalQuantity = invoice.totalQuantity + 1;
           invoice.remark = 'C.O Fees';
@@ -1591,7 +1596,7 @@ export class Dashboard2Component implements OnInit {
             });
   
             invoice.totalAmount = invoice.totalAmount + parseFloat(pricingCost); // Added total cost to 
-            invoice.totalAmountWithoutTax = invoice.totalAmountWithoutTax + pricingCost;
+            invoice.totalAmountWithoutTax = invoice.totalAmountWithoutTax + parseFloat(pricingCost);
             invoice.totalQuantity = invoice.totalQuantity + 1;
 
             invoice.remark = invoice.remark == ''?  ' Ammendments Fees': invoice.remark +', Ammendments Fees';
@@ -1698,6 +1703,12 @@ export class Dashboard2Component implements OnInit {
          
           invoice.totalAmount = 0;
           invoice.totalAmount = invoice.totalAmountWithoutTax +  this.fixDecimal(totalTaxNow)
+
+          let roundedTotal =  Math.round(invoice.totalAmount);
+
+          invoice.roundedValue = -( this.fixDecimal(invoice.totalAmount - roundedTotal ));
+
+          invoice.totalAmount = roundedTotal;
 
           this.certificateService.createInvoice(invoice).subscribe(data => {
             // this.loadingService.hide();

@@ -284,6 +284,19 @@
                       </div>
                     </div>
                     <div class="row mb-1">
+                      <div class="col-md-4" [formGroupName]="i">
+                        <span> Invoice Number*:  </span> 
+                        <input type="text" formControlName="invoiceNumber" class="form-control"  placeholder="" >
+              
+                      </div>
+                      <div class="col-md-4" [formGroupName]="i">
+                        <span> Invoice Date*:  </span> 
+                        <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
+              
+                      </div>
+                    </div>
+
+                    <div class="row mb-1">
                       <div class="col-md-12" [formGroupName]="i">
                           <span>  Description of Goods*:  </span> 
                           <input type="text" formControlName="goodsDescription" class="form-control" >
@@ -303,9 +316,9 @@
                       </div>
                     </div>
                     <div class="col-md-6 mt-1">
-                      <span> Coo. Regn. Date:  </span> 
+                      <!-- <span> Coo. Regn. Date:  </span> 
                       <input type="date" formControlName="iccCooCodeDate" class="form-control" >
-                     
+                      -->
                     </div>
                     
                     <div class="col-md-6 mt-1">
@@ -324,7 +337,7 @@
                       <input type="date"min="{{minLCDate}}"  formControlName="lcNumberDateExpiry" class="form-control"  >
                     
                     </div>
-                    <div class="col-md-6 mt-1">
+                    <!-- <div class="col-md-6 mt-1">
                       <span>  Invoice No.*:  </span> 
                       <input type="text" formControlName="invoiceNumber" class="form-control"  >
                       <div *ngIf="coForm.invoiceNumber.invalid  &&  coSubmitted" class="error_txt">
@@ -332,9 +345,9 @@
                           This field is required.
                         </div>
                       </div>
-                    </div>
+                    </div> -->
         
-                    <div class="col-md-6 mt-1">
+                    <!-- <div class="col-md-6 mt-1">
                       <span>  Invoice Date*:  </span> 
                       <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
                       <div *ngIf="coForm.invoiceNumberDate.invalid &&  coSubmitted" class="error_txt">
@@ -343,7 +356,7 @@
                       </div>
                       
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-6 mt-1">
                       <span>  Order No.:  <sub>Enter "Email Order" for Email order.</sub>  </span> 
@@ -643,6 +656,19 @@
                         </div>
                       </div>
                       <div class="row mb-1">
+                        <div class="col-md-4" [formGroupName]="i">
+                          <span> Invoice Number*:  </span> 
+                          <input type="text" formControlName="invoiceNumber" class="form-control"  placeholder="" >
+                
+                        </div>
+                        <div class="col-md-4" [formGroupName]="i">
+                          <span> Invoice Date*:  </span> 
+                          <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
+                
+                        </div>
+                      </div>
+  
+                      <div class="row mb-1">
                         <div class="col-md-12" [formGroupName]="i">
                             <span>  Description of Goods*:  </span> 
                             <input type="text" formControlName="goodsDescription" class="form-control" >
@@ -662,9 +688,9 @@
                         </div>
                       </div>
                       <div class="col-md-6 mt-1">
-                        <span>  Coo. Regn. Date:  </span> 
+                        <!-- <span>  Coo. Regn. Date:  </span> 
                         <input type="date" formControlName="iccCooCodeDate" class="form-control" >
-                       
+                        -->
                       </div>
                       
                       <div class="col-md-6 mt-1">
@@ -683,7 +709,7 @@
                         <input type="date" min="{{minLCDate}}"   formControlName="lcNumberDateExpiry" class="form-control"  >
                       
                       </div>
-                      <div class="col-md-6 mt-1">
+                      <!-- <div class="col-md-6 mt-1">
                         <span>  Invoice No.*:  </span> 
                         <input type="text" formControlName="invoiceNumber" class="form-control"  >
                         <div *ngIf="coAmmendmentForm.invoiceNumber.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
@@ -691,9 +717,9 @@
                             This field is required.
                           </div>
                         </div>
-                      </div>
+                      </div> -->
           
-                      <div class="col-md-6 mt-1">
+                      <!-- <div class="col-md-6 mt-1">
                         <span>  Invoice Date*:  </span> 
                         <input type="date" formControlName="invoiceNumberDate" class="form-control"  >
                         <div *ngIf="coAmmendmentForm.invoiceNumberDate.invalid &&  coAmmendmentRequestSubmitted" class="error_txt">
@@ -702,7 +728,7 @@
                         </div>
                         
                         </div>
-                      </div>
+                      </div> -->
   
                       <div class="col-md-6 mt-1">
                         <span>   Order No.:  <sub>Enter "Email Order" for Email order.</sub></span> 
