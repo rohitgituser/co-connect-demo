@@ -3,7 +3,7 @@
     <div class="card mt-4">
         <div class="row mt-4">
             <div ></div>
-            <div class="col-md-3" style="    left: 55px;     bottom: 12px;">
+            <div class="col-md-3" style="    left: 60px;     bottom: 12px;">
                      <img src="assets/img/avatars/fa-user-tie.png" style="    width: 10em;" class="img-avatar" alt=""/>
             </div>
             <div class="col-md-3" style="right: 5em;bottom: 12px;">
@@ -14,7 +14,7 @@
                 <h6>{{currentUser['email']}}</h6>
                 <span style="text-transform: capitalize;" class="badge badge-success">{{currentUser && currentUser['role']}}</span>
 
-                <span *rbacShow="['user']" class="ml-2"> <span class="badge badge-success" *ngIf="currentUser['isMember']">Member</span>  <span class="badge badge-warning" *ngIf="!currentUser['isMember']"> Non-Member</span></span>
+                <span *rbacShow="['user']"  class="ml-2"> <span class="badge badge-success" *ngIf="currentUser['isMember']">Member</span>  <span class="badge badge-warning" *ngIf="!currentUser['isMember']"> Non-Member</span></span>
 
             </div>
         </div>
@@ -35,11 +35,7 @@
                    
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <span> <b>Member Id:</b> </span> 
-                  <input disabled type="text" formControlName="memberId" class="form-control"  >
-                  
-                </div>
+               
                 <div class="col-md-12">
                   <span> <b>Address*:</b> </span> 
                   <input type="text" formControlName="address" class="form-control" placeholder="Address" required>
@@ -65,7 +61,7 @@
                 
                 </div>
     
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                   <span> <b>Name of CM/DM/Director*:</b> </span> 
                   <input type="text" formControlName="cdDmName" class="form-control" placeholder="Name" required>
                   <div *ngIf="rForm.cdDmName.invalid && registerSubmitted" class="error_txt">
@@ -73,7 +69,7 @@
                       This field is required  is required.
                     </div>
                   </div>
-                </div>
+                </div> -->
     
                 <div class="col-md-6">
                   <span> <b>Website:</b> </span> 
