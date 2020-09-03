@@ -267,8 +267,8 @@ digitallySignDoc(event, index){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>50,2</cood>"+
-          "<size>200,100</size>"+
+          "<cood>50,55</cood>"+
+          "<size>80,56</size>"+
           "</pdf>"+
           "<data>"+doc.base +"</data>"+
         '</request>';
@@ -404,7 +404,15 @@ saveFileDocument =  (formData, id) => {
 
 signDocHandel(i, doc, documentLength){
   this.certificateService.getBase64Format(doc.url).subscribe(res =>{
-    doc.base = res['data'];
+    doc.base = res['data']['base64String'];
+    doc.pageCount = res['data']['pages'];
+
+    let pageString = ''
+    for(let i =1; i<= doc.pageCount; i++){
+      pageString = pageString +"<page>" + i + "</page>";
+    }
+
+    console.log('pageString', pageString)
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
     
@@ -426,7 +434,7 @@ signDocHandel(i, doc, documentLength){
             "<attribute name='type'>pdf</attribute>"+
           "</file>"+
           "<pdf>"+
-          "<page>1</page>"+
+          pageString +
           "<cood>25,25</cood>"+
           "<size>200,100</size>"+
           "</pdf>"+
