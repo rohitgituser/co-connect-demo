@@ -184,8 +184,8 @@ export class Dashboard2Component implements OnInit {
 
       // invoiceNumber: ['', Validators.required],
       // invoiceNumberDate: ['', Validators.required],
-      orderNumber: [''],
-      orderNumberDate: [''],
+      // orderNumber: [''],
+      // orderNumberDate: [''],
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
@@ -226,8 +226,8 @@ export class Dashboard2Component implements OnInit {
 
       // invoiceNumber: ['', Validators.required],
       // invoiceNumberDate: ['', Validators.required],
-      orderNumber: [''],
-      orderNumberDate: [''],
+      // orderNumber: [''],
+      // orderNumberDate: [''],
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
@@ -282,8 +282,8 @@ export class Dashboard2Component implements OnInit {
       lcNumberDateExpiry: [''],
       // invoiceNumber: ['', Validators.required],
       // invoiceNumberDate: ['', Validators.required],
-      orderNumber: [''],
-      orderNumberDate: [''],
+      // orderNumber: [''],
+      // orderNumberDate: [''],
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
@@ -325,8 +325,8 @@ export class Dashboard2Component implements OnInit {
       lcNumberDateExpiry: [''],
       // invoiceNumber: ['', Validators.required],
       // invoiceNumberDate: ['', Validators.required],
-      orderNumber: [''],
-      orderNumberDate: [''],
+      // orderNumber: [''],
+      // orderNumberDate: [''],
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
@@ -612,8 +612,8 @@ export class Dashboard2Component implements OnInit {
           lcNumberDateExpiry: [this.currentCertificate.lcNumberDateExpiry],
           // invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
           // invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
-          orderNumber: [this.currentCertificate.orderNumber],
-          orderNumberDate: [this.currentCertificate.orderNumberDate],
+          // orderNumber: [this.currentCertificate.orderNumber],
+          // orderNumberDate: [this.currentCertificate.orderNumberDate],
           netWeight: [this.currentCertificate.netWeight, Validators.required],
           grossWeight: [this.currentCertificate.grossWeight, Validators.required],
           totalValue: [this.currentCertificate.totalValue, Validators.required],
@@ -707,8 +707,8 @@ export class Dashboard2Component implements OnInit {
           lcNumberDateExpiry:[this.currentCertificate.lcNumberDateExpiry],
           // invoiceNumber: [this.currentCertificate.invoiceNumber, Validators.required],
           // invoiceNumberDate: [this.currentCertificate.invoiceNumberDate, Validators.required],
-          orderNumber: [this.currentCertificate.orderNumber],
-          orderNumberDate: [this.currentCertificate.orderNumberDate],
+          // orderNumber: [this.currentCertificate.orderNumber],
+          // orderNumberDate: [this.currentCertificate.orderNumberDate],
           netWeight: [this.currentCertificate.netWeight, Validators.required],
           grossWeight: [this.currentCertificate.grossWeight, Validators.required],
           totalValue: [this.currentCertificate.totalValue, Validators.required],
@@ -801,8 +801,8 @@ export class Dashboard2Component implements OnInit {
 
             // invoiceNumber: [oldCert.invoiceNumber, Validators.required],
             // invoiceNumberDate: [oldCert.invoiceNumberDate, Validators.required],
-            orderNumber: [oldCert.orderNumber],
-            orderNumberDate: [oldCert.orderNumberDate],
+            // orderNumber: [oldCert.orderNumber],
+            // orderNumberDate: [oldCert.orderNumberDate],
             netWeight: [oldCert.netWeight, Validators.required],
             grossWeight: [oldCert.grossWeight, Validators.required],
             totalValue: [oldCert.totalValue, Validators.required],
@@ -853,19 +853,19 @@ export class Dashboard2Component implements OnInit {
       this.showError = "Terms and Conditions: Request you to go throw Terms and Conditions and accept them to proceed."
       return false;
     }
-    if(!values.lcNumber && !values.orderNumber){
-      this.showError = "Please Enter LC Number or Order Number and dates associated."
-      return false;
-    }
+    // if(!values.lcNumber && !values.orderNumber){
+    //   this.showError = "Please Enter LC Number or Order Number and dates associated."
+    //   return false;
+    // }
     if(values.lcNumber && !values.lcNumberDate ){
       this.showError = "Please Enter LC Number Issued Date."
       return false;
     }
 
-    if(values.orderNumber && !values.orderNumberDate ){
-      this.showError = "Please Enter Order Number Date."
-      return false;
-    }
+    // if(values.orderNumber && !values.orderNumberDate ){
+    //   this.showError = "Please Enter Order Number Date."
+    //   return false;
+    // }
     if(values.goods && values.goods.length > 0){
       let isMissingValues = false;
       _.forEach(values.goods, (good) => { _.values(good).some( (x) => { if(x == undefined || x == '') isMissingValues = true; }  )});
@@ -939,19 +939,19 @@ export class Dashboard2Component implements OnInit {
       this.showError = "Terms and Conditions: Request you to go throw Terms and Conditions and accept them to proceed."
       return false;
     }
-    if(!values.lcNumber && !values.orderNumber){
-      this.showError = "Please Enter LC Number or Order Number and dates associated."
-      return false;
-    }
+    // if(!values.lcNumber && !values.orderNumber){
+    //   this.showError = "Please Enter LC Number or Order Number and dates associated."
+    //   return false;
+    // }
     if(values.lcNumber && !values.lcNumberDate ){
       this.showError = "Please Enter LC Number Issued Date."
       return false;
     }
 
-    if(values.orderNumber && !values.orderNumberDate ){
-      this.showError = "Please Enter Order Number Date."
-      return false;
-    }
+    // if(values.orderNumber && !values.orderNumberDate ){
+    //   this.showError = "Please Enter Order Number Date."
+    //   return false;
+    // }
 
     if(values.goods && values.goods.length > 0){
       let isMissingValues = false;

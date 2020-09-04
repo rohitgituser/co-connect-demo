@@ -404,15 +404,9 @@ saveFileDocument =  (formData, id) => {
 
 signDocHandel(i, doc, documentLength){
   this.certificateService.getBase64Format(doc.url).subscribe(res =>{
-    doc.base = res['data']['base64String'];
-    doc.pageCount = res['data']['pages'];
-
-    let pageString = ''
-    for(let i =1; i<= doc.pageCount; i++){
-      pageString = pageString +"<page>" + i + "</page>";
-    }
-
-    console.log('pageString', pageString)
+    doc.base = res['data']
+    
+    
     let today = new Date()
     let uniqueId = this.currentCertificate['_id'];
     
@@ -434,7 +428,12 @@ signDocHandel(i, doc, documentLength){
             "<attribute name='type'>pdf</attribute>"+
           "</file>"+
           "<pdf>"+
-          pageString +
+          "<page>1</page>"+
+          "<cood>25,25</cood>"+
+          "<size>200,100</size>"+
+          "</pdf>"+
+          "<pdf>"+
+          "<page>1</page>"+
           "<cood>25,25</cood>"+
           "<size>200,100</size>"+
           "</pdf>"+
