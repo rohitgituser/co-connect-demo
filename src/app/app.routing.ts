@@ -25,6 +25,8 @@ import { WalletComponent } from './views/wallet/wallet.component';
 
 import { AuthGuard } from './helpers/auth.guard';
 import { UpdateRejestrationComponent } from './update-rejestration/update-rejestration.component';
+import { ChaListComponent } from './views/cha-list/cha-list.component';
+import { InviteChaComponent } from './views/invite-cha/invite-cha.component';
 export const routes: Routes = [
   {
     path: '',
@@ -106,6 +108,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'master/cha',
+        component: ChaListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'master/pricing',
         component: PricingListComponent,
         canActivate: [AuthGuard]
@@ -175,6 +182,11 @@ export const routes: Routes = [
       {
         path: 'userWallet',
         component: WalletComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'cha',
+        component: InviteChaComponent,
         canActivate: [AuthGuard]
       },
      

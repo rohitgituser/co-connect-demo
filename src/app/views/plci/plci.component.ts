@@ -267,7 +267,7 @@ digitallySignDoc(event, index){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>50,120</cood>"+
+          "<cood>50,85</cood>"+
           "<size>120,85</size>"+
           "</pdf>"+
           "<data>"+doc.base +"</data>"+
@@ -429,8 +429,8 @@ signDocHandel(i, doc, documentLength){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>25,25</cood>"+
-          "<size>200,100</size>"+
+          "<cood>50,85</cood>"+
+          "<size>120,85</size>"+
           "</pdf>"+
           "<pdf>"+
           "<page>1</page>"+
@@ -513,6 +513,22 @@ signDocHandel(i, doc, documentLength){
         })
       }
        
+  }
+
+  goToOldCO = (ref) => {
+    this.certificateService.getCertificateByReference(ref).subscribe(data => {
+      if(data['status'] == 'success'){
+
+        let oldCertId = data['data']['_id'];
+        this.certificateId = oldCertId;
+        this.router.navigate(['/plci/' + oldCertId]);
+
+        this.getCertificateById(this.certificateId)
+
+      }
+
+    });
+
   }
   
   

@@ -72,6 +72,10 @@ import { InvoiceListComponent } from './views/invoice-list/invoice-list.componen
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { WalletComponent } from './views/wallet/wallet.component';
 import { UpdateRejestrationComponent } from './update-rejestration/update-rejestration.component';
+import { ChaListComponent } from './views/cha-list/cha-list.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
+import { InviteChaComponent } from './views/invite-cha/invite-cha.component';
 
 @NgModule({
   imports: [
@@ -97,6 +101,7 @@ import { UpdateRejestrationComponent } from './update-rejestration/update-rejest
     MatStepperModule,
     PdfViewerModule,
     ChartJSRoutingModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -126,6 +131,8 @@ import { UpdateRejestrationComponent } from './update-rejestration/update-rejest
     ResetPasswordComponent,
     WalletComponent,
     UpdateRejestrationComponent,
+    ChaListComponent,
+    InviteChaComponent,
 
   ],
   providers: [{

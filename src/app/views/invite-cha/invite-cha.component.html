@@ -1,0 +1,270 @@
+
+<div class="animated fadeIn container-fluid mt-3">
+    <!-- The  View Modal -->
+    <div class="modal" #inviteCHA id="inviteCHA">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+   
+          <!-- Modal Header -->
+          <div class="modal-header" style="background: #162b5a; color: white;">
+            <h4 class="modal-title">Invite CHA</h4>
+            <button type="button" id="closeInviteCHAModalButton" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 col-sm-6" style="max-width:100%;">
+                <div class="form-group">
+                  <label for="searchText"><b>CHA Email</b></label>
+                  <input type="text" [(ngModel)]="newCHAEmail" (input)="searchCHAEmailChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                    id="searchCHAText">
+                </div>
+              </div>
+              <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+                <span class="text-center"> {{showError}}</span>
+                </div>
+          </div>
+           
+          </div>
+   
+          <!-- Modal footer -->
+          <div class="modal-footer">
+           
+            <button type="button"  class="btn btn-dark" data-dismiss="modal">Close</button>
+            <button  type="button"  class="btn btn-primary" (click)="inviteNewCHA(newCHAEmail)">Invite</button>
+   
+          </div>
+   
+        </div>
+      </div>
+    </div>
+ <div class="modal" #viewUserMode id="viewUserMode">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+
+       <!-- Modal Header -->
+       <div class="modal-header" style="background: #162b5a; color: white;">
+         <h4 class="modal-title">CHA Info</h4>
+         <button type="button" id="closeViewUserModalButton" class="close" data-dismiss="modal">&times;</button>
+       </div>
+       <!-- Modal body -->
+       <div class="modal-body">
+         <div class="row">
+           <div class="col-md-8">
+             <span> <b>Company Name:</b> </span> 
+               <p>{{selectedUser && selectedUser.companyName}}</p>
+           </div>
+        
+           <div class="col-md-12">
+             <span> <b>Address:</b> </span> 
+             <p>{{selectedUser && selectedUser.address}}</p>
+           </div>
+           <div class="col-md-4">
+             <span> <b>City:</b> </span> 
+             <p>{{selectedUser && selectedUser.city}}</p>
+           </div>
+           <div class="col-md-4">
+             <span> <b>State:</b> </span> 
+             <p>{{selectedUser && selectedUser.state}}</p>
+           </div>
+           <div class="col-md-4">
+             <span> <b>Pin Code:</b> </span> 
+             <p>{{selectedUser && selectedUser.zipCode}}</p>
+           </div>
+       
+           <div class="col-md-6">
+             <span> <b>PAN No:</b> </span> 
+             <p>{{selectedUser && selectedUser.panNumber}}</p>
+           </div>
+
+           <div class="col-md-6">
+             <span> <b>Name of Authorized Signatory:</b> </span> 
+             <p>{{selectedUser && selectedUser.contactPersonName}}</p>
+
+           </div>
+
+           <div class="col-md-6">
+             <span> <b>Website:</b> </span> 
+             <p>{{selectedUser && selectedUser.website}}</p>            
+           </div>
+
+           
+
+           <div class="col-md-6">
+             <span> <b>Email:</b> </span> 
+             <p>{{selectedUser && selectedUser.email}}</p>
+
+           </div>
+           <div class="col-md-6">
+             <span> <b>Contact No.:</b> </span> 
+             <p>{{selectedUser && selectedUser.contactNumber}}</p>
+
+           </div>
+          
+           <div class="col-md-6">
+             <span> <b>Fax No.:</b> </span> 
+             <p>{{selectedUser && selectedUser.faxNumber}}</p>
+
+           </div>
+          
+           
+           <div class="col-md-4">
+            <span> <b>CHA License No.:</b> </span> 
+            <p>{{selectedUser && selectedUser.chaLicenseNo}}</p>
+            </div>
+            <div class="col-md-4">
+                <span> <b>Field of Operations:</b> </span> 
+                <p>{{selectedUser && selectedUser.fieldOfOperation}}</p>
+            </div>
+            <div class="col-md-4">
+                <span> <b>CHA License date:</b> </span> 
+                <p>{{selectedUser && selectedUser.chaLicenseDate}}</p>
+            </div>
+           
+       </div>
+        
+       </div>
+
+       <!-- Modal footer -->
+       <div class="modal-footer">
+        
+         <button type="button"  class="btn btn-dark" data-dismiss="modal">Close</button>
+         <button [hidden]="newCHA" type="button"  class="btn btn-primary" (click)="inviteCHAExporter(selectedUser)"> Invite</button>
+         <button [hidden]="!newCHA" type="button"  class="btn btn-primary" (click)="rejectCHA(selectedUser)">Stop</button>
+
+       </div>
+
+     </div>
+   </div>
+ </div>
+
+    <div class="row margin_top_10">
+        <div class="card width_100">
+            <div class="card-header page_heading" >
+            Search New CHA
+            </div>
+            <div class="card-body">
+                <div class="row col-md-12">
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                        <div class="form-group">
+                          <label for="searchText"><b>CHA Name</b></label>
+                          <input type="text" [(ngModel)]="searchCHAText" (input)="searchCHANameChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                            id="searchCHAText">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                        <div class="form-group">
+                          <label for="searchText"><b>CHA Email</b></label>
+                          <input type="text" [(ngModel)]="searchCHAEmailText" (input)="searchCHAEmailChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                            id="searchCHAText">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                      <button  data-toggle="modal" data-target="#inviteCHA" class="btn btn-pill btn-primary">Invite CHA</button>
+
+                  </div>
+                </div>
+
+                <table *ngIf="searchList && searchList.length > 0" class="table table-responsive  table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Company Name</th>
+                            <th style="width: 15%;">Authorized Signatory</th>
+                            <th style="width: 15%;">Email</th>
+                            <th>Role</th>
+                            <!-- <th>Status</th> -->
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <tr *ngFor="let user of usersList | gridFilter: {'companyName':searchText, 'fromDate': fromDate, 'toDate': toDate}; index as i;"> -->
+                        <tr *ngFor="let user of searchList ; index as i;">
+                            <td>{{user.companyName}}</td>
+                            <td>{{user.contactPersonName}}</td>
+ 
+                            <td>{{user.email}}</td>
+                            <td>CHA</td>
+                           
+                            <td>
+                                <button (click)="viewClicked(user)" data-toggle="modal" data-target="#viewUserMode" class="btn btn-pill btn-primary">View</button>
+                            </td>
+                        </tr>
+ 
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+  
+   <div class="row margin_top_10">
+       <div class="card width_100">
+           <div class="card-header page_heading" >
+              Active CHA List
+           </div>
+           <div class="card-body">
+               <div class="row col-md-12">
+                   <!-- <div class="col-md-3 col-sm-6"></div> -->
+                   <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                     <div class="form-group">
+                       <label for="searchText"><b>CHA Name</b></label>
+                       <input type="text" [(ngModel)]="searchText" (input)="nameChanged($event.target.value)"  class="form-control" placeholder="Search.."
+                         id="searchText">
+                     </div>
+                   </div>
+                  
+                   <div class="col-md-3 col-sm-6" style="max-width:100%;">
+                   
+                   </div>
+                   <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                     <button (click)="selectedAccountType=''; searchText=''; " type="button" class="btn btn-sm btn-pill btn-danger">Clear</button>
+                   </div>
+                 </div>
+               <table class="table table-responsive  table-striped">
+                   <thead>
+                       <tr>
+                           <th style="width: 30%;">Company Name</th>
+                           <th style="width: 15%;">Authorized Signatory</th>
+                           <th style="width: 15%;">Email</th>
+                           <th>Role</th>
+                           <!-- <th>Status</th> -->
+                           <th>Action</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <!-- <tr *ngFor="let user of usersList | gridFilter: {'companyName':searchText, 'fromDate': fromDate, 'toDate': toDate}; index as i;"> -->
+                       <tr *ngFor="let user of usersList ; index as i;">
+                           <td>{{user.companyName}}</td>
+                           <td>{{user.contactPersonName}}</td>
+
+                           <td>{{user.email}}</td>
+                           <td>CHA</td>
+                          
+                           <td>
+                               <button (click)="viewClicked(user)" data-toggle="modal" data-target="#viewUserMode" class="btn btn-pill btn-primary">View</button>
+                           </td>
+                       </tr>
+
+                   </tbody>
+               </table>
+               <span [hidden]="usersList && usersList.length > 0" class="not-found">
+                   Users Not Found 
+               </span>
+
+               <div class="width_100 mt-1" [hidden]="usersList && usersList.length < 0">
+                   <ngb-pagination
+                       class="float-right" 
+                       [(page)]="page"
+                       [pageSize]="pagination.perPage"
+                       [maxSize]="maxSize"
+                       [collectionSize]="pagination.numOfResults"
+                       aria-label="Default pagination"
+                       [rotate]="true" 
+                       (pageChange)="pageChanged($event)">
+                   </ngb-pagination>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

@@ -24,6 +24,54 @@ export class MastersService {
     return this.http.get(this.serverUrl + url, getHeaders('application/json'))
   }
 
+  getAllAgentsList = (name,type, page) => {
+    let url ='users?';
+    url = url + '&role=' + 'agent'
+    if(name) {  url = url + '&name=' + name}
+    if(type) {  url = url + '&type=' + type;}
+    if(page)  {  url = url + '&page=' + page;} else{url = url + '&page=' + '1'; }
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+  }
+
+  getExportersAgentsList = (exporterId, name, page)=> {
+    let url ='users/exportersCHAList/?';
+    url = url + '&role=' + 'agent';
+    if(exporterId) {  url = url + '&exporterId=' + exporterId}
+    if(name) {  url = url + '&name=' + name}
+    if(page)  {  url = url + '&page=' + page;} else{url = url + '&page=' + '1'; }
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+  }
+
+  findNewCHAByName = (name) => {
+    let url ='users/exportersFindCHA/?';
+    url = url + '&role=' + 'agent';
+    if(name) {  url = url + '&name=' + name}
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+  }
+
+  findNewCHAByEmail= (email) => {
+    let url ='users/exportersFindCHA/?';
+    url = url + '&role=' + 'agent';
+    if(email) {  url = url + '&email=' + email}
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+  }
+
+  inviteCHAByExporter =(user) => {
+    let url ='users/inviteCHA/';
+    return this.http.post(this.serverUrl + url,user, getHeaders('application/json'))
+
+  }
+  removeCHAByExporter=(user) => {
+    let url ='users/removeCHA/';
+    return this.http.post(this.serverUrl + url,user, getHeaders('application/json'))
+
+  }
+
+  inviteNewCHA=(email) => {
+    let url ='users/inviteNewCHA';
+    return this.http.post(this.serverUrl + url,{email:email}, getHeaders('application/json'))
+
+  }
   getMembersList =  (name,type, page) => {
     let url ='masters/members?';
     if(name) {  url = url + '&name=' + name}
@@ -128,6 +176,13 @@ export class MastersService {
   getConfig = (name: string) => {
     let url = 'masters/configs?';
     if(name) {  url = url + '&name=' + name;}
+    return this.http.get(this.serverUrl + url , getHeaders('application/json'))
+
+  }
+
+  getAllExportersForCHA = () =>{
+    let url = 'users/getAllExportersForCHA';
+
     return this.http.get(this.serverUrl + url , getHeaders('application/json'))
 
   }

@@ -94,9 +94,22 @@
                     <div [hidden]="currentCertificate && currentCertificate.docStatus != 'rejected'" class=" col-md-12 warning">
                       <span  *rbacShow="['user']"> <span *ngIf="currentCertificate">  Rejected Reason: {{currentCertificate.rejectionReason}}</span> </span>
                     </div>
-                    <div class="col-md-6 mt-1">
+                    <div *rbacShow="['user']" class="col-md-6 mt-1">
                       <span>  Exporter*:  </span> 
                       <input type="text" formControlName="exporter" class="form-control" required>
+                      <div *ngIf="coForm.exporter.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporter.errors.required">
+                              Exporter is required.
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div *rbacShow="['agent']" class="col-md-6 mt-1">
+                      <span>  Exporter*:  </span> 
+
+                      <select class="form-control dropdowns" formControlName="exporter">
+                        <option *ngFor="let exporter of chaExportersList" [value]="exporter.companyName">{{exporter.companyName}}</option>
+                      </select>
                       <div *ngIf="coForm.exporter.invalid  &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.exporter.errors.required">
                               Exporter is required.
@@ -651,7 +664,7 @@
                           <input type="text" formControlName="typeOfPacking" class="form-control" placeholder="" >
                 
                         </div>
-                        <div class="col-md-1" (click)="removeGoodsItem(i)">
+                        <div class="col-md-1" (click)="removeGoodsItemAmmendment(i)">
                           <i  style="color: crimson;top: 5px;position: relative;font-size: 30px;" class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
                         </div>
                       </div>
@@ -954,6 +967,12 @@
                             <span *ngIf="row.description == 'IGST' || row.description == 'CGST' || row.description == 'SGST' ">{{row.rate}}</span>
                           </td>                        
                         </tr>
+                        <tr *ngIf="currentInvoice.roundedValue  && currentInvoice.roundedValue != 0">
+                          <td style="text-transform:uppercase;"> Round Off </td>
+                          <td></td>
+                          <td></td>
+                          <td>( {{ currentInvoice.roundedValue}})</td>
+                        </tr>
                         <td>Total</td>
                         <td>{{currentInvoice.totalQuantity}}</td>
                         <td></td>
@@ -1044,6 +1063,11 @@
               class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Ammendment  <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i> </button>
               <button *rbacShow="['user']" (click)="certificateMode='create'" data-toggle="modal" data-target="#createCORequestModal" type="button"
                 class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Request  <i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i> </button>
+
+                <button *rbacShow="['agent']" (click)="ammendmentMode='create'; ammntmentRequest = true" data-toggle="modal" data-target="#createCORequestModal" type="button"
+                class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Ammendment  <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i> </button>
+                <button *rbacShow="['agent']" (click)="certificateMode='create'" data-toggle="modal" data-target="#createCORequestModal" type="button"
+                  class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Request  <i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i> </button>
             </div>
           </div>
           <div class="row col-md-12">
@@ -1132,6 +1156,16 @@
                   <span *ngIf="pl.docStatus == 'rejected' " class="badge badge-danger" style="text-transform: capitalize;">{{pl.docStatus}}</span>
                 </td>
                 <td *rbacShow="['user']">
+                  <span *ngIf="pl.ammendmentMode">
+                    <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditAmmendmentCertificateClicked(pl)">Edit</button>
+
+                  </span>
+                  <span *ngIf="!pl.ammendmentMode">
+                    <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
+                  </span>
+                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
+                </td>
+                <td *rbacShow="['agent']">
                   <span *ngIf="pl.ammendmentMode">
                     <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditAmmendmentCertificateClicked(pl)">Edit</button>
 

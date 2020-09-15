@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import { navItems } from '../../_nav';
-import { navItems1 } from '../../_.nav2';
+import { navItems1, navItems2} from '../../_.nav2';
 import { UserRole } from '../../enums/user-role';
 import { ConditionalExpr } from '@angular/compiler';
 
@@ -13,7 +13,7 @@ export class DefaultLayoutComponent {
   user: object; 
   public sidebarMinimized = false;
   public currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-  public navItems = this.currentUser ? (this.currentUser['role'] == UserRole.ICC_ADMIN ||this.currentUser['role'] == UserRole.ICC_EDITOR )  ?  navItems: navItems1 : navItems1 ;
+  public navItems = this.currentUser ? (this.currentUser['role'] == UserRole.ICC_ADMIN ||this.currentUser['role'] == UserRole.ICC_EDITOR )  ?  navItems: this.currentUser['role'] == UserRole.ICC_AGENT   ?   navItems2 : navItems1:navItems1  ;
 
   ngOnInit(): void {
 

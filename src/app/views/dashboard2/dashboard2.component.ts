@@ -85,7 +85,8 @@ export class Dashboard2Component implements OnInit {
   notIssuedCertificate: Boolean = false;
   coRefCertInvalid: Boolean = false;
   uploadDocClicked: Boolean =false;
-
+  chaExportersList: [];
+  chaExportersNameList=[];
   rzp1:any;
   razorPayOptions: any;
   payment_creation_id=null;
@@ -507,6 +508,56 @@ export class Dashboard2Component implements OnInit {
 
         });
       }
+
+      if(this.currentUser && this.currentUser["role"] == UserRole.ICC_AGENT){
+        console.log('ICC_AGENT')
+        this.loadingService.show();
+        this.mastersService.getAllExportersForCHA().subscribe(data => {
+          if(data['status'] == "success"){
+            this.chaExportersList =  data['data']
+            this.chaExportersNameList = _.map(this.chaExportersList, (e) => { return e['companyName']})
+            console.log('this.chaExportersNameList', this.chaExportersNameList);
+          }
+        });
+
+        this.certificateService.getCertificates(companyName, startDate,endDate, 'plList', page).subscribe(data => {
+          if(data['status'] == "success"){
+            this.pagination = data['data']['pagination'];
+            if(!this.pagination){
+              this.pagination = {
+                currentPage: 1,
+                nextPage: 1,
+                numOfResults: 0,
+                pages: 1,
+                perPage: 5
+              };
+            }
+            this.loadingService.hide();
+            this.page = this.pagination['currentPage'];
+            this.plList = data['data']['certificates'];
+          }
+
+        });
+        this.loadingService.show();
+        this.certificateService.getCertificates(companyName, startDate,endDate, 'coList', page1).subscribe(data => {
+          if(data['status'] == "success"){
+            this.pagination1 = data['data']['pagination'];
+            if(!this.pagination1){
+              this.pagination1 = {
+                currentPage: 1,
+                nextPage: 1,
+                numOfResults: 0,
+                pages: 1,
+                perPage: 5
+              };
+            }
+            this.loadingService.hide();
+            this.page1 = this.pagination1['currentPage'];
+            this.coList = data['data']['certificates'];
+          }
+
+        });
+      }
       if(this.currentUser && (this.currentUser["role"] == UserRole.ICC_ADMIN|| this.currentUser["role"] == UserRole.ICC_EDITOR ) ){
         this.loadingService.show();
         this.certificateService.getEditorCertificates(companyName, startDate,endDate,'plList', page).subscribe(data => {
@@ -573,7 +624,7 @@ export class Dashboard2Component implements OnInit {
       this.loadingService.hide();
       if(data['status'] == "success"){
         this.currentCertificate = data['data'];
-        console.log('this.currentCertificate', this.currentCertificate)
+
         if(this.currentCertificate['docStatus'] != "draft" && !this.currentCertificate['rejectionReason']){
 
           this.toastr.error('', "Request is not in draft mode");

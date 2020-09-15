@@ -314,6 +314,33 @@ ValidateToken() {
 
   }
 
+  registerCHA(data){
+
+    data.role = "agent";
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/x-www-form-urlencoded',
+      })
+    };
+    
+
+    return this.http.post<any>(`${this.serverUrl}/register`, data)
+      .pipe(map(user => {
+        if(user.status == "error") {
+          this.toastr.error('Error',user.message);
+          return false;
+        }
+        if(user.status =="success"){
+          return data;
+        }
+        
+      })
+      );
+
+
+  }
+
   getUserById = (userId: string) => {
     const httpOptions = {
       headers: new HttpHeaders({ 

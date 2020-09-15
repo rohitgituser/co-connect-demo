@@ -37,7 +37,254 @@
       </div>
     </div>
   </div>
+  
+  <div class="modal" #registerChaMode id="registerChaMode">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
 
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">CHA Registration Form</h4>
+          <button type="button" id="closeRegistrationModalButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form [formGroup]="chaRegistrationForm" (ngSubmit)="onCHARegisterSubmit()" autocomplete="off">
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-8">
+              <span> <b>Company Name*:</b> </span> 
+              <input type="text" formControlName="companyName" class="form-control" placeholder="Company Name" required>
+              <div *ngIf="chaForm.companyName.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.companyName.errors.required">
+                    Company name is required.
+                </div>
+               
+              </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-8">
+              <span> <b>Address*:</b> </span> 
+              <input type="text" formControlName="address" class="form-control" placeholder="Address" required>
+              <div *ngIf="chaForm.address.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.address.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <!-- <span> <b>  DCCIA CO code Issued Date:</b> </span> 
+              <input type="date" formControlName="coReferenceDate" maxlength="10" class="form-control" placeholder="Co Reference Number">
+              -->
+            </div>
+            <div class="col-md-4">
+              <span> <b>City*:</b> </span> 
+              <input type="text" formControlName="city" class="form-control" placeholder="City" required>
+              <div *ngIf="chaForm.city.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.city.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>State*:</b> </span> 
+              <input type="text" formControlName="state" class="form-control" placeholder="State" required>
+              <div *ngIf="chaForm.state.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.state.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <span> <b>Pin Code*:</b> </span> 
+              <input type="text" formControlName="zipCode" class="form-control" placeholder="Zip Code" required>
+              <div *ngIf="chaForm.zipCode.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.zipCode.errors.required">
+                  Address  is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <span> <b> CHA License No*:</b> </span> 
+              <input type="text" formControlName="chaLicenseNo" maxlength="10" class="form-control" placeholder="Co Reference Number" required>
+              <div *ngIf="chaForm.chaLicenseNo.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.chaLicenseNo.errors.required">
+                  CHA License No is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b> Field of Operations*:</b> </span> 
+
+              <ng-multiselect-dropdown
+                  name="fieldOfOperation"
+                  [placeholder]="'Select Field'"
+                  [data]="fieldsArray"
+                  formControlName="fieldOfOperation"
+                  [disabled]="disabled"
+                  [settings]="dropdownSettings"
+                  (onSelect)="onItemSelect($event)">
+              </ng-multiselect-dropdown>
+
+              
+              <!-- <input type="text" formControlName="fieldOfOperation" maxlength="10" class="form-control" placeholder="Co Reference Number" required> -->
+              <div *ngIf="chaForm.fieldOfOperation.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.fieldOfOperation.errors.required">
+                  Field of Operations is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b> CHA License date*:</b> </span> 
+              <input type="date" formControlName="chaLicenseDate" maxlength="10" class="form-control" placeholder="Co Reference Number" required>
+              <div *ngIf="chaForm.chaLicenseDate.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.chaLicenseDate.errors.required">
+                  CHA License Date is required.
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-md-4">
+              <span> <b>IEC No*:</b> </span> 
+              <input type="text" formControlName="iecNumber" class="form-control" placeholder="IEC Number" required>
+              <div *ngIf="chaForm.iecNumber.invalid && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.iecNumber.errors.required">
+                  IEC No.  is required.
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-4">
+              <span> <b>PAN No*:</b> </span> 
+              <input type="text" formControlName="panNumber" class="form-control" placeholder="PAN Number" required>
+              <div *ngIf="chaForm.panNumber.invalid  && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.panNumber.errors.required">
+                  PAN No.  is required.
+                </div>
+                <div *ngIf="chaForm.panNumber.errors.pattern">
+                  In valid PAN Number.
+              </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <span> <b>GSTIN No:</b> </span> 
+              <input type="text" formControlName="gstinNumber" class="form-control" placeholder="GSTIN Number" >
+             
+            </div>
+
+            <div class="col-md-6">
+              <span> <b>Name of Authorized Signatory*:</b> </span> 
+              <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Name" required>
+              <div *ngIf="chaForm.contactPersonName.invalid && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.contactPersonName.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <span> <b>Website:</b> </span> 
+              <input type="text" formControlName="website" class="form-control" placeholder="wwww.xyz.com" >
+            
+            </div>
+
+            <!-- <div class="col-md-6">
+              <span> <b>Registered Person*:</b> </span> 
+              <input type="text" formControlName="contactPersonName" class="form-control" placeholder="Contact Person Name" >
+              <div *ngIf="chaForm.contactPersonName.invalid && registerSubmitted" class="error_txt">
+                <div *ngIf="chaForm.contactPersonName.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-md-6">
+              <span> <b>Email ID*:</b> </span> 
+              <input type="text" formControlName="email" class="form-control" placeholder="Email Id"  required>
+              <div *ngIf="chaForm.email.invalid && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.email.errors.required">
+                  Email Id is required.
+              </div>
+              <div *ngIf="chaForm.email.errors.pattern">
+                  In valid email address.
+              </div> 
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span> <b>Registered Contact No.*:</b> </span> 
+              <input type="text" formControlName="contactNumber" class="form-control" placeholder="Contact Number" >
+              <div *ngIf="chaForm.contactNumber.invalid && chaRegisterSubmitted" class="error_txt">
+                <div *ngIf="chaForm.contactNumber.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div>
+           
+            <div class="col-md-6">
+              <span> <b>Fax No.:</b> </span> 
+              <input type="text" formControlName="faxNumber" class="form-control"  >
+             
+            </div>
+
+            <!-- <div class="col-md-6">
+              <span> <b>Annual Turnover*:</b> </span> 
+              <input type="text" formControlName="turnover" class="form-control" placeholder="Amount" >
+              <div *ngIf="chaForm.turnover.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="chaForm.turnover.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-6">
+              <span> <b>Export Product*:</b> </span> 
+              <input type="text" formControlName="product" class="form-control" placeholder="Product Name" >
+              <div *ngIf="chaForm.product.invalid  && registerSubmitted" class="error_txt">
+                <div *ngIf="chaForm.product.errors.required">
+                  This field is required  is required.
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <span> <b>Password*:</b> </span> 
+              <input type="password" formControlName="password" class="form-control"  required>
+              <div *ngIf="chaForm.password.invalid" class="error_txt">
+                <div *ngIf="chaForm.password.errors.required && chaRegisterSubmitted">
+                  Password Id is required.
+              </div>
+              <div *ngIf="chaForm.password.errors.pattern">
+                At least one digit,one lowercase character,one uppercase character and least one special character is Required. At least 8 characters in length, but no more than 32.
+              </div> 
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span> <b>Confirm Password*:</b> </span> 
+              <input type="password" formControlName="passwordConfirm" class="form-control"  >
+              
+            </div>
+
+            <div *ngIf="showError" class="col-md-12 error_txt text-center" style="font-size: 12px;">
+              <span class="text-center"> {{showError}}</span>
+            </div>
+
+          </div>
+         
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button  type="submit"   style="float: right; font-weight: 600;" class="btn btn-success"> Register</button>
+
+          <button type="button"  class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
       <!-- The Modal -->
   <div class="modal" #registerMode id="registerMode">
     <div class="modal-dialog modal-lg">
@@ -191,7 +438,7 @@
            
             <div class="col-md-6">
               <span> <b>Fax No.:</b> </span> 
-              <input type="text" formControlName="faxNumber" class="form-control" placeholder="Fax Number" >
+              <input type="text" formControlName="faxNumber" class="form-control"  >
              
             </div>
 
@@ -312,10 +559,12 @@
                     </div>
                   </div>
                   <div>
-                    <div class="col-md-12 ">
-                      <button style="float: right;" type="button" data-toggle="modal" data-target="#registerMode" class="btn btn-link px-0">Register </button>
+                    <div class="col-md-12 row ">
+                      <button style="float: right;" type="button" data-toggle="modal" data-target="#registerMode" class="btn btn-link px-0">Register Exporter </button>
                     </div>
-
+                    <div class="col-md-12 row">
+                      <button style="float: right;" type="button" data-toggle="modal" data-target="#registerChaMode" class="btn btn-link px-0">Register CHA </button>
+                    </div>
                   </div>
                 </form>
               </div>

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../helpers/auth.service';
 import { UserRole } from '../../enums/user-role';
 import { LoadingScreenService } from '../loader/services/loading-screen.service';
+import _ from "lodash";
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'
@@ -13,15 +15,28 @@ export class LoginComponent {
   imagesUrl: object; 
   loginForm: FormGroup;
   registrationForm: FormGroup;
+  chaRegistrationForm: FormGroup;
   forgotPasswordForm: FormGroup;
   submitted = false;
   registerSubmitted = false;
+  chaRegisterSubmitted = false;
   passSubmitted = false;
+  fieldsArray: any;
+  fieldOfOperationString: string
   error: {};
   loginError: string;
   // passwordConfirm: string = '';
   showError: String ='';
-
+  dropdownSettings: object = {
+    "singleSelection": false,
+    "idField": "item_id",
+    "textField": "item_text",
+    "selectAllText": "Select All",
+    "unSelectAllText": "UnSelect All",
+    "itemsShowLimit": 3,
+    "allowSearchFilter": false,
+    "limitSelection": 2
+  }
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -35,6 +50,12 @@ export class LoginComponent {
     this.authService.restrctLogin();
     let EmailPattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'
     let PasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    this.fieldsArray = [
+      { item_id: 1, item_text: 'Air' },
+      { item_id: 2, item_text: 'Ocean' },
+      { item_id: 3, item_text: 'Inland' },
+      { item_id: 4, item_text: 'Costal' },
+      ];
     let panPattern = new RegExp("[A-Z]{5}[0-9]{4}[A-Z]{1}")
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.pattern(EmailPattern)],
@@ -68,6 +89,31 @@ export class LoginComponent {
       passwordConfirm: [''],
 
     })
+
+    this.chaRegistrationForm = this.formBuilder.group({
+      email: ['', Validators.pattern(EmailPattern)],
+      companyName: ['', Validators.required],
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      zipCode: ['', Validators.required],
+      gstinNumber: [''],
+      panNumber: ['', Validators.pattern(panPattern)],
+      // cdDmName: ['', Validators.required],
+      contactPersonName: ['', Validators.required],
+      contactNumber: ['', Validators.required],
+      faxNumber: [''],
+      // turnover: ['', Validators.required],
+      // product: ['', Validators.required],
+      website: [''],
+      fieldOfOperation: ['', Validators.required],
+      chaLicenseNo: ['', Validators.required],
+      chaLicenseDate: ['', Validators.required],
+
+      password:['', Validators.pattern(PasswordPattern)],
+      passwordConfirm: [''],
+
+    })
   }
 
   // setUser(): void {
@@ -78,6 +124,7 @@ export class LoginComponent {
   get password() { return this.loginForm.controls.password; }
 
   get rForm() { return this.registrationForm.controls;}
+  get chaForm() { return this.chaRegistrationForm.controls;}
   get passForm() { return this.forgotPasswordForm.controls;}
 
   onSubmit() {
@@ -129,7 +176,6 @@ export class LoginComponent {
     this.showError = ''
     this.registerSubmitted = true;
     this.loadingService.show();
-    console.log('this.registrationForm', this.registrationForm)
 
     if(this.registrationForm.invalid){
       return false;
@@ -159,6 +205,55 @@ export class LoginComponent {
 
 
     });
+  }
+
+  onItemSelect(item: any) {
+    console.log('onItemSelect', item);
+  }
+
+  onCHARegisterSubmit(){
+    this.showError = ''
+    this.chaRegisterSubmitted = true;
+    this.loadingService.show();
+    if(this.chaRegistrationForm.invalid){
+      console.log('this.chaRegistrationForm', this.chaRegistrationForm)
+      return false;
+    }
+
+    
+    let values = this.chaRegistrationForm.value;
+    this.fieldOfOperationString = '';
+    _.forEach(values.fieldOfOperation , (fields) => {
+      if( this.fieldOfOperationString != ''){
+        this.fieldOfOperationString += ',';
+      }
+      this.fieldOfOperationString += fields.item_text
+    })
+    console.log('this.fieldOfOperationString', this.fieldOfOperationString)
+    if(values.passwordConfirm !== values.password){
+      this.showError = "Confirm Password is not matching."
+      return false;
+      
+    }
+    values.fieldOfOperation = this.fieldOfOperationString;
+
+    this.authService.registerCHA(values).subscribe((data) => {
+      if(data && data['email'] ){
+        this.loadingService.hide();
+
+        document.getElementById("closeRegistrationModalButton").click();
+        this.registrationForm.reset();
+        this.registerSubmitted = false;
+
+        this.toastr.success('Success', 'Registration success');
+      }
+      
+
+
+    });
+
+    
+
   }
 
 }
