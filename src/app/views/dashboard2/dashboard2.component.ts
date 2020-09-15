@@ -573,7 +573,7 @@ export class Dashboard2Component implements OnInit {
       this.loadingService.hide();
       if(data['status'] == "success"){
         this.currentCertificate = data['data'];
-
+        console.log('this.currentCertificate', this.currentCertificate)
         if(this.currentCertificate['docStatus'] != "draft" && !this.currentCertificate['rejectionReason']){
 
           this.toastr.error('', "Request is not in draft mode");
@@ -668,7 +668,7 @@ export class Dashboard2Component implements OnInit {
       this.loadingService.hide();
       if(data['status'] == "success"){
         this.currentCertificate = data['data'];
-        if(this.currentCertificate['docStatus'] != "draft"){
+        if(this.currentCertificate['docStatus'] != "draft"  && !this.currentCertificate['rejectionReason']){
 
           this.toastr.error('', "Request is not in draft mode");
           document.getElementById("closeCreateCoModelCloseButton").click();
