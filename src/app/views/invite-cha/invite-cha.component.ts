@@ -29,6 +29,7 @@ export class InviteChaComponent implements OnInit {
   isMember: any;
   profileValidity: any;
   newCHA: boolean = false;
+  newCHAEmail: string = '';
   ngOnInit(): void {
 
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
