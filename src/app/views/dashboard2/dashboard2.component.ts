@@ -1308,27 +1308,21 @@ export class Dashboard2Component implements OnInit {
     this.minLCDate = data;
   }
 
-  otpBackButton = () =>{
-    console.log('otpBackButton');
-    if( this.currentCertificate.attachedDocuments.length > 0){
-      _.forEach(this.currentCertificate.attachedDocuments, (doc) => {
-        this.attachedDocuments.push({name: doc.name, isEndorseRequired: doc.isEndorseRequired, url: doc.url})
-      });
+  // otpBackButton = () =>{
+  //   console.log('otpBackButton');
 
-      if(this.lcRequired && this.currentCertificate.attachedDocuments.length == 3){
-        this.attachedDocuments.push({name: "LC ", isEndorseRequired: false})
-        this.mandatoryDocs = 4;
-      }
-    }else{
-      this.attachedDocuments.push({name: "Covering Letter", isEndorseRequired: false})
-      this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
-      this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
-      if(this.lcRequired){
-        this.attachedDocuments.push({name: "LC ", isEndorseRequired: false})
-        this.mandatoryDocs = 4;
-      }
-    }
-  }
+  //   if( this.currentCertificate.attachedDocuments.length > 0){
+  //     _.forEach(this.currentCertificate.attachedDocuments, (doc) => {
+  //       this.attachedDocuments.push({name: doc.name, isEndorseRequired: doc.isEndorseRequired, url: doc.url})
+  //     });
+
+    
+  //   }else{
+  //     this.attachedDocuments.push({name: "Packing List", isEndorseRequired: false})
+  //     this.attachedDocuments.push({name: "Commercial Invoice", isEndorseRequired: false})
+      
+  //   }
+  // }
 
 
   getCert = () => {
