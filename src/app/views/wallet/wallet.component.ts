@@ -138,7 +138,7 @@ export class WalletComponent implements OnInit {
     if (name && name.length > 2) {
         this.mastersService.getBaUsers(name).subscribe(data => {
 
-            this.companyList = data['data'];
+            this.companyList =  _.filter(data['data'], (data) => { return  data.isConfirmed;});
 
         });
     }

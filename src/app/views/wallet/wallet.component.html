@@ -21,7 +21,7 @@
                         <input type="text" [(ngModel)]="selectedCompany" formControlName="selectedCompany" (input)="getCompany($event.target.value)" class="form-control" placeholder="Search.." />
                         <div [hidden]="!companyList">
                             <ul  class="filter-select" style="padding-left: 0px;">
-                                <li (click)="companyClicked(company)" *ngFor="let company of companyList"   class="filter-select-list">{{company.companyName}}
+                                <li (click)="companyClicked(company)" *ngFor="let company of companyList"   class="filter-select-list">{{company.companyName}} <sub style="color:blue">({{company.email}})</sub>
                                 </li>
                             </ul>
                         </div> 
