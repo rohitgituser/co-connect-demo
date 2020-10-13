@@ -243,6 +243,7 @@ onDocUploadClicked(event, index): void {
 }
 
 digitallySignDoc(event, index){
+  console.log('digitallySignDoc')
   let doc = this.acceptDocuments[index];
   this.certificateService.getBase64Format(doc.oldUrl).subscribe(res =>{
     doc.base = res['data'];

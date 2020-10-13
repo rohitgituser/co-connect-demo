@@ -395,7 +395,7 @@
 
                     <div class="row col-md-12 mt-1">
                       <div class="col-md-6 ">
-                        <span>   Net Weight*:  </span> 
+                        <span>   Net Weight* <sub>(Enter with Unit)</sub>:  </span> 
                         <input type="text" formControlName="netWeight" class="form-control" >
                         <div *ngIf="coForm.netWeight.invalid  &&  coSubmitted" class="error_txt">
                           <div *ngIf="coForm.netWeight.errors.required">
@@ -404,7 +404,7 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <span>  Gross Weight*:  </span> 
+                        <span>  Gross Weight* <sub>(Enter with Unit)</sub>:  </span> 
                         <input type="text" formControlName="grossWeight" class="form-control" >
                         <div *ngIf="coForm.grossWeight.invalid  &&  coSubmitted" class="error_txt">
                           <div *ngIf="coForm.grossWeight.errors.required">
@@ -767,7 +767,7 @@
   
                       <div class="row col-md-12 mt-1">
                         <div class="col-md-6 ">
-                          <span>   Net Weight*:  </span> 
+                          <span>   Net Weight* <sub>(Enter with Unit)</sub>:  </span> 
                           <input type="text" formControlName="netWeight" class="form-control" >
                           <div *ngIf="coAmmendmentForm.netWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                             <div *ngIf="coAmmendmentForm.netWeight.errors.required">
@@ -776,7 +776,7 @@
                           </div>
                         </div>
                         <div class="col-md-6">
-                          <span>  Gross Weight*:  </span> 
+                          <span>  Gross Weight* <sub>(Enter with Unit)</sub>:  </span> 
                           <input type="text" formControlName="grossWeight" class="form-control" >
                           <div *ngIf="coAmmendmentForm.grossWeight.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                             <div *ngIf="coAmmendmentForm.grossWeight.errors.required">

@@ -50,6 +50,7 @@
                     <thead>
                         <tr>
                             <th>Invoice No</th>
+                            <th *rbacShow="['user']">Consignee's Name</th>
                             <th>Cert Ref No</th>
 
                             <th *rbacShow="['editor']" style="width: 30%;">Company Name</th>
@@ -66,7 +67,10 @@
                     <tbody>
                         <tr *ngFor="let invoice of invoiceList ; index as i;">
                             <td>{{invoice.invoiceNo}}</td>
+                            <td *rbacShow="['user']">{{invoice.consignee }}</td>
+
                             <td>{{invoice.certificateRefNo}}</td>
+
                             <td *rbacShow="['editor']">{{invoice.buyer}}</td>
                             <td *rbacShow="['admin']">{{invoice.buyer}}</td>
 
