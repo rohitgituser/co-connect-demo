@@ -23,7 +23,7 @@ export class ChaListComponent implements OnInit {
   membersValidity: any;
   isMember: any;
   profileValidity: any;
-
+  agentUsersList: any;
   ngOnInit(): void {
 
     this.accountType = ["Active", "In-Active"];
@@ -99,4 +99,13 @@ export class ChaListComponent implements OnInit {
     }
   }
 
+  viewExporters(user){
+    this.mastersService.getAllAgentsExportersList(user._id).subscribe(data => {
+
+      console.log(data);
+      if(data && data['status'] == 'success'){
+        this.agentUsersList = data['data']['usersList'];
+      }
+    });
+  }
 }

@@ -112,6 +112,9 @@ export class CertificateService {
     return this.http.post(this.serverUrl + 'editorCertificate/accept/' + certificate._id, {issuedBy : certificate.issuedBy, issuedById: certificate.issuedById}, getHeaders('application/json'))
   }
 
+  rejectForEver =  (certificate) => {
+    return this.http.post(this.serverUrl + 'editorCertificate/rejectForEver/' + certificate._id, {certificate : certificate}, getHeaders('application/json'))
+  }
   payAmountClicked = (invoiceId, certificateId) => {
     return this.http.post(this.serverUrl + 'certificate/pay/' + certificateId + '/' + invoiceId, {invoiceId : invoiceId,certificateId: certificateId }, getHeaders('application/json'))
   }

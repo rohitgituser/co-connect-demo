@@ -61,7 +61,7 @@ export class PlciComponent implements OnInit {
       this.loadingService.hide()
       this.currentCertificate = response['data'];
 
-      if(this.currentCertificate['editorActionTimeStamp']){
+      if(this.currentCertificate && this.currentCertificate['editorActionTimeStamp']){
         this.currentCertificate['editorActionTimeStampMoment'] = moment(this.currentCertificate['editorActionTimeStamp']).format('LLL')
       }
       // this.currentCertificate['coUrl'] = this.currentCertificate['coUrl'] +  "&output=embed";
@@ -70,7 +70,7 @@ export class PlciComponent implements OnInit {
       //     doc.url = doc.url +  "&output=embed";
       // })
       this.acceptDocuments = [];
-      if(this.currentCertificate['isCOEndorseRequired']){
+      if(this.currentCertificate && this.currentCertificate['isCOEndorseRequired']){
         let signedStatus = _.find(this.currentCertificate['signedDocument'] , doc=> {
           return doc.name == 'CO';
         })
@@ -243,7 +243,6 @@ onDocUploadClicked(event, index): void {
 }
 
 digitallySignDoc(event, index){
-  console.log('digitallySignDoc')
   let doc = this.acceptDocuments[index];
   this.certificateService.getBase64Format(doc.oldUrl).subscribe(res =>{
     doc.base = res['data'];
@@ -532,7 +531,18 @@ signDocHandel(i, doc, documentLength){
 
   }
   
+  rejectForEver = () => {
+
+    console.log(this.currentCertificate);
+
+    this.certificateService.rejectForEver(this.currentCertificate).subscribe(data => {
   
+      this.getCertificateById(this.currentCertificate['_id']);
+      document.getElementById("closeConfirmRejectButton").click();
+
+    });
+
+  }
 
 
 }

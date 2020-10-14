@@ -14,7 +14,7 @@
              CHA 
           </span>  </div> 
       </div>
-        <div routerLink="/master/pricing" class="col-md-3 card date-card">
+        <div *rbacShow="['admin']" routerLink="/master/pricing" class="col-md-3 card date-card">
             <div  class="master-label">
                <span class="col-md-3" >
                   <img src="assets/img/avatars/fa-rupee-sign.png" style="    width: 1.8em;" class="img-avatar" alt=""/>

@@ -1,5 +1,54 @@
 
 <div class="animated fadeIn container-fluid mt-3">
+  <!-- View Exporters Modal -->
+  
+  <div class="modal" #viewExportersMode id="viewExportersMode">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+ 
+        <!-- Modal Header -->
+        <div class="modal-header" style="background: #162b5a; color: white;">
+          <h4 class="modal-title">CHA Exporters List</h4>
+          <button type="button" id="closeViewExporterModalButton" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          
+          <table class="table table-responsive  table-striped">
+            <thead>
+                <tr>
+                    <th style="">Company Name</th>
+                    <th style="">City</th>
+                    <th style="">State</th>
+                    <th>Contact Person</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr *ngFor="let user of usersList | gridFilter: {'companyName':searchText, 'fromDate': fromDate, 'toDate': toDate}; index as i;"> -->
+                <tr *ngFor="let user of agentUsersList ; index as i;">
+                    <td>{{user.companyName}}</td>
+                    <td>{{user.city}}</td>
+
+                    <td>{{user.state}}</td>
+                    <td>{{user.contactPersonName}}</td>
+                   
+                </tr>
+
+            </tbody>
+        </table>
+         
+        </div>
+ 
+        <!-- Modal footer -->
+        <div class="modal-footer">
+         
+          <button type="button"  class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
     <!-- The  View Modal -->
  <div class="modal" #viewUserMode id="viewUserMode">
    <div class="modal-dialog modal-lg">
@@ -157,11 +206,13 @@
 
                            <td>{{user.email}}</td>
                            <td>{{user.role}}</td>
-                           <td *ngIf="user.isConfirmed"><span class="badge badge-success">Active</span></td>
-                           <td *ngIf="!user.isConfirmed"><span class="badge badge-warning">In-Active</span></td>
+                           <td *ngIf="user.chaExporters.length > 0"><span class="badge badge-success">Active</span></td>
+                           <td *ngIf="!user.chaExporters.length > 0"><span class="badge badge-warning">In-Active</span></td>
 
                            <td>
                                <button (click)="viewClicked(user)" data-toggle="modal" data-target="#viewUserMode" class="btn btn-pill btn-primary">View</button>
+                               <button *ngIf="user.chaExporters.length > 0" (click)="viewExporters(user)" data-toggle="modal" data-target="#viewExportersMode" class="btn btn-pill btn-primary">Exporters</button>
+
                            </td>
                        </tr>
 

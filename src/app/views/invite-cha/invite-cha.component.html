@@ -126,9 +126,11 @@
        <!-- Modal footer -->
        <div class="modal-footer">
         
-         <button type="button"  class="btn btn-dark" data-dismiss="modal">Close</button>
+         <button [hidden]="!newCHA" type="button"  class="btn btn-danger" (click)="rejectCHA(selectedUser)">STOP SERVICE</button>
+
          <button [hidden]="newCHA" type="button"  class="btn btn-primary" (click)="inviteCHAExporter(selectedUser)"> Invite</button>
-         <button [hidden]="!newCHA" type="button"  class="btn btn-primary" (click)="rejectCHA(selectedUser)">Stop</button>
+         <button type="button"  class="btn btn-dark" data-dismiss="modal">Close</button>
+
 
        </div>
 

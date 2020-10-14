@@ -33,6 +33,13 @@ export class MastersService {
     return this.http.get(this.serverUrl + url, getHeaders('application/json'))
   }
 
+  getAllAgentsExportersList = (id) => {
+    let url ='users/cha/exportersList/' + id;
+    // if(id) {  url = url + '&chaId=' + id;}
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+
+  }
+
   getExportersAgentsList = (exporterId, name, page)=> {
     let url ='users/exportersCHAList/?';
     url = url + '&role=' + 'agent';
