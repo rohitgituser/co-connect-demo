@@ -149,7 +149,10 @@ export class CertificateService {
 
   updateSigningStatus = (data) => {
     return this.http.post(this.serverUrl + 'certificate/updateSigningStatus' , data, getHeaders('application/json'))
+  }
 
+  getReport = (type) => {
+    return this.http.get(this.serverUrl + 'certificate/report/getCount/' + type, getHeaders('application/json'))
   }
 
 }

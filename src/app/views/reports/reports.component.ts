@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartJSComponent } from '../chartjs/chartjs.component';
 import _ from "lodash";
 import * as moment from 'moment';
+import { CertificateService } from '../../services/certificate.service';
 
 @Component({
   selector: 'app-reports',
@@ -11,8 +12,9 @@ import * as moment from 'moment';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor() { }
+  constructor(    private certificateService: CertificateService    ) { }
   buttonType:string;
+  reportCount: any;
   // lineChart
   public lineChartData: Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Members'},
@@ -81,17 +83,36 @@ export class ReportsComponent implements OnInit {
   ];
 
   // Doughnut
-  public doughnutChartLabels: string[] = ['Members', 'Non-Members'];
-  public doughnutChartData: number[] = [650, 350];
+  public doughnutChartLabels: string[] = ['Created', 'Submitted', 'Issued', 'Rejected'];
+  public doughnutChartData: number[] = [0,0,0,0];
   public doughnutChartType = 'doughnut';
 
   ngOnInit(): void {
     this.buttonType = "Year";
-    this.yearReport();
+    // this.yearReport();
+    this.dayReport();
+    // this.certificateService.getReport('Day').subscribe(data => {
+    //   if(data['status'] == "success"){
+    //     this.reportCount = data['data'];
+    //   }
+    // });
+  }
+
+  dayReport(): void{
+    this.buttonType = "Day";
+
+    this.certificateService.getReport('Day').subscribe(data => {
+      if(data['status'] == "success"){
+        this.reportCount = data['data'];
+        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount];
+        // console.log(' this.doughnutChartData',  this.doughnutChartData)
+      } 
+    });
   }
 
   yearReport(): void{
     this.buttonType = "Year";
+    
     let currentYear = moment().year();
     this.lineChartLabels = [];
     this.barChartLabels = [];
@@ -112,11 +133,18 @@ export class ReportsComponent implements OnInit {
       {data: [28, 48, 40, 59, 44, 15], label: 'Non-Members'},
     ];
 
-    this.doughnutChartData = [3709, 2334];
+    // this.doughnutChartData = [3709, 2334];
 
   }
   quarterReport(): void{
     this.buttonType = "Quarter";
+    this.certificateService.getReport('Quarter').subscribe(data => {
+      if(data['status'] == "success"){
+        this.reportCount = data['data'];
+        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount]
+
+      }
+    });
     // Line chart data
     this.lineChartData = [
       {data: [225, 110, 0, 0 ], label: 'Members'},
@@ -130,12 +158,18 @@ export class ReportsComponent implements OnInit {
       {data: [440, 60, 0, 0], label: 'Non-Members'},
     ];
 
-    this.doughnutChartData = [235, 115];
+    // this.doughnutChartData = [235, 115];
 
   }
   monthReport(): void{
     this.buttonType = "Month";
-
+    this.certificateService.getReport('Month').subscribe(data => {
+      if(data['status'] == "success"){
+        this.reportCount = data['data'];
+        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount]
+        console
+      }
+    });
      // Line chart data
      this.lineChartData = [
       {data: [75, 100, 50, 10, 0, 0 ,0, 0, 0,0, 0, 0], label: 'Members'},
@@ -149,11 +183,18 @@ export class ReportsComponent implements OnInit {
       {data: [40, 40, 10, 25, 10, 0, 0, 0, 0, 0, 0,0], label: 'Non-Members'},
     ];
 
-    this.doughnutChartData = [235, 115];
+    // this.doughnutChartData = [235, 115];
 
   }
   weekReport(): void{
     this.buttonType = "Week";
+    this.certificateService.getReport('Week').subscribe(data => {
+      if(data['status'] == "success"){
+        this.reportCount = data['data'];
+        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount]
+
+      }
+    });
      // Line chart data
      this.lineChartData = [
       {data: [3,4,2,1, 0], label: 'Members'},
@@ -167,7 +208,7 @@ export class ReportsComponent implements OnInit {
       {data: [40, 40, 10, 25, 10, 0, 0, 0, 0, 0, 0,0], label: 'Non-Members'},
     ];
 
-    this.doughnutChartData = [10, 25];
+    // this.doughnutChartData = [10, 25];
 
   }
 
