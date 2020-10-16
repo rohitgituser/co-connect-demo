@@ -1204,9 +1204,7 @@ export class Dashboard2Component implements OnInit {
                  
                 setTimeout(() => { this.saveFileDocument(formData, this.currentCertificate._id);}, index* 700);
 
-                if(index +1 == newDocuments.length){
-                  setTimeout(() => {  this.resendOTP(this.currentCertificate);}, index* 1000);
-                }
+               
                   
              
               });

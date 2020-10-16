@@ -80,13 +80,11 @@ export class PlciComponent implements OnInit {
           url: signedStatus && signedStatus.isSigned ? this.currentCertificate['coUrl'] : ''
         })
       }
-
       _.forEach(this.currentCertificate['attachedDocuments'], (doc) => {
         let signedStatus = _.find(this.currentCertificate['signedDocument'] , sign=> {
           
           return doc.name.toLowerCase() == sign.name.toLowerCase();
         })
-
         if(doc.isEndorseRequired){
           this.acceptDocuments.push({
             name: doc['name'].toUpperCase(),
