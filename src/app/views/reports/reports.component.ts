@@ -83,7 +83,7 @@ export class ReportsComponent implements OnInit {
   ];
 
   // Doughnut
-  public doughnutChartLabels: string[] = ['Created', 'Submitted', 'Issued', 'Rejected'];
+  public doughnutChartLabels: string[] = ['Created', 'Submitted', 'Issued Members', 'Issued Non-Members', 'Rejected'];
   public doughnutChartData: number[] = [0,0,0,0];
   public doughnutChartType = 'doughnut';
 
@@ -104,7 +104,7 @@ export class ReportsComponent implements OnInit {
     this.certificateService.getReport('Day').subscribe(data => {
       if(data['status'] == "success"){
         this.reportCount = data['data'];
-        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount];
+        this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedMembersCount, this.reportCount.issuedNonMembersCount, this.reportCount.rejectedCount];
         // console.log(' this.doughnutChartData',  this.doughnutChartData)
       } 
     });

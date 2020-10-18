@@ -929,6 +929,7 @@ export class Dashboard2Component implements OnInit {
     }
     values.email = this.currentUser["email"];
     values.ammendmentMode = true;
+    values.isMember = this.currentUser['isMember'];
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
@@ -1015,6 +1016,7 @@ export class Dashboard2Component implements OnInit {
 
     }
     values.email = this.currentUser["email"];
+    values.isMember = this.currentUser['isMember'];
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
@@ -1204,7 +1206,9 @@ export class Dashboard2Component implements OnInit {
                  
                 setTimeout(() => { this.saveFileDocument(formData, this.currentCertificate._id);}, index* 700);
 
-               
+                if(index +1 == newDocuments.length){
+                  setTimeout(() => {  this.resendOTP(this.currentCertificate);}, index* 1000);
+                }
                   
              
               });

@@ -18,7 +18,7 @@
        </div>
       <div *ngIf="reportCount" class="row col-md-12" style="text-align: center;align-items: center;">
 
-        <div class="col-md-2"></div>
+        <div class="col-md-1" style="flex: 0 0 6.333333%;"></div>
         <div class="card text-white bg-info col-md-2 m-2">
           <div class="card-body pb-0"><div>Created</div><div class="text-value">{{reportCount.createdCount}}</div></div>
         </div>
@@ -26,7 +26,10 @@
           <div class="card-body pb-0"><div>Submitted</div><div class="text-value">{{reportCount.submittedCount}}</div></div>
         </div>
         <div class="card text-white bg-success col-md-2 m-2">
-          <div class="card-body pb-0"><div>Issued</div><div class="text-value">{{reportCount.issuedCount}}</div></div>
+          <div class="card-body pb-0"><div>Issued Member</div><div class="text-value">{{reportCount.issuedMembersCount}}</div></div>
+        </div>
+        <div class="card text-white bg-success col-md-2 m-2">
+          <div class="card-body pb-0"><div style="    white-space: nowrap;">Issued Non-Member</div><div class="text-value">{{reportCount.issuedNonMembersCount}}</div></div>
         </div>
         <div class="card text-white bg-danger col-md-2 m-2  ">
           <div class="card-body pb-0"><div>Rejected</div><div class="text-value">{{reportCount.rejectedCount}}</div></div>
