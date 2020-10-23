@@ -155,4 +155,13 @@ export class CertificateService {
     return this.http.get(this.serverUrl + 'certificate/report/getCount/' + type, getHeaders('application/json'))
   }
 
+  uploadBulkCSV = (data) => {
+    return this.http.post(this.serverUrl + 'certificate/uploadBulkCSV' , data, getHeadersWithNoContentType()).pipe(catchError(handleError))
+  }
+
+  getErrorLogs = (logId) => {
+    return this.http.get(this.serverUrl + 'certificate/getUploadLogs/' + logId, getHeaders('application/json'))
+
+  }
+
 }

@@ -35,6 +35,8 @@ export class Dashboard2Component implements OnInit {
   coList: Object;
   imageSrc: string;
   imageSrc2: string;
+  uploadId: string;
+  errorLogs: any;
   progressPer2: number;
   progressPer1: number;
   ammntmentRequest: Boolean = false;
@@ -1105,6 +1107,25 @@ export class Dashboard2Component implements OnInit {
 
   }
 
+  onBulkFileChosen(event): void {
+    let reader = new FileReader()
+
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0]
+
+      // doc.file = file;
+      reader.readAsDataURL(file)
+      this.uploadBulkCSV(file)
+
+      reader.onload = () => {
+        //this.createEventForm.controls['eventImage'].setValue(file)
+        // doc.preview = reader.result
+      }
+
+      // need to run CD since file load runs outside of zone
+    }
+  }
+
   onFileChosen(event, doc, i): void {
     let reader = new FileReader()
 
@@ -1425,19 +1446,22 @@ export class Dashboard2Component implements OnInit {
           let certificateCostObj = _.find(this.pricingList, function(price){ return price.internalName == 'isCOEndorseRequired'});
 
           let pricingCost =  parseFloat(this.currentUser['isMember'] ? certificateCostObj.costForMember : certificateCostObj.costForNonMember);
-          invoice.invoiceItems.push({
-            description: "CERTIFICATE OF ORIGIN FEES",
-            hsnOrSAC: '998399',
-            quantity: 1,
-            rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
-            amount: pricingCost,
-          });
+          if(!this.currentCertificate.ammendmentMode){
+            // add if not ammentment Doc
+            invoice.invoiceItems.push({
+              description: "CERTIFICATE OF ORIGIN FEES",
+              hsnOrSAC: '998399',
+              quantity: 1,
+              rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
+              amount: pricingCost,
+            });
 
-          invoice.totalAmount = this.fixDecimal( invoice.totalAmount + pricingCost); // Added total cost to 
-          invoice.totalAmountWithoutTax =  parseFloat(pricingCost.toString());
+            invoice.totalAmount = this.fixDecimal( invoice.totalAmount + pricingCost); // Added total cost to 
+            invoice.totalAmountWithoutTax =  parseFloat(pricingCost.toString());
 
-          invoice.totalQuantity = invoice.totalQuantity + 1;
-          invoice.remark = 'C.O Fees';
+            invoice.totalQuantity = invoice.totalQuantity + 1;
+            invoice.remark = 'C.O Fees';
+          }
           if(isInterState){
             // only push one Tax type IGST
             if(_.isEmpty(invoice.taxDetails[0])){
@@ -2023,6 +2047,48 @@ export class Dashboard2Component implements OnInit {
 
     return ciphertext;
     // $("#decryptedText").text(decrypted.toString(CryptoJS.enc.Utf8));
+}
+
+bulkUploadCSV(event) {
+  event.preventDefault()
+    let id = "bulkCo";
+    document.getElementById(id).click();
+}
+
+uploadBulkCSV = (file) => {
+  const formData = new FormData()
+    //formData.append('file', this.eventImageFile)
+      formData.append('file', file)
+      formData.append('name', file.name)
+  this.certificateService.uploadBulkCSV(formData).subscribe(data => {
+    if(data['status'] == "success"){
+      this.uploadId =  data['data']['logId'];
+      this.checkStatus(this.uploadId);
+    }
+  });
+}
+
+checkStatus = (logId) => {
+
+  // get errorLogs
+  document.getElementById('openLogsModel').click();
+  let logsTimer = setInterval( () => {
+    this.certificateService.getErrorLogs(logId).subscribe(data => {
+      if(data['status'] == "success"){
+        this.errorLogs =  data['data']['errorLogs'];
+  
+        console.log('this.errorLogs', this.errorLogs);
+        if(this.errorLogs.status == 'error' || this.errorLogs.status == 'completed' ){
+
+          clearInterval(logsTimer);
+          
+          this.getCertificated('', this.fromDate, this.toDate, '1', '1');
+        }
+      }
+    });
+  }, 500)
+  
+
 }
 
 }

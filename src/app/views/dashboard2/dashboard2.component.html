@@ -1,5 +1,55 @@
 <div class="animated fadeIn">
   <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+  <!-- Logs Model -->
+  <div class="modal" #logsModal id="logsModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header" >
+          <h4 class="modal-title"> Upload Logs  <span *ngIf="errorLogs">-- {{errorLogs.status}}</span> </h4>
+              <button type="button" id="UploadLogsModalCLoseButton" (click)="clearModel()"  class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div *ngIf="errorLogs" class="modal-body">
+         
+          <div   class="col-md-12" > <!-- [hidden]="payClicked" -->
+            <table class="table table-responsive ">
+              <thead>
+                <tr>
+                  <th style="width: 35%;">Unique Key</th>
+                  <th>Status</th>
+                  <th>Message</th>
+                  <th style="width: 25%;">Error</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr 
+                  *ngFor="let row  of errorLogs.logs; index as i "
+                 >
+                  <td style="text-transform:uppercase;">{{row.key}}</td>
+                  <td>{{row.status}}</td>
+                  <td>{{row.message}}</td>
+                  <td ><span *ngIf="row.error">{{row.error.message}}</span></td>
+
+                                          
+                </tr>
+             
+              </tbody>
+            </table>
+           
+          </div>
+          
+        
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="openLogsModel" title="" style="display: none;" data-toggle="modal" data-target="#logsModal" class="btn btn-sm btn-primary" > </button>
 
 
   <div class="modal fade" #payModal id="payModal" aria-hidden="true"   data-keyboard="false"data-backdrop="static">
@@ -1059,6 +1109,10 @@
           <div class="row col-md-12">
             <div class="col-md-6 col-sm-4"></div>
             <div  class="col-md-6 col-sm-8">
+              <!-- <button *rbacShow="['user']" (click)="bulkUploadCSV($event)"  type="button"
+                class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Bulk Upload  <i class="fa fa-upload fa-lg" aria-hidden="true"></i> </button> -->
+                <input id="bulkCo" hidden type="file" name="fileInput" accept=".csv"
+                (change)="onBulkFileChosen($event)">
               <button *rbacShow="['user']" (click)="ammendmentMode='create'; ammntmentRequest = true" data-toggle="modal" data-target="#createCORequestModal" type="button"
               class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">CO Ammendment  <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i> </button>
               <button *rbacShow="['user']" (click)="certificateMode='create'" data-toggle="modal" data-target="#createCORequestModal" type="button"
