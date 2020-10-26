@@ -1445,7 +1445,18 @@ export class Dashboard2Component implements OnInit {
         if(this.currentCertificate.isCOEndorseRequired){
           let certificateCostObj = _.find(this.pricingList, function(price){ return price.internalName == 'isCOEndorseRequired'});
 
-          let pricingCost =  parseFloat(this.currentUser['isMember'] ? certificateCostObj.costForMember : certificateCostObj.costForNonMember);
+          let pricingCost = 0;
+          if(this.currentUser['role'] == 'user'){
+
+            pricingCost = parseFloat(this.currentUser['isMember'] ? certificateCostObj.costForMember : certificateCostObj.costForNonMember);
+          }
+          if(this.currentUser['role'] == 'agent'){
+            let selectedUser = _.find(this.chaExportersList, (exporter) => {
+              return  this.currentCertificate.exporter.toLowerCase() == exporter.companyName.toLowerCase();
+              
+            } );
+            pricingCost = parseFloat(selectedUser['isMember'] ? certificateCostObj.costForMember : certificateCostObj.costForNonMember);
+          }
           if(!this.currentCertificate.ammendmentMode){
             // add if not ammentment Doc
             invoice.invoiceItems.push({
@@ -1557,8 +1568,19 @@ export class Dashboard2Component implements OnInit {
 
             if(doc['isEndorseRequired']){
               let isDocEndorseRequired = _.find(this.pricingList, function(price){ return price.internalName == 'isDocEndorseRequired'});
+              let pricingCost = 0;
+              if(this.currentUser['role'] == 'user'){
 
-              let pricingCost = this.currentUser['isMember'] ? isDocEndorseRequired.costForMember : isDocEndorseRequired.costForNonMember;
+                pricingCost = this.currentUser['isMember'] ? isDocEndorseRequired.costForMember : isDocEndorseRequired.costForNonMember;
+              }
+              if(this.currentUser['role'] == 'agent'){
+                let selectedUser = _.find(this.chaExportersList, (exporter) => {
+                  return  this.currentCertificate.exporter.toLowerCase() == exporter.companyName.toLowerCase();
+                  
+                } );
+                pricingCost = selectedUser['isMember'] ? isDocEndorseRequired.costForMember : isDocEndorseRequired.costForNonMember;
+
+              }
               invoice.invoiceItems.push({
                 description: doc.name + ' Certification FEES',
                 hsnOrSAC: '',
@@ -1566,10 +1588,10 @@ export class Dashboard2Component implements OnInit {
                 rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost)),
                 amount: pricingCost,
               }); 
-              invoice.totalAmount = invoice.totalAmount + pricingCost +  parseFloat(pricingCost); // Added total cost to 
+              invoice.totalAmount = invoice.totalAmount + pricingCost +  parseFloat(pricingCost.toString()); // Added total cost to 
               invoice.totalQuantity = invoice.totalQuantity + 1;
               invoice.remark = invoice.remark == ''?  doc.name + ' Certification FEES':  invoice.remark + ', ' + doc.name + ' Certification FEES';
-              invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax +  parseInt(pricingCost) ;
+              invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax +  parseInt(pricingCost.toString()) ;
 
               // invoice.taxDetails.push({
               //   hsnOrSAC: '998399',
@@ -1599,7 +1621,7 @@ export class Dashboard2Component implements OnInit {
                   // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
 
                 }else{
-                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                   invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
                   invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
     
@@ -1631,7 +1653,7 @@ export class Dashboard2Component implements OnInit {
                   // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
 
                 }else{
-                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                   invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
                   invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
                 
@@ -1659,7 +1681,7 @@ export class Dashboard2Component implements OnInit {
                   // invoice.totalAmountWithoutTax =  invoice.totalAmountWithoutTax + pricingCost;
 
                 }else{
-                  invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                  invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                   invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getSGSTtRate(pricingCost) ),
                   invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getSGSTtRate(pricingCost))))
     
@@ -1683,17 +1705,29 @@ export class Dashboard2Component implements OnInit {
           if(this.currentCertificate.ammendmentMode){
             let ammendmentMode = _.find(this.pricingList, function(price){ return price.internalName == 'ammendmentMode'});
   
-            let pricingCost = this.currentUser['isMember'] ? ammendmentMode.costForMember : ammendmentMode.costForNonMember;
+            let pricingCost = 0
+            if(this.currentUser['role'] == 'user'){
+              pricingCost = this.currentUser['isMember'] ? ammendmentMode.costForMember : ammendmentMode.costForNonMember;
+            }
+            if(this.currentUser['role'] == 'agent'){
+              let selectedUser = _.find(this.chaExportersList, (exporter) => {
+                return  this.currentCertificate.exporter.toLowerCase() == exporter.companyName.toLowerCase();
+                
+              } );
+              pricingCost = selectedUser['isMember'] ? ammendmentMode.costForMember : ammendmentMode.costForNonMember;
+
+
+            }
             invoice.invoiceItems.push({
               description: "Ammendments / Fresh Correction",
               hsnOrSAC: '',
               quantity: 1,
               rate: this.fixDecimal(isInterState? this.getIGSTRate(pricingCost): this.getCGSTRate(pricingCost) + this.getSGSTtRate(pricingCost) ),
-              amount:  parseFloat(pricingCost) ,
+              amount:  parseFloat(pricingCost.toString()) ,
             });
   
-            invoice.totalAmount = invoice.totalAmount + parseFloat(pricingCost); // Added total cost to 
-            invoice.totalAmountWithoutTax = invoice.totalAmountWithoutTax + parseFloat(pricingCost);
+            invoice.totalAmount = invoice.totalAmount + parseFloat(pricingCost.toString()); // Added total cost to 
+            invoice.totalAmountWithoutTax = invoice.totalAmountWithoutTax + parseFloat(pricingCost.toString());
             invoice.totalQuantity = invoice.totalQuantity + 1;
 
             invoice.remark = invoice.remark == ''?  ' Ammendments Fees': invoice.remark +', Ammendments Fees';
@@ -1718,7 +1752,7 @@ export class Dashboard2Component implements OnInit {
                   totalTaxAmount: this.fixDecimal( this.getIGSTRate(pricingCost))
                 })
               }else{
-                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                 invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
                 invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
               }
@@ -1735,7 +1769,7 @@ export class Dashboard2Component implements OnInit {
                   totalTaxAmount: this.fixDecimal( this.getCGSTRate(pricingCost)) ,
                 })
               }else{
-                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                 invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
                 invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
               
@@ -1751,7 +1785,7 @@ export class Dashboard2Component implements OnInit {
                 })
               }else{
                 
-                invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[1].taxableValue + parseFloat(pricingCost) : parseFloat(pricingCost);
+                invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[1].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
                 invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getCGSTRate(pricingCost) ),
                 invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
 
