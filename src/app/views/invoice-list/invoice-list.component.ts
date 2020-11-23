@@ -105,7 +105,6 @@ export class InvoiceListComponent implements OnInit {
   }
 
   exportInvoiceUser(searchText, startDate, endDate){
-    console.log(searchText, startDate, endDate);
     this.invoiceService.getExportInvoiceUser(searchText, startDate, endDate).subscribe(data => {
       if(data['status'] == "success"){
         let exportInvoices = data['data'];
@@ -116,11 +115,11 @@ export class InvoiceListComponent implements OnInit {
           let igst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'IGST'});
           let cgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'CGST'});
           let sgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'SGST'});
-
+          let taxableValue = _.find(invoice.taxDetails, (inv) => { return inv.description == 'CGST' || inv.description == 'IGST' });
           invoice.IGST = _.isEmpty(igst) ? '0': igst.amount;
           invoice.CGST = _.isEmpty(cgst) ? '0': cgst.amount;
           invoice.SGST = _.isEmpty(sgst) ? '0': sgst.amount;
-
+          invoice.taxableValue = _.isEmpty(taxableValue) ? '0': taxableValue.taxableValue;
           delete invoice.invoiceItems;
 
           exportInvoicesArranged.push({
@@ -136,6 +135,7 @@ export class InvoiceListComponent implements OnInit {
             destination: invoice.destination,	
             deliveryTerms: invoice.deliveryTerms,	
             totalQuantity: invoice.totalQuantity,	
+            taxableAmount: invoice.taxableValue,
             totalAmount: invoice.totalAmount,	
             totalAmountWords: invoice.totalAmountWords,	
             IGST: invoice.IGST,	
@@ -167,10 +167,12 @@ export class InvoiceListComponent implements OnInit {
           let igst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'IGST'});
           let cgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'CGST'});
           let sgst = _.find(invoice.invoiceItems, (inv) => { return inv.description == 'SGST'});
+          let taxableValue = _.find(invoice.taxDetails, (inv) => { return inv.description == 'CGST' || inv.description == 'IGST' });
 
           invoice.IGST = _.isEmpty(igst) ? '0': igst.amount;
           invoice.CGST = _.isEmpty(cgst) ? '0': cgst.amount;
           invoice.SGST = _.isEmpty(sgst) ? '0': sgst.amount;
+          invoice.taxableValue = _.isEmpty(taxableValue) ? '0': taxableValue.taxableValue;
 
           delete invoice.invoiceItems;
 
@@ -187,6 +189,8 @@ export class InvoiceListComponent implements OnInit {
             destination: invoice.destination,	
             deliveryTerms: invoice.deliveryTerms,	
             totalQuantity: invoice.totalQuantity,	
+            taxableAmount: invoice.taxableValue,
+
             totalAmount: invoice.totalAmount,	
             totalAmountWords: invoice.totalAmountWords,	
             IGST: invoice.IGST,	
