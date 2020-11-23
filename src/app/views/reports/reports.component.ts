@@ -167,7 +167,7 @@ export class ReportsComponent implements OnInit {
       if(data['status'] == "success"){
         this.reportCount = data['data'];
         this.doughnutChartData = [ this.reportCount.createdCount, this.reportCount.submittedCount, this.reportCount.issuedCount, this.reportCount.rejectedCount]
-        console
+        
       }
     });
      // Line chart data

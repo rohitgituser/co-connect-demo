@@ -66,6 +66,11 @@
              <span> <b>Company Name:</b> </span> 
                <p>{{selectedUser && selectedUser.companyName}}</p>
            </div>
+           <div class="col-md-4">
+            <span class=" badge badge-success" style="float:right">
+              Available Credit: {{getCurrentUserCredit()}}
+            </span>
+          </div>
         
            <div class="col-md-12">
              <span> <b>Address:</b> </span> 

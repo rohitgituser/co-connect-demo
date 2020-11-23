@@ -17,6 +17,11 @@
               <span> <b>Company Name:</b> </span> 
                 <p>{{selectedUser && selectedUser.companyName}}</p>
             </div>
+            <div class="col-md-4">
+              <span class=" badge badge-success" style="float:right">
+                Available Credit: {{getCurrentUserCredit()}}
+              </span>
+            </div>
             <div class="col-md-8">
               <span> <b> DCCIA CO code:</b> </span> 
                 <p>{{selectedUser && selectedUser.coReference}}</p>
@@ -141,7 +146,7 @@
         <!-- Modal footer -->
         <div class="modal-footer">
           <button  type="button" *ngIf="selectedUser && !selectedUser.isConfirmed" (click)="activateUser(selectedUser)"   style="float: right; font-weight: 600;" class="btn btn-primary"> Activate</button>
-          <button *ngIf="selectedUser && !selectedUser.isConfirmed && !selectedUser.rejectionReason"  data-toggle="modal" data-target="#rejectionModal" type="button"  style="float: right; font-weight: 600;" class="btn  btn-danger mr-1"><i class="cui-circle-x icons "></i>  Reject</button>
+          <button *ngIf="selectedUser && !selectedUser.isConfirmed "  data-toggle="modal" data-target="#rejectionModal" type="button"  style="float: right; font-weight: 600;" class="btn  btn-danger mr-1"><i class="cui-circle-x icons "></i>  Reject</button>
 
           <button  type="button" *ngIf="selectedUser && selectedUser.isConfirmed" (click)="deActivateUser(selectedUser)"   style="float: right; font-weight: 600;" class="btn btn-primary">Deactivate</button>
 

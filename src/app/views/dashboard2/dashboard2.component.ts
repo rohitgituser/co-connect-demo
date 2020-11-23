@@ -355,7 +355,7 @@ export class Dashboard2Component implements OnInit {
 
     this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
     this.toDate = new Date(toDate).toISOString().split('T')[0];
-    this.getCertificated('', this.fromDate, this.toDate, '1', '1');
+    this.getCertificated('', '', '', '1', '1');
 
   }
 

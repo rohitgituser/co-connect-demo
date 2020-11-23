@@ -991,6 +991,8 @@
               <mat-step [stepControl]="coRequestFormGroup">
                 <ng-template matStepLabel>Payment</ng-template>
                 <div *ngIf="currentInvoice && currentInvoice.invoiceItems['length'] > 0"  class="row  mt-1">
+                   <div class="col-md-12 float-right"><span (click)="openPDF(currentCertificate.coPreviewUrl)" class="btn btn-sm btn-success float-right">CO Preview</span>
+                   </div>
                    <div   class="col-md-12" > <!-- [hidden]="payClicked" -->
                     <table class="table table-responsive ">
                       <thead>
@@ -1163,10 +1165,17 @@
                 <th *rbacShow="['admin']" style="width: 25%;">Company Name</th>
                 <th *rbacShow="['editor']" style="width: 25%;">Company Name</th>
                 <th *rbacShow="['user']" style="width: 25%;">Consignee's Name</th>
+                <th *rbacShow="['agent']" style="width: 25%;">Consignee's Name</th>
+
                 <th style="width: 20%;">Reference No.</th>
                 <th style="width: 12%;">IEC No.</th>
                 <th style="width: 12%;">Request Type</th>
-                <th>Date</th>
+                <!-- <th>Date</th> -->
+                <th *rbacShow="['admin']" style="width: 25%;">Submitted Date</th>
+                <th *rbacShow="['editor']" style="width: 25%;">Submitted Date</th>
+                <th *rbacShow="['user']" style="width: 25%;">Date</th>
+                <th *rbacShow="['agent']" style="width: 25%;">Date</th>
+
                 <th style="width: 20%;">Destination</th>
                 <th *rbacShow="['editor']" style="width: 20%;">Editor Action</th>
                 <th *rbacShow="['admin']" style="width: 20%;">Editor Action</th>
@@ -1299,7 +1308,7 @@
                 <th *rbacShow="['user']" style="width: 30%;">Consignee's Name</th>
                 <th style="width: 20%;">Reference No.</th>
                 <th style="width: 12%;">IEC No.</th>
-                <th style="width: 12%;">Date</th>
+                <th style="width: 12%;"> Issued Date</th>
                 <th style="width: 20%;">Destination</th>
                
                 <th>Status</th>
@@ -1317,7 +1326,7 @@
                 <td> {{pl.coReferenceNumber}}</td>
 
                 <td>{{pl.iecNumber}}</td>
-                <td>{{pl.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td>{{pl.issued_on | date:'dd/MM/yyyy'}}</td>
                 <td>{{pl.finalDestination}}</td>
 
               

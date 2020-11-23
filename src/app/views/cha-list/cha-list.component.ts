@@ -108,4 +108,7 @@ export class ChaListComponent implements OnInit {
       }
     });
   }
+  getCurrentUserCredit(){
+    return this.selectedUser && this.selectedUser['credit'] ? this.selectedUser['credit'] + ' ₹' : '0 ₹';
+  }
 }

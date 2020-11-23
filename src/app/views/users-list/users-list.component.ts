@@ -136,5 +136,8 @@ export class UsersListComponent implements OnInit {
       document.getElementById("closeViewUserModalButton").click();
     });
   }
+  getCurrentUserCredit(){
+    return this.selectedUser && this.selectedUser['credit'] ? this.selectedUser['credit'] + ' ₹' : '0 ₹';
+  }
 
 }
