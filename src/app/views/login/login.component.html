@@ -89,7 +89,10 @@
             </div>
             <div class="col-md-4">
               <span> <b>State*:</b> </span> 
-              <input type="text" formControlName="state" class="form-control" placeholder="State" required>
+              <select class="form-control dropdowns" formControlName="state">
+                <option *ngFor="let unit of statesOfIndia" [value]="unit">{{unit}}</option>
+              </select>
+              <!-- <input type="text" formControlName="state" class="form-control" placeholder="State" required> -->
               <div *ngIf="chaForm.state.invalid  && chaRegisterSubmitted" class="error_txt">
                 <div *ngIf="chaForm.state.errors.required">
                   Address  is required.
@@ -344,7 +347,10 @@
             </div>
             <div class="col-md-4">
               <span> <b>State*:</b> </span> 
-              <input type="text" formControlName="state" class="form-control" placeholder="State" required>
+              <select class="form-control dropdowns" formControlName="state">
+                <option *ngFor="let unit of statesOfIndia" [value]="unit">{{unit}}</option>
+              </select>
+              <!-- <input type="text" formControlName="state" class="form-control" placeholder="State" required> -->
               <div *ngIf="rForm.state.invalid  && registerSubmitted" class="error_txt">
                 <div *ngIf="rForm.state.errors.required">
                   Address  is required.

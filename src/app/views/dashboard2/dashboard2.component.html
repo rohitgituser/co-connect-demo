@@ -198,14 +198,24 @@
                       </div>
                     </div>
                     <div class="col-md-3 mt-1">
-                      <span>  Exporter State*:  </span> 
-                      <input type="text" formControlName="exporterState" class="form-control" required>
+                      <span>  Exporter State*:  </span>
+                      <!-- <span>  &nbsp; Type  </span>  -->
+                      <select class="form-control dropdowns" formControlName="exporterState">
+                          <option *ngFor="let unit of statesOfIndia" [value]="unit">{{unit}}</option>
+                      </select>
+                      <div *ngIf="coForm.exporterState.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.exporterState.errors.required">
+                              State is required.
+                        </div>
+                       
+                      </div>
+                      <!-- <input type="text" formControlName="exporterState" class="form-control" required>
                       <div *ngIf="coForm.exporterAddress.invalid  &&  coSubmitted" class="error_txt">
                         <div *ngIf="coForm.exporterAddress.errors.required">
                               State is required.
                         </div>
                        
-                      </div>
+                      </div> -->
                     </div>
                     <div class="col-md-3 mt-1">
                       <span>  Exporter Country*:  </span> 
@@ -571,7 +581,10 @@
                       </div>
                       <div class="col-md-3 mt-1">
                         <span>  Exporter State*:  </span> 
-                        <input type="text" formControlName="exporterState" class="form-control" required>
+                        <select class="form-control dropdowns" formControlName="exporterState">
+                          <option *ngFor="let unit of statesOfIndia" [value]="unit">{{unit}}</option>
+                      </select>
+                        <!-- <input type="text" formControlName="exporterState" class="form-control" required> -->
                         <div *ngIf="coAmmendmentForm.exporterAddress.invalid  &&  coAmmendmentRequestSubmitted" class="error_txt">
                           <div *ngIf="coAmmendmentForm.exporterAddress.errors.required">
                                 State is required.
@@ -1111,8 +1124,8 @@
           <div class="row col-md-12">
             <div class="col-md-6 col-sm-4"></div>
             <div  class="col-md-6 col-sm-8">
-              <!-- <button *rbacShow="['user']" (click)="bulkUploadCSV($event)"  type="button"
-                class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Bulk Upload  <i class="fa fa-upload fa-lg" aria-hidden="true"></i> </button> -->
+              <button *rbacShow="['user']" (click)="bulkUploadCSV($event)"  type="button"
+                class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Bulk Upload  <i class="fa fa-upload fa-lg" aria-hidden="true"></i> </button>
                 <input id="bulkCo" hidden type="file" name="fileInput" accept=".csv"
                 (change)="onBulkFileChosen($event)">
               <button *rbacShow="['user']" (click)="ammendmentMode='create'; ammntmentRequest = true" data-toggle="modal" data-target="#createCORequestModal" type="button"

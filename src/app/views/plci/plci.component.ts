@@ -50,7 +50,7 @@ export class PlciComponent implements OnInit {
     this.acceptDocuments = [];
     this.certificateId = this.route.snapshot.params.id;
     this.getCertificateById(this.certificateId)
-    this.plObject = this.generalServiceService.getPlById(this.plId);
+    // this.plObject = this.generalServiceService.getPlById(this.plId);
 
   }
 

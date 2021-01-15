@@ -92,6 +92,7 @@ export class Dashboard2Component implements OnInit {
   rzp1:any;
   razorPayOptions: any;
   payment_creation_id=null;
+  statesOfIndia = [];
 
   constructor( private generalServiceService : GeneralServiceService, 
     private formBuilder: FormBuilder,
@@ -119,6 +120,8 @@ export class Dashboard2Component implements OnInit {
       "paymode": 9,
 
     }
+
+    this.statesOfIndia = this.generalServiceService.getStatesList();
     this.razorpayService
     .lazyLoadLibrary('https://checkout.razorpay.com/v1/checkout.js')
     .subscribe();
@@ -1439,8 +1442,8 @@ export class Dashboard2Component implements OnInit {
           totalTaxableValue: 0,
           remark: ''
         }
-
-        let isInterState = this.currentCertificate.exporterState.toLowerCase().indexOf('maharashtra') !== -1 ? false: true;
+        // console.log('this.currentUser.state', this.currentUser['state'])
+        let isInterState = this.currentUser['state'].toLowerCase().indexOf('maharashtra') !== -1 ? false: true;
 
         if(this.currentCertificate.isCOEndorseRequired){
           let certificateCostObj = _.find(this.pricingList, function(price){ return price.internalName == 'isCOEndorseRequired'});

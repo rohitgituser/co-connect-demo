@@ -6,6 +6,7 @@ import { AuthService } from '../../helpers/auth.service';
 import { UserRole } from '../../enums/user-role';
 import { LoadingScreenService } from '../loader/services/loading-screen.service';
 import _ from "lodash";
+import { GeneralServiceService } from '../../services/general-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +28,7 @@ export class LoginComponent {
   loginError: string;
   // passwordConfirm: string = '';
   showError: String ='';
+  statesOfIndia = [];
   dropdownSettings: object = {
     "singleSelection": false,
     "idField": "item_id",
@@ -43,13 +45,16 @@ export class LoginComponent {
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-    private loadingService: LoadingScreenService
+    private loadingService: LoadingScreenService,
+    private generalServiceService : GeneralServiceService
     ) {  }
   ngOnInit() {
     this.imagesUrl = ['assets/img/brand/DCCIA-Slides.png', 'assets/img/brand/DCCIA-Slides_1.png', 'assets/img/brand/DCCIA-Slides_2.png'];
     this.authService.restrctLogin();
     let EmailPattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'
     let PasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    this.statesOfIndia = this.generalServiceService.getStatesList();
+
     this.fieldsArray = [
       { item_id: 1, item_text: 'Air' },
       { item_id: 2, item_text: 'Ocean' },
