@@ -489,6 +489,9 @@
                         <option *ngFor="let unit of currencyArray" [value]="unit">{{unit}}</option>
                       </select>
                     </div>
+                    <div class="col-md-4 mt-4">
+                      Show Value on CO <input type="checkbox" formControlName="showValue" > 
+                    </div>
 
                     <div class="col-md-12 mt-1">
                       Attest Certificate of Origin ?  <input type="checkbox" formControlName="isCOEndorseRequired" disabled> 
@@ -864,6 +867,9 @@
                           <option *ngFor="let unit of currencyArray" [value]="unit">{{unit}}</option>
                         </select>
                        
+                      </div>
+                      <div class="col-md-4 mt-4">
+                        Show Value on CO <input type="checkbox" formControlName="showValue" > 
                       </div>
   
                       <div style="display: none;" class="col-md-12 mt-1">

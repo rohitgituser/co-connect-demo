@@ -195,6 +195,7 @@ export class Dashboard2Component implements OnInit {
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
+      showValue: [true],
       valueCurrency: [this.currencyArray[0]],
       termsAccepted: [false, Validators.required],
       isCOEndorseRequired: [true, Validators.required],
@@ -237,6 +238,7 @@ export class Dashboard2Component implements OnInit {
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
+      showValue: [true],
       valueCurrency: [this.currencyArray[0]],
       termsAccepted: [false, Validators.required],
       isCOEndorseRequired: [true, Validators.required],
@@ -293,6 +295,7 @@ export class Dashboard2Component implements OnInit {
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
+      showValue: [true],
       valueCurrency: [this.currencyArray[0]],
 
       termsAccepted: [false, Validators.required],
@@ -336,6 +339,7 @@ export class Dashboard2Component implements OnInit {
       netWeight: ['', Validators.required],
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
+      showValue: [true],
       valueCurrency: [this.currencyArray[0]],
       termsAccepted: [false, Validators.required],
       isCOEndorseRequired: [true, Validators.required],
@@ -673,6 +677,7 @@ export class Dashboard2Component implements OnInit {
           netWeight: [this.currentCertificate.netWeight, Validators.required],
           grossWeight: [this.currentCertificate.grossWeight, Validators.required],
           totalValue: [this.currentCertificate.totalValue, Validators.required],
+          showValue: [this.currentCertificate.showValue],
           valueCurrency: [this.currentCertificate.valueCurrency || this.currencyArray[0]],
           termsAccepted: [this.currentCertificate.termsAccepted, Validators.required],
           isCOEndorseRequired: [this.currentCertificate.isCOEndorseRequired, Validators.required],
@@ -768,6 +773,7 @@ export class Dashboard2Component implements OnInit {
           netWeight: [this.currentCertificate.netWeight, Validators.required],
           grossWeight: [this.currentCertificate.grossWeight, Validators.required],
           totalValue: [this.currentCertificate.totalValue, Validators.required],
+          showValue: [this.currentCertificate.showValue],
           valueCurrency: [this.currentCertificate.valueCurrency || this.currencyArray[0]],
           termsAccepted: [this.currentCertificate.termsAccepted, Validators.required],
           isCOEndorseRequired: [this.currentCertificate.isCOEndorseRequired, Validators.required],
@@ -862,6 +868,7 @@ export class Dashboard2Component implements OnInit {
             netWeight: [oldCert.netWeight, Validators.required],
             grossWeight: [oldCert.grossWeight, Validators.required],
             totalValue: [oldCert.totalValue, Validators.required],
+            showValue: [oldCert.showValue],
             valueCurrency: [oldCert.valueCurrency || this.currencyArray[0]],
             termsAccepted: [oldCert.termsAccepted, Validators.required],
             isCOEndorseRequired: [oldCert.isCOEndorseRequired, Validators.required],
@@ -935,6 +942,8 @@ export class Dashboard2Component implements OnInit {
     values.email = this.currentUser["email"];
     values.ammendmentMode = true;
     values.isMember = this.currentUser['isMember'];
+    values.showValue = values.showValue ? true: false;
+    console.log('values.showValue', values.showValue );
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
@@ -1022,6 +1031,8 @@ export class Dashboard2Component implements OnInit {
     }
     values.email = this.currentUser["email"];
     values.isMember = this.currentUser['isMember'];
+    values.showValue = values.showValue ? true: false;
+    console.log('values.showValue', values.showValue );
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
