@@ -16,6 +16,10 @@
                 <div *rbacShow="['user']" class="row col-md-12">
                   <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportInvoiceUser(searchText,fromDate, toDate)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export To CSV</button>
                 </div>
+                <div *rbacShow="['agent']" class="row col-md-12">
+                  <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportInvoiceUser(searchText,fromDate, toDate)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export To CSV</button>
+                </div>
+                
                 <div class="row col-md-12" style="display: flex;">
                     <!-- <div class="col-md-3 col-sm-6"></div> -->
                     <div class="col-md-3 col-sm-6" style="max-width:100%;">
@@ -51,6 +55,7 @@
                         <tr>
                             <th>Invoice No</th>
                             <th *rbacShow="['user']">Consignee's Name</th>
+                            <th *rbacShow="['agent']">Consignee's Name</th>
                             <th>Cert Ref No</th>
 
                             <th *rbacShow="['editor']" style="width: 30%;">Company Name</th>
@@ -68,7 +73,7 @@
                         <tr *ngFor="let invoice of invoiceList ; index as i;">
                             <td>{{invoice.invoiceNo}}</td>
                             <td *rbacShow="['user']">{{invoice.consignee }}</td>
-
+                            <td *rbacShow="['agent']">{{invoice.consignee }}</td>
                             <td>{{invoice.certificateRefNo}}</td>
 
                             <td *rbacShow="['editor']">{{invoice.buyer}}</td>

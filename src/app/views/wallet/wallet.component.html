@@ -123,6 +123,8 @@
             <div class="card-header page_heading" >
                 Wallet History
                 <span *rbacShow="['user']" style="float:right" >Available Credit: {{getCurrentUserCredit()}}</span>
+                <span *rbacShow="['agent']" style="float:right" >Available Credit: {{getCurrentUserCredit()}}</span>
+
             </div>
             <div class="card-body">
                 <div *rbacShow="['editor']"  class="row col-md-12">
@@ -145,7 +147,14 @@
                     <button   data-toggle="modal" data-target="#CreditUserModel" type="button"
                     class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
                 </div>
-            </div>
+              </div>
+              <div *rbacShow="['agent']"  class="row col-md-12">
+                <div class="col-md-6 col-sm-4"></div>
+                <div  class="col-md-6 col-sm-8">
+                    <button   data-toggle="modal" data-target="#CreditUserModel" type="button"
+                    class="btn btn-sm btn-pill btn-primary ml-1" style="float: right;">Credit  <i class="fa fa-usd fa-lg" aria-hidden="true"></i> </button>
+                </div>
+              </div>
                 <div class="row col-md-12">
                     <!-- <div class="col-md-3 col-sm-6"></div> -->
                     <div class="col-md-3 col-sm-6" style="max-width:100%;">
@@ -154,7 +163,8 @@
 
                         <label *rbacShow="['editor']" for="searchText"> Company Name </label>
                         <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
-        
+                        <label *rbacShow="['agent']" for="searchText">Consignee's Name</label>
+
                         <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control"
                           placeholder="Search.." id="searchText">
                       </div>
@@ -185,6 +195,8 @@
 
                             <th *rbacShow="['editor']" style="width: 20%;">Company Name</th>
                             <th *rbacShow="['user']" style="width: 20%;">Consignee's Name</th>
+                            <th *rbacShow="['agent']" style="width: 20%;">Consignee's Name</th>
+
                             <th  style="width: 10%;">Ref No.</th>
 
                             <th style="width: 20%;">Description</th>
