@@ -46,7 +46,7 @@ export class PaymentsComponent implements OnInit {
 
   getPayments(companyName: String, startDate:String, endDate: String, page: any){
 
-    if(this.user && this.user["role"] == UserRole.BA){
+    if(this.user && this.user["role"] == UserRole.BA || this.user["role"] == UserRole.ICC_AGENT){
       this.paymentService.getPayments(companyName, startDate,endDate, page).subscribe(data => {
         if(data['status'] == "success"){
           this.pagination = data['data']['pagination'];

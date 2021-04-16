@@ -93,7 +93,7 @@ export class WalletComponent implements OnInit {
   get cUserForm() { return this.creditUserForm.controls;}
 
   getWalletList(searchText, from, to, page){
-    if(this.currentUser['role'] == 'user'){
+    if(this.currentUser['role'] == 'user' || this.currentUser['role'] == 'agent'){
       this.walletService.getWalletHistory(searchText, from, to, page).subscribe(data => {
         if(data['status'] == "success"){
           this.pagination = data['data']['pagination'];
@@ -136,7 +136,7 @@ export class WalletComponent implements OnInit {
 
   getCompany(name): void {
     if (name && name.length > 2) {
-        this.mastersService.getBaUsers(name).subscribe(data => {
+        this.mastersService.getBaAndChaUsers(name).subscribe(data => {
 
             this.companyList =  _.filter(data['data'], (data) => { return  data.isConfirmed;});
 

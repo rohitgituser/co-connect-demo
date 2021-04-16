@@ -519,13 +519,11 @@ export class Dashboard2Component implements OnInit {
       }
 
       if(this.currentUser && this.currentUser["role"] == UserRole.ICC_AGENT){
-        console.log('ICC_AGENT')
         this.loadingService.show();
         this.mastersService.getAllExportersForCHA().subscribe(data => {
           if(data['status'] == "success"){
             this.chaExportersList =  data['data']
             this.chaExportersNameList = _.map(this.chaExportersList, (e) => { return e['companyName']})
-            console.log('this.chaExportersNameList', this.chaExportersNameList);
           }
         });
 
@@ -943,7 +941,6 @@ export class Dashboard2Component implements OnInit {
     values.ammendmentMode = true;
     values.isMember = this.currentUser['isMember'];
     values.showValue = values.showValue ? true: false;
-    console.log('values.showValue', values.showValue );
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
@@ -1032,7 +1029,6 @@ export class Dashboard2Component implements OnInit {
     values.email = this.currentUser["email"];
     values.isMember = this.currentUser['isMember'];
     values.showValue = values.showValue ? true: false;
-    console.log('values.showValue', values.showValue );
     // this.loadingService.show();
     if(this.createPlModal == 'edit' || !_.isEmpty(this.currentCertificate) ){
       // edit mode activated
@@ -1346,7 +1342,6 @@ export class Dashboard2Component implements OnInit {
   }
 
   // otpBackButton = () =>{
-  //   console.log('otpBackButton');
 
   //   if( this.currentCertificate.attachedDocuments.length > 0){
   //     _.forEach(this.currentCertificate.attachedDocuments, (doc) => {
@@ -1453,7 +1448,6 @@ export class Dashboard2Component implements OnInit {
           totalTaxableValue: 0,
           remark: ''
         }
-        // console.log('this.currentUser.state', this.currentUser['state'])
         let isInterState = this.currentUser['state'].toLowerCase().indexOf('maharashtra') !== -1 ? false: true;
 
         if(this.currentCertificate.isCOEndorseRequired){

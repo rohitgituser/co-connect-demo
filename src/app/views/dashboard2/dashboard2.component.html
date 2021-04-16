@@ -143,6 +143,8 @@
                   <div class="row">
                     <div [hidden]="currentCertificate && currentCertificate.docStatus != 'rejected'" class=" col-md-12 warning">
                       <span  *rbacShow="['user']"> <span *ngIf="currentCertificate">  Rejected Reason: {{currentCertificate.rejectionReason}}</span> </span>
+                      <span  *rbacShow="['agent']"> <span *ngIf="currentCertificate">  Rejected Reason: {{currentCertificate.rejectionReason}}</span> </span>
+
                     </div>
                     <div *rbacShow="['user']" class="col-md-6 mt-1">
                       <span>  Exporter*:  </span> 
@@ -522,6 +524,8 @@
                     <div class="row">
                       <div [hidden]="currentCertificate && currentCertificate.docStatus != 'rejected'" class=" col-md-12 warning">
                         <span  *rbacShow="['user']"> <span *ngIf="currentCertificate">  Rejected Reason: {{currentCertificate.rejectionReason}}</span> </span>
+                        <span  *rbacShow="['agent']"> <span *ngIf="currentCertificate">  Rejected Reason: {{currentCertificate.rejectionReason}}</span> </span>
+
                       </div>
                       <div class="col-md-6 mt-1">
                         <span>  CO Reference Number*:  </span> 
@@ -1152,6 +1156,7 @@
                 <label *rbacShow="['admin']" for="searchText"> Company Name </label>
                 <label *rbacShow="['editor']" for="searchText"> Company Name </label>
                 <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
+                <label *rbacShow="['agent']" for="searchText">Consignee's Name</label>
                 <input (change)="updateFilter(searchText,fromDate, toDate)"  type="search" [(ngModel)]="searchText"  class="form-control"
                   placeholder="Search.." id="searchText">
               </div>
@@ -1208,6 +1213,7 @@
                 <td *rbacShow="['admin']" >{{pl.exporter}}</td>
                 <td *rbacShow="['editor']" >{{pl.exporter}}</td>
                 <td *rbacShow="['user']" >{{pl.consignee}}</td>
+                <td *rbacShow="['agent']" >{{pl.consignee}}</td>
                 <td> {{pl.coReferenceNumber}}</td>
                 <td>{{pl.iecNumber}}</td>
                 <td>              
@@ -1295,7 +1301,7 @@
                 <label *rbacShow="['admin']" for="searchText"> Company Name </label>
                 <label *rbacShow="['editor']" for="searchText"> Company Name </label>
                 <label *rbacShow="['user']" for="searchText">Consignee's Name</label>
-
+                <label *rbacShow="['agent']" for="searchText">Consignee's Name</label>
                 <input (change)="updateFilter(searchText,fromDate, toDate)" type="search" [(ngModel)]="searchText" class="form-control"
                   placeholder="Search.." id="searchText">
               </div>
@@ -1325,6 +1331,7 @@
                 <th *rbacShow="['admin']" style="width: 30%;">Company Name</th>
                 <th *rbacShow="['editor']" style="width: 30%;">Company Name</th>
                 <th *rbacShow="['user']" style="width: 30%;">Consignee's Name</th>
+                <th *rbacShow="['agent']" style="width: 30%;">Consignee's Name</th>
                 <th style="width: 20%;">Reference No.</th>
                 <th style="width: 12%;">IEC No.</th>
                 <th style="width: 12%;"> Issued Date</th>
@@ -1341,7 +1348,7 @@
                 <td *rbacShow="['admin']" >{{pl.exporter}}</td>
                 <td *rbacShow="['editor']" >{{pl.exporter}}</td>
                 <td *rbacShow="['user']" >{{pl.consignee}}</td>
-
+                <td *rbacShow="['agent']" >{{pl.consignee}}</td>
                 <td> {{pl.coReferenceNumber}}</td>
 
                 <td>{{pl.iecNumber}}</td>
@@ -1358,6 +1365,11 @@
                   <span *ngIf="pl.docStatus == 'rejected' " class="badge badge-danger" style="text-transform: capitalize;">{{pl.docStatus}}</span>
                 </td>
                 <td *rbacShow="['user']">
+                  <button  title="Ammendments fees will be added."class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
+                  <button title="Download Documents " (click)="downloadClicked(pl)" data-toggle="modal" data-target="#documentsModal" class="btn btn-sm btn-primary" *ngIf=" pl.docStatus == 'issued'"  > <i class="fa fa-arrow-down fa-lg" aria-hidden="true"></i></button>
+
+                </td>
+                <td *rbacShow="['agent']">
                   <button  title="Ammendments fees will be added."class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
                   <button title="Download Documents " (click)="downloadClicked(pl)" data-toggle="modal" data-target="#documentsModal" class="btn btn-sm btn-primary" *ngIf=" pl.docStatus == 'issued'"  > <i class="fa fa-arrow-down fa-lg" aria-hidden="true"></i></button>
 

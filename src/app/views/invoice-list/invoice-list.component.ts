@@ -36,7 +36,7 @@ export class InvoiceListComponent implements OnInit {
 
   getInvoices = (name, fromDate, toDate, page) => {
 
-    if(this.currentUser && this.currentUser["role"] == UserRole.BA){
+    if(this.currentUser && this.currentUser["role"] == UserRole.BA || this.currentUser["role"] == UserRole.ICC_AGENT ){
       this.invoiceService.getInvoices(name, fromDate, toDate, page).subscribe(data => {
         if(data['status'] == "success"){
           this.pagination = data['data']['pagination'];

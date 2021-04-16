@@ -117,6 +117,14 @@ export class MastersService {
     return this.http.get(this.serverUrl + url, getHeaders('application/json'))
   }
 
+  getBaAndChaUsers = (name: string) => {
+    let url ='users/baSelect?';
+    if(name) {  url = url + '&name=' + name}
+    url = url + '&baAndCHA=true';
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+  }
+
+
   // getAllLists =  (name: string, page:any) => {
   //   let url = 'masters/lists?';
   //   if(name) {  url = url + '&name=' + name;}
