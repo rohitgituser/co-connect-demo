@@ -196,6 +196,7 @@ export class Dashboard2Component implements OnInit {
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
       showValue: [true],
+      itemOrigin: [''],
       valueCurrency: [this.currencyArray[0]],
       termsAccepted: [false, Validators.required],
       isCOEndorseRequired: [true, Validators.required],
@@ -296,6 +297,7 @@ export class Dashboard2Component implements OnInit {
       grossWeight: ['', Validators.required],
       totalValue: ['', Validators.required],
       showValue: [true],
+      itemOrigin: [''],
       valueCurrency: [this.currencyArray[0]],
 
       termsAccepted: [false, Validators.required],
@@ -676,6 +678,7 @@ export class Dashboard2Component implements OnInit {
           grossWeight: [this.currentCertificate.grossWeight, Validators.required],
           totalValue: [this.currentCertificate.totalValue, Validators.required],
           showValue: [this.currentCertificate.showValue],
+          itemOrigin: [this.currentCertificate.itemOrigin],
           valueCurrency: [this.currentCertificate.valueCurrency || this.currencyArray[0]],
           termsAccepted: [this.currentCertificate.termsAccepted, Validators.required],
           isCOEndorseRequired: [this.currentCertificate.isCOEndorseRequired, Validators.required],
