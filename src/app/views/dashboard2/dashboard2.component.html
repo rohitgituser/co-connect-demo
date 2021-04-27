@@ -495,6 +495,19 @@
                       Show Value on CO <input type="checkbox" formControlName="showValue" > 
                     </div>
 
+                    <div class="col-md-4 mt-1">
+                      <span> Importing Country </span>
+
+                       <input type="text" formControlName="itemOrigin" class="form-control">
+
+                      <div *ngIf="coForm.itemOrigin.invalid  &&  coSubmitted" class="error_txt">
+                        <div *ngIf="coForm.itemOrigin.errors.required">
+                          This field is required.
+                        </div>
+                      </div>
+                     
+                    </div>
+
                     <div class="col-md-12 mt-1">
                       Attest Certificate of Origin ?  <input type="checkbox" formControlName="isCOEndorseRequired" disabled> 
                     </div>
@@ -875,7 +888,7 @@
                       <div class="col-md-4 mt-4">
                         Show Value on CO <input type="checkbox" formControlName="showValue" > 
                       </div>
-  
+
                       <div style="display: none;" class="col-md-12 mt-1">
                         Attest Certificate of Origin?  <input type="checkbox" formControlName="isCOEndorseRequired" > 
                       </div>
