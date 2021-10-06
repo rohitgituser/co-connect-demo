@@ -272,7 +272,6 @@ digitallySignDoc(event, index){
         '</request>';
       body.replace(/"/g, '+');
       this.certificateService.sendXMLToSign(body).subscribe(res=>{
-
       // convert xml to Json and send
       let result1 = converter.xml2json(res, {compact: true, spaces: 2});
       if(result1){

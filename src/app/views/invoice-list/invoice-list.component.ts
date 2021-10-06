@@ -3,6 +3,7 @@ import { InvoiceService } from '../../services/invoice.service';
 import { UserRole } from '../../enums/user-role';
 import * as moment from 'moment';
 import _ from "lodash";
+import { paginationMaxSize } from '../../utilities/common'
 
 @Component({
   selector: 'app-invoice-list',
@@ -16,6 +17,7 @@ export class InvoiceListComponent implements OnInit {
   currentUser: Object;
   searchText: any = '';
   fromDate: any;
+  maxSize: number = paginationMaxSize;
   toDate: any;
   page: any;
   pagination: any = {
