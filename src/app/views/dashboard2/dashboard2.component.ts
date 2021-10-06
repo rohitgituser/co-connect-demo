@@ -2069,6 +2069,7 @@ export class Dashboard2Component implements OnInit {
   }
 
   openPDF = (src)=>{
+    src = src.replace("http:", "https:");
     document.getElementById("full")['href'] = src;
     document.getElementById("full").click();
   }

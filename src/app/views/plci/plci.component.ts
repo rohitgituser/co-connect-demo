@@ -111,6 +111,7 @@ closeEventHandler() {
 }
 
 openPDF = (src)=>{
+  src = src.replace("http:", "https:");
   document.getElementById("full")['href'] = src;
   document.getElementById("full").click();
 }
