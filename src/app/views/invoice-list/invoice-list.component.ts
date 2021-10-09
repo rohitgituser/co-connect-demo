@@ -20,7 +20,7 @@ export class InvoiceListComponent implements OnInit {
   maxSize: number = paginationMaxSize;
   toDate: any;
   page: any;
-  maxSize: number = paginationMaxSize;
+//   maxSize: number = paginationMaxSize;
   pagination: any = {
     currentPage: 1,
     nextPage: 1,
