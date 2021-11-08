@@ -891,6 +891,19 @@
                         Show Value on CO <input type="checkbox" formControlName="showValue" > 
                       </div>
 
+                      <div class="col-md-4 mt-1">
+                        <span> Importing Country </span>
+  
+                         <input type="text" formControlName="itemOrigin" class="form-control">
+  
+                        <div *ngIf="coForm.itemOrigin.invalid  &&  coSubmitted" class="error_txt">
+                          <div *ngIf="coForm.itemOrigin.errors.required">
+                            This field is required.
+                          </div>
+                        </div>
+                       
+                      </div>  
+
                       <div style="display: none;" class="col-md-12 mt-1">
                         Attest Certificate of Origin?  <input type="checkbox" formControlName="isCOEndorseRequired" > 
                       </div>
@@ -1107,7 +1120,7 @@
                 <div>
                   <span [hidden]="currentCertificate && currentCertificate['rejectionReason']">
                     <div *ngIf="!payClicked" class="col-md-12 mt-3">
-                      <button *ngIf="isWalletPayActive()" type="button" (click)="payCredit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary ml-2" style="float: right;"  >Pay From Wallet</button>
+                      <button *ngIf="isWalletPayActive()" type="button" (click)="payCredit(currentCertificate)"  class="btn btn-sm btn-pill btn-primary ml-2" style="float: right;" [disabled]="disablePay" >Pay From Wallet</button>
                       <button type="button" (click)="payNowRazor(currentCertificate, $event)"  class="btn btn-sm btn-pill btn-primary" style="float: right;"  >Pay Now</button>
                       <button type="button"  class="btn btn-sm btn-pill btn-primary" style="float: left;" matStepperPrevious>Back </button>
                     </div>

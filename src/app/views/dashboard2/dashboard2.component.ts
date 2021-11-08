@@ -40,6 +40,7 @@ export class Dashboard2Component implements OnInit {
   progressPer2: number;
   progressPer1: number;
   ammntmentRequest: Boolean = false;
+  payOnce:  Boolean = false;
   coRequestFormGroup: FormGroup;
   coAmmendmentRequestFormGroup: FormGroup;
   coOTPFormGroup: FormGroup;
@@ -84,6 +85,7 @@ export class Dashboard2Component implements OnInit {
   certificateId: any;
   payment: object 
   payClicked: Boolean= false;
+  disablePay: Boolean = false;
   notIssuedCertificate: Boolean = false;
   coRefCertInvalid: Boolean = false;
   uploadDocClicked: Boolean =false;
@@ -1105,6 +1107,7 @@ export class Dashboard2Component implements OnInit {
     this.emailSubmitted = false;
     this.notIssuedCertificate = false;
     this.coRefCertInvalid = false;
+    this.disablePay = false
 
   }
 
@@ -1937,7 +1940,11 @@ export class Dashboard2Component implements OnInit {
 
 
   payCredit = (currentCertificate) => {
+    this.disablePay = true;
 
+    if(!this.payOnce){
+
+      this.payOnce = true;
     let debit = {
       companyName: currentCertificate.exporter,
       buyerName: currentCertificate.consignee,
@@ -1950,13 +1957,17 @@ export class Dashboard2Component implements OnInit {
     this.loadingService.show();
     this.walletService.useCredit(debit).subscribe(data => {
       if(data['status'] == "success"){
+        this.disablePay = true;
           this.currentUser = data['data']['user'];
           sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
           this.loadingService.hide();
           this.payNowTest(currentCertificate);
       }
+      else {
+        this.disablePay = false;
+        }
     });
-    
+  }
   }
 
   payNowTest = (currentCertificate) => {
@@ -1966,6 +1977,7 @@ export class Dashboard2Component implements OnInit {
       if(data['status'] == "success"){
         this.getCertificated(this.searchText, this.fromDate, this.toDate, '1', '1');
         this.loadingService.hide();
+        this.payOnce = false;
         document.getElementById("closeCreateCoModelCloseButton").click();
 
       }
