@@ -1984,6 +1984,11 @@ export class Dashboard2Component implements OnInit {
     });
   };
 
+  payBack = (e) => {
+    e.preventDefault();
+    this.disablePay = false;
+  }
+
   payNow = (currentCertificate) => {
     // this.currentCertificate = currentCertificate;
     // this.certificateService.payAmountClicked(this.currentInvoice._id,this.currentCertificate._id).subscribe(data => {
