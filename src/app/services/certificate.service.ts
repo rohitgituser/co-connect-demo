@@ -23,6 +23,10 @@ export class CertificateService {
     return this.http.put(this.serverUrl + "certificate/" + certificateId, data, getHeaders('application/json'))
   }
 
+  deleteCertificate = (certificateId) => {
+    return this.http.delete(this.serverUrl + "certificate/" + certificateId, getHeaders('application/json'))
+  }
+
   getCertificates = ( companyName, startDate, endDate, type, page) =>{
     let url = 'certificate?';
     if(companyName) {  url = url + '&companyName=' + companyName}

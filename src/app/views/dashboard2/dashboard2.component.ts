@@ -898,10 +898,25 @@ export class Dashboard2Component implements OnInit {
   }
 
 
+
   onCertificateDelete(event,certificate){
     event.preventDefault()
-
     this.currentCertificate = certificate;
+  }
+
+  onCODeleteConfirm(currentCertificate) {
+    console.log(currentCertificate);
+    this.loadingService.show();
+    this.certificateService.deleteCertificate(this.currentCertificate._id).subscribe(data => {
+      this.loadingService.hide();
+      if(data['status'] == "success"){
+        this.toastr.success('Success', 'Certificate deleted successfully...');
+         this.getCertificated('', this.fromDate, this.toDate, '1', '1');
+      }else{
+        this.toastr.error('',data['message'] );
+      }
+      document.getElementById("closeDeleteCO").click();
+    });
   }
 
   onAmmendmentRequestCOSubmit(){

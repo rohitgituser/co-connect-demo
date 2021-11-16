@@ -1114,7 +1114,6 @@
                       <!-- <button  id="payModelSubmit" type="submit">Submit</button> -->
                     </form>
                     
-                   
                   </div>
                 </div>
                 <div>
@@ -1279,7 +1278,7 @@
                   <span *ngIf="!pl.ammendmentMode">
                     <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
                   </span>
-                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
+                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)" data-toggle="modal" data-target="#deleteCO"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
                 </td>
                 <td *rbacShow="['agent']">
                   <span *ngIf="pl.ammendmentMode">
@@ -1289,7 +1288,7 @@
                   <span *ngIf="!pl.ammendmentMode">
                     <button class="btn btn-sm btn-primary" *ngIf="pl.docStatus == 'draft' || pl.docStatus == 'rejected'" data-toggle="modal" data-target="#createCORequestModal" (click)="onEditCertificateClicked(pl)">Edit</button>
                   </span>
-                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
+                  <button class="btn btn-sm " *ngIf="pl.docStatus == 'draft'"  (click)="onCertificateDelete($event,pl)" data-toggle="modal" data-target="#deleteCO"> <i style="color: crimson;" class="fa fa-trash fa-lg"></i> </button>
                 </td>
                 <td *rbacShow="['editor']">
                   <button class="pointer" [routerLink]="['/plci/', pl._id]" class="btn btn-sm btn-primary" >View</button>
@@ -1436,5 +1435,35 @@
 
     <!-- </div> -->
 
+  </div>
+</div>
+
+<!-- Delete Dialogbox -->
+<div class="modal" #deleteCO id="deleteCO">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header" style="background: #162b5a; color: white;">
+        <h4 class="modal-title">Delete CO Request</h4>
+        <button type="button" id="closeDeleteCO" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12" *ngIf= " currentCertificate ">
+            Are you sure you want to Delete CO Request of Reference No. {{currentCertificate.coReferenceNumber}}
+          </div>
+        </div>
+
+        <div class="modal-footer">
+
+          <button (click)="onCODeleteConfirm(currentCertificate)" type="button" style="float: right; font-weight: 600;"
+            class="btn  btn-danger mr-1"><i class="far fa-trash-alt"></i> Delete</button>
+
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
