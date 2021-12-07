@@ -1781,9 +1781,9 @@ export class Dashboard2Component implements OnInit {
                   totalTaxAmount: this.fixDecimal( this.getIGSTRate(pricingCost))
                 })
               }else{
-                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
-                invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getIGSTRate(pricingCost) ),
-                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount +  this.getIGSTRate(pricingCost))
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
+                invoice.taxDetails[0].taxAmount =  this.fixDecimal(  this.getIGSTRate(pricingCost) ),
+                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal(this.getIGSTRate(pricingCost))
               }
              
             }else{
@@ -1798,9 +1798,9 @@ export class Dashboard2Component implements OnInit {
                   totalTaxAmount: this.fixDecimal( this.getCGSTRate(pricingCost)) ,
                 })
               }else{
-                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? invoice.taxDetails[0].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
-                invoice.taxDetails[0].taxAmount =  this.fixDecimal( invoice.taxDetails[0].taxAmount + this.getCGSTRate(pricingCost) ),
-                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal( invoice.taxDetails[0].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+                invoice.taxDetails[0].taxableValue = invoice.taxDetails[0] && invoice.taxDetails[0].taxableValue ? parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
+                invoice.taxDetails[0].taxAmount =  this.fixDecimal( this.getCGSTRate(pricingCost) ),
+                invoice.taxDetails[0].totalTaxAmount = this.fixDecimal(  ( (this.getCGSTRate(pricingCost))))
               
               }
               if(_.isEmpty(invoice.taxDetails[1])){
@@ -1814,9 +1814,9 @@ export class Dashboard2Component implements OnInit {
                 })
               }else{
                 
-                invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? invoice.taxDetails[1].taxableValue + parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
-                invoice.taxDetails[1].taxAmount =  this.fixDecimal( invoice.taxDetails[1].taxAmount + this.getCGSTRate(pricingCost) ),
-                invoice.taxDetails[1].totalTaxAmount = this.fixDecimal( invoice.taxDetails[1].totalTaxAmount + ( (this.getCGSTRate(pricingCost))))
+                invoice.taxDetails[1].taxableValue = invoice.taxDetails[1] && invoice.taxDetails[1].taxableValue ? parseFloat(pricingCost.toString()) : parseFloat(pricingCost.toString());
+                invoice.taxDetails[1].taxAmount =  this.fixDecimal( this.getCGSTRate(pricingCost) ),
+                invoice.taxDetails[1].totalTaxAmount = this.fixDecimal(  ( (this.getCGSTRate(pricingCost))))
 
               }
             }
