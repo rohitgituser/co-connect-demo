@@ -18,10 +18,10 @@ export class ConstantService {
 
 
     //Demo Server
-    this.serverUrl = 'https://api.dcciapune.com/api/v1/';
-    this.loginUrl = 'https://api.dcciapune.com/api/v1/auth';
-    this.authUrl = 'https://api.dcciapune.com/api/v1/auth';
-    this.logoutUrl = 'https://api.dcciapune.com/api/v1/auth/logout';
+    this.serverUrl = 'https://testapi.dcciapune.com/api/v1/';
+    this.loginUrl = 'https://testapi.dcciapune.com/api/v1/auth';
+    this.authUrl = 'https://testapi.dcciapune.com/api/v1/auth';
+    this.logoutUrl = 'https://testapi.dcciapune.com/api/v1/auth/logout';
    }
 
    getUrl(){
