@@ -143,7 +143,7 @@ export class Dashboard2Component implements OnInit {
           "color": "#8bf7a8"
       },
   };
-    this.currencyArray = ['USD', 'INR', 'GBP', 'EUR', "AED", "CHF", "QAR", "AUD"];
+    this.currencyArray = ['USD', 'INR', 'GBP', 'EUR', "AED", "CHF", "QAR", "AUD", "KWD"];
 
     this.payClicked = false;
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
