@@ -54,7 +54,7 @@ export class MembersLoginComponent implements OnInit {
 
                }else if(invoiceNumber && invoiceNumber != ''){
 
-                if(currentCertificate.invoiceNumber.toLowerCase() == invoiceNumber.toLowerCase()){
+                if(currentCertificate.goods[0].invoiceNumber.toLowerCase().trim() == invoiceNumber.toLowerCase().trim()){
                   this.currentCertificate = currentCertificate;
                 }else{
                   this.showError = "No Record Found";;
