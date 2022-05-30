@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 import { Dashboard2Component } from './views/dashboard2/dashboard2.component';
+import { DashboardViewComponent } from './views/dashboardView/dashboardView.component';
 import { ReportsComponent } from './views/reports/reports.component';
 import { PaymentsComponent } from './views/payments/payments.component';
 import { PlciComponent } from './views/plci/plci.component';
@@ -142,6 +143,11 @@ export const routes: Routes = [
         path: 'co/:id',
         // loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
         component : CoComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'ads',
+        component:DashboardViewComponent,
         canActivate: [AuthGuard]
       },
       {

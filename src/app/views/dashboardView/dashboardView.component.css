@@ -1,0 +1,14 @@
+.fdpadBackground {
+    /* background: url("/assets/img/fdpAds/Ad1.gif"); */
+    cursor: pointer;
+    /* background-size: cover; */
+}
+
+::ng-deep .ng-image-slider .ng-image-slider-container .main {
+    margin-left: 0px !important;
+    /* width: 50% !important; */
+}
+
+/* .ng-image-slider-container{
+    margin-left: 0px !important;
+} */

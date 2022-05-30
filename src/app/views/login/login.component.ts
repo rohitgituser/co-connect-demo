@@ -140,9 +140,10 @@ export class LoginComponent {
        this.loadingService.hide()
        if (this.authService.isLoggedIn) {
         //  this.authService.ValidateToken().subscribe((authData) => {
-            let returnUrl =  JSON.parse(sessionStorage.getItem('currentUser'))['role'] === UserRole.ICC_ADMIN || JSON.parse(sessionStorage.getItem('currentUser'))['role'] === UserRole.ICC_EDITOR  ? '/dashboard': '/userDashboard'
+            let returnUrl =  JSON.parse(sessionStorage.getItem('currentUser'))['role'] === UserRole.ICC_ADMIN || JSON.parse(sessionStorage.getItem('currentUser'))['role'] === UserRole.ICC_EDITOR  ? '/dashboard': '/ads'
             this.router.navigate([returnUrl]);
             this.toastr.success('Success', 'Login success');
+            setTimeout(() => { sessionStorage.setItem('checkAlert', 'true') } ,  500);
         //  });
         } 
       },

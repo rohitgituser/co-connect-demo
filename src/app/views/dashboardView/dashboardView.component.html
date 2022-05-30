@@ -1,0 +1,103 @@
+<div class="animated fadeIn mt-4">
+ 
+
+  <div class="row mt-12" style="max-width: 100%;">
+
+    <div class=" col-md-6">
+      <div class="card">
+        <div class="card-header page_heading"> FDP CONNECT </div>
+        <div class="card-body">
+          <!-- <div class="chart-wrapper"> -->
+    <!-- <div style="width: 840px; height: 500px; text-align:center; margin:0 !important; padding:0;"> -->
+    <ng-image-slider #nav 
+    [images]="imagesUrl"
+    [infinite]="true"
+    [autoSlide]="5"
+    [imageSize]="{width: 500, height: 235}"
+    [slideImage]="1"
+    [manageImageRatio] = "false"
+    [imagePopup] = "true"
+    [showVideoControls] = "false"
+  ></ng-image-slider>
+  <div>Do you Still use excel and word for creation of documents? Want to upgrade yourself? <a href="https://app.fdpconnect.com/#/login" target="blank">Click here</a> to Explore. 
+    <a href="assets/img/fdpAds/FDP brochure.pdf" target="blank">Know More</a> about FDP Connect</div>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-md-6">
+      <div class="card">
+        <div class="card-header page_heading">
+            Certificate Request  (<i class="fa fa-percent" aria-hidden="true"></i>)
+        </div>
+        <div class="card-body">
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart"
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" style="max-width: 100%;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center">
+      <button (click)="quarterReport()" type="button" style="border-radius: 50px 0px 0px 50px; padding:0.375rem 2.75rem;" class="btn  btn-secondary " [ngClass]="{'active': buttonType=='Quarter'}" aria-pressed="true">Quarter</button>
+      <button (click)="monthReport()"type="button" style=" padding:0.375rem 2.75rem;"class="btn  btn-secondary " [ngClass]="{'active': buttonType=='Month'}" aria-pressed="true">Month</button>
+      <button (click)="weekReport()" type="button"  style=" padding:0.375rem 2.75rem;" class="btn  btn-secondary " [ngClass]="{'active': buttonType=='Week'}" aria-pressed="true">Week</button>
+      <button (click)="dayReport()" type="button"  style="border-radius: 0px 50px  50px 0px; padding:0.375rem 2.75rem;" class="btn  btn-secondary " [ngClass]="{'active': buttonType=='Day'}" aria-pressed="true">Day</button>
+
+    </div>
+    <div class="col-md-2"></div>
+
+  </div>
+    <div class="card">
+      <div class="card-header page_heading">
+       Certificate Count     
+       </div>
+      <div *ngIf="reportCount" class="row col-md-12" style="text-align: center;align-items: center;">
+
+        <div class="col-md-1" style="flex: 0 0 6.333333%;"></div>
+        <div class="card text-white bg-info col-md-2 m-2">
+          <div class="card-body pb-0"><div>Created</div><div class="text-value">{{reportCount.createdCount}}</div></div>
+        </div>
+        <div class="card text-white bg-primary col-md-2 m-2">
+          <div class="card-body pb-0"><div>Submitted</div><div class="text-value">{{reportCount.submittedCount}}</div></div>
+        </div>
+        <div class="card text-white bg-success col-md-4 m-4">
+          <div class="card-body pb-0"><div>Issued</div><div class="text-value">{{reportCount.issuedMembersCount + reportCount.issuedNonMembersCount}}</div></div>
+        </div>
+        <!-- <div class="card text-white bg-success col-md-2 m-2">
+          <div class="card-body pb-0"><div style="    white-space: nowrap;">Issued Non-Member</div><div class="text-value">{{reportCount.issuedNonMembersCount}}</div></div>
+        </div> -->
+        <div class="card text-white bg-danger col-md-2 m-2  ">
+          <div class="card-body pb-0"><div>Rejected</div><div class="text-value">{{reportCount.rejectedCount}}</div></div>
+        </div>
+        
+      </div>
+   
+    </div>
+
+ 
+
+    <div class="modal" #fdpAd id="fdpAd">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          
+          <div class="modal-body fdpadBackground" style="white-space: initial; min-height: 20em;" (click)="adRedirect()" data-dismiss="modal">
+            <img src="/assets/img/fdpAds/Ad1.gif" loop=1 style="width: 100%; height: 40em;">
+            <!-- <p style="font-weight: bold; min-height: 10em; align-items: center; justify-content: center; display: grid; color: white;">Connect all the your trade stakeholders on one single secured platform. </p> -->
+            </div>
+    
+        </div>
+      </div>
+    </div>
+  
+    <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#fdpAd"></button>
+
+</div>

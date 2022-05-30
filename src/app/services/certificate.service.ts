@@ -168,4 +168,8 @@ export class CertificateService {
 
   }
 
+  getExporterReport = (type) => {
+    return this.http.get(this.serverUrl + 'certificate/exporterreport/getCount/' + type, getHeaders('application/json'))
+  }
+  
 }

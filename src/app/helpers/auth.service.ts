@@ -217,7 +217,7 @@ ValidateToken() {
   }
 
   logout() {
-   
+    sessionStorage.removeItem('checkAlert');
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     
     var authData ={

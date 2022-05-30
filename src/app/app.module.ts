@@ -10,7 +10,7 @@ import { SliderModule } from 'angular-image-slider';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatStepperModule} from '@angular/material/stepper';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 
@@ -51,6 +51,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { Dashboard2Component } from './views/dashboard2/dashboard2.component';
+import { DashboardViewComponent } from './views/dashboardView/dashboardView.component';
 import { ReportsComponent } from './views/reports/reports.component';
 import { PaymentsComponent } from './views/payments/payments.component';
 import { PlciComponent } from './views/plci/plci.component';
@@ -94,6 +95,7 @@ import { InviteChaComponent } from './views/invite-cha/invite-cha.component';
     NgImageFullscreenViewModule,
     ChartsModule,
     SliderModule,
+    NgImageSliderModule,
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
@@ -111,6 +113,7 @@ import { InviteChaComponent } from './views/invite-cha/invite-cha.component';
     LoginComponent,
     RegisterComponent,
     Dashboard2Component,
+    DashboardViewComponent,
     ReportsComponent,
     PaymentsComponent,
     // WalletComponent,

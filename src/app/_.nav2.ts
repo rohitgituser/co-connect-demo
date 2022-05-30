@@ -3,14 +3,13 @@ import { INavData } from '@coreui/angular';
 export const navItems1: INavData[] = [
   {
     name: 'Dashboard',
-    url: '/userDashboard',
+    url: '/ads',
     icon: 'icon-speedometer',   
   },
   {
-    name: 'Reports',
-    url: '/reports',
-    icon: 'icon-graph',
-   
+    name: 'COO Create',
+    url: '/userDashboard',
+    icon: 'fa fa-list-alt fa-lg',   
   },
   {
     name: 'Payments',
