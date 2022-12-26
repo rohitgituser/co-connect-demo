@@ -3,6 +3,7 @@ import _ from "lodash";
 import * as moment from 'moment';
 import { UserRole } from '../../enums/user-role';
 import { PaymentService } from '../../services/payment.service';
+import { paginationMaxSize } from '../../utilities/common'
 
 @Component({
   selector: 'app-payments',
@@ -17,6 +18,7 @@ export class PaymentsComponent implements OnInit {
   searchText: any = '';
   fromDate: any;
   toDate: any;
+  maxSize: number = paginationMaxSize;
   pagination: any = {
     currentPage: 1,
     nextPage: 1,
@@ -32,6 +34,7 @@ export class PaymentsComponent implements OnInit {
     this.fromDate = new Date(today.setMonth(today.getMonth() - 3)).toISOString().split('T')[0];
     this.toDate = new Date(toDate).toISOString().split('T')[0];
       this.getPayments('', this.fromDate, this.toDate , '1');
+      console.log(this.pagination)
   } 
 
   callClear() {
@@ -48,8 +51,10 @@ export class PaymentsComponent implements OnInit {
 
     if(this.user && this.user["role"] == UserRole.BA || this.user["role"] == UserRole.ICC_AGENT){
       this.paymentService.getPayments(companyName, startDate,endDate, page).subscribe(data => {
+        console.log(data)
         if(data['status'] == "success"){
           this.pagination = data['data']['pagination'];
+          console.log(this.pagination)
           if(!this.pagination){
             this.pagination = {
               currentPage: 1,
@@ -71,8 +76,10 @@ export class PaymentsComponent implements OnInit {
     }
     if(this.user && (this.user["role"] == UserRole.ICC_ADMIN || this.user["role"] == UserRole.ICC_EDITOR)){
       this.paymentService.getEditorPayments(companyName, startDate,endDate, page).subscribe(data => {
+        console.log(data)
         if(data['status'] == "success"){
           this.pagination = data['data']['pagination'];
+          console.log(this.pagination)
           if(!this.pagination){
             this.pagination = {
               currentPage: 1,
@@ -94,6 +101,13 @@ export class PaymentsComponent implements OnInit {
       });
     }
 }
+
+pageChanged(event: any): void {
+  if (event && !isNaN(event) && event != this.pagination.currentPage) {
+  this.getPayments(this.searchText, this.fromDate, this.toDate, event)
+  }
+}
+
   updateFilter(searchText: String, startDate: String, endDate: String): void {
 
     this.getPayments(searchText, startDate, endDate, '1');
