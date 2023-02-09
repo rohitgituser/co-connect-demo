@@ -1219,7 +1219,7 @@
                 <th *rbacShow="['agent']" style="width: 25%;">Consignee's Name</th>
 
                 <th style="width: 20%;">Reference No.</th>
-                <th style="width: 12%;">IEC No.</th>
+                <th style="width: 12%;">Invoice No.</th>
                 <th style="width: 12%;">Request Type</th>
                 <!-- <th>Date</th> -->
                 <th *rbacShow="['admin']" style="width: 25%;">Submitted Date</th>
@@ -1242,7 +1242,9 @@
                 <td *rbacShow="['user']" >{{pl.consignee}}</td>
                 <td *rbacShow="['agent']" >{{pl.consignee}}</td>
                 <td> {{pl.coReferenceNumber}}</td>
-                <td>{{pl.iecNumber}}</td>
+                <!-- <td>{{pl.iecNumber}}</td> -->
+                <td style="width: 12%; word-wrap: anywhere;"><span *ngFor="let invoiceData of GetInvoice(pl); index as idx">{{invoiceData['invoiceNumber']}}<span *ngIf="idx !== GetInvoice(pl).length-1">,&nbsp;&nbsp;</span></span></td>
+
                 <td>              
                   <span *ngIf="pl.ammendmentMode" class="badge badge-warning"  style="text-transform: capitalize;">Ammendment</span>
                   <span *ngIf="!pl.ammendmentMode" class="badge badge-success"  style="text-transform: capitalize;">Certificate</span>
@@ -1360,7 +1362,7 @@
                 <th *rbacShow="['user']" style="width: 30%;">Consignee's Name</th>
                 <th *rbacShow="['agent']" style="width: 30%;">Consignee's Name</th>
                 <th style="width: 20%;">Reference No.</th>
-                <th style="width: 12%;">IEC No.</th>
+                <th style="width: 12%;">Invoice No.</th>
                 <th style="width: 12%;"> Issued Date</th>
                 <th style="width: 20%;">Destination</th>
                
@@ -1377,8 +1379,8 @@
                 <td *rbacShow="['user']" >{{pl.consignee}}</td>
                 <td *rbacShow="['agent']" >{{pl.consignee}}</td>
                 <td> {{pl.coReferenceNumber}}</td>
-
-                <td>{{pl.iecNumber}}</td>
+                <!-- <td>{{pl.iecNumber}}</td> -->
+                <td style="width: 12%; word-wrap: anywhere;"><span *ngFor="let invoiceData of GetInvoice(pl); index as idx">{{invoiceData['invoiceNumber']}}<span *ngIf="idx !== GetInvoice(pl).length-1">,&nbsp;&nbsp;</span></span></td>
                 <td>{{pl.issued_on | date:'dd/MM/yyyy'}}</td>
                 <td>{{pl.finalDestination}}</td>
 

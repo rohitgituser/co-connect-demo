@@ -477,6 +477,12 @@ export class Dashboard2Component implements OnInit {
       };
    
     }
+  };
+
+  GetInvoice(data:any) {
+    const list =  _.filter(data['goods'], (item: any, index: any) => _.indexOf(data['goods'], (item) === index))
+    if(list.length > 0)
+    return list
   }
    
   getCertificated(companyName: String, startDate:String, endDate: String, page: any, page1:any){
