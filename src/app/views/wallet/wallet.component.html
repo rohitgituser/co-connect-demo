@@ -183,11 +183,20 @@
                           placeholder="date">
                       </div>
                     </div>
-                    <div class="col-md-3 col-sm-6" style="max-width:100%; margin-top: 35px;">
+                    <div class="col-md-1 col-sm-2" style="max-width:100%; margin-top: 35px;">
                       <button (click)="searchText='';  callClear()" type="button"
                         class="btn btn-sm btn-pill btn-danger">Clear</button>
                     </div>
+                  
+
+                  <div *rbacShow="['admin']" class="col-md-2 col-sm-4" style="margin-top: 30px;">
+                    <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportWallet(searchText,fromDate, toDate)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export To CSV</button>
                   </div>
+                  <div *rbacShow="['editor']" class="col-md-2 col-sm-4" style="margin-top: 30px;">
+                      <button class="btn btn-primary float-right" style="margin-left: auto;" (click)="exportWallet(searchText,fromDate, toDate)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export To CSV</button>
+                  </div>
+                </div>
+                
                 <table class="table table-responsive  table-striped">
                     <thead>
                         <tr style="width: 100%;">

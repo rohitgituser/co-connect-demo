@@ -288,6 +288,71 @@ export class WalletComponent implements OnInit {
 
   }
 
-
+  exportWallet(searchText, startDate, endDate){
+    this.walletService.getExportWallet(searchText, startDate, endDate).subscribe(data => {
+        if(data['status'] == "success"){
+          let exportWallets = data['data'];
+          let exportWalletArranged = [];
+          _.forEach(exportWallets, wallet => {
+            
+            wallet.createdAt = moment(wallet.createdAt).format('L');
+    
+            exportWalletArranged.push({
+              companyName: wallet.companyName,
+              certificateRefNo: wallet.certificateRefNo,	
+              Description: wallet.description,	
+              Type: wallet.type,	
+              Date: wallet.createdAt,	
+              amount: wallet.amount           
+            })
+    
+          })
+          let date = moment().format();
+          let csvName = 'Wallet-' + date + '.csv'
+          this.exportToCsv(csvName, exportWalletArranged);
+        }
+      });
+    }
+  
+  exportToCsv(filename: string, rows: object[]) {
+    if (!rows || !rows.length) {
+      return;
+    }
+    const separator = ',';
+    const keys = Object.keys(rows[0]);
+    
+    const csvContent =
+      keys.join(separator) +
+      '\n' +
+      rows.map(row => {
+        return keys.map(k => {
+          let cell = row[k] === null || row[k] === undefined ? '' : row[k];
+          cell = cell instanceof Date
+            ? cell.toLocaleString()
+            : cell.toString().replace(/"/g, '""');
+          if (cell.search(/("|,|\n)/g) >= 0) {
+            cell = `"${cell}"`;
+          }
+          return cell;
+        }).join(separator);
+      }).join('\n');
+  
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        // Browsers that support HTML5 download attribute
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  }
 
 }

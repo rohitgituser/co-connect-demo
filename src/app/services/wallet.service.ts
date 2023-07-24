@@ -39,6 +39,16 @@ export class WalletService {
 
   }
 
+  getExportWallet= (companyName, startDate, endDate) =>{
+    let url = 'wallet/export/toCSV/wallet?';
+    if(companyName) {  url = url + '&companyName=' + companyName}
+    if(startDate) {  url = url + '&startDate=' + startDate}
+    if(endDate) {  url = url + '&endDate=' + endDate}
+
+    return this.http.get(this.serverUrl + url, getHeaders('application/json'))
+
+  }
+
   addCredit = (body) => {
     return this.http.post(this.serverUrl + 'wallet/addCredit' , body, getHeaders('application/json'))
   }

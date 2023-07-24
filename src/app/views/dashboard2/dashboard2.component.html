@@ -945,7 +945,7 @@
                     <input *ngIf="i > 1" type="text" [(ngModel)]="doc.name" class="form-control" required>
                    
                   </div>
-                  <div [hidden]="doc.url && doc.url != '' " class="col-md-3 mt-1" >
+                  <div [hidden]="doc.url && doc.url != '' " class="col-md-3 mt-1" style="display: flex; justify-content: center; align-items: center;">
                     <span [hidden]=" doc.file && doc.file != '' ">
                     <input id="{{'certificateDocInput-'+i}}" hidden type="file" name="fileInput" accept=".pdf,.doc"
                         (change)="onFileChosen($event, doc, i)">
@@ -961,9 +961,9 @@
 
                   </div>
                   <div [hidden]="!doc.name" class="col-md-4 mt-4">
-                    Attest {{doc.name}} ?  <input type="checkbox"[(ngModel)]="doc.isEndorseRequired" > 
+                    Attest {{doc.name}} ?  <input [disabled]="currentCertificate && currentCertificate['rejectionReason']" type="checkbox" [(ngModel)]="doc.isEndorseRequired" > 
                   </div>
-                  <div *ngIf=" i != 0 || i != 1"  class="col-md-1" (click)="removeUploadDocsItem(i)">
+                  <div [hidden]="doc.isEndorseRequired && currentCertificate && currentCertificate['rejectionReason']" *ngIf=" i != 0 || i != 1 "  class="col-md-1" (click)="removeUploadDocsItem(i)" style="display: flex; justify-content: center; align-items: center;">
                     <i  style="color: red;" class="fa fa-times-circle-o fa-lg" aria-hidden="true"></i>
                   </div>
                 </div>
