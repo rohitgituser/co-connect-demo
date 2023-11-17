@@ -266,7 +266,7 @@ digitallySignDoc(event, index){
           "</file>"+
           "<pdf>"+
           "<page>1</page>"+
-          "<cood>50,120</cood>"+
+          "<cood>80,90</cood>"+
           "<size>120,85</size>"+
           "</pdf>"+
           "<data>"+doc.base +"</data>"+
